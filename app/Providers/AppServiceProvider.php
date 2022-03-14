@@ -23,18 +23,28 @@ class AppServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function getName(){
-        $company=CompanyParameters::all();
-        foreach($company ?? '' as $data){
-            $web_name=$data->Name;
+    public function getName()
+    {
+        $company = CompanyParameters::all();
+        foreach ($company ?? '' as $data) {
+            $web_name = $data->Name;
         }
-        return $web_name;
+        $web_alt="Loan Management System";
+        if (empty($web_name)) {
+            return $web_alt;
+        }
+        else{            
+            return $web_name;
+        }
     }
     public function boot()
-    {  
+    {
+       
         view()->composer('*', function ($view) {
-            $view->with('CompanyName', $this->getName()
-        );
+            $view->with(
+                'CompanyName',
+                $this->getName()
+            );
         });
     }
 }
