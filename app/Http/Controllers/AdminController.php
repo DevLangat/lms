@@ -4,8 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Admin;
 use Illuminate\Http\Request;
-use DB;
-use App\Models\CompanyParameters;
+
 
 class AdminController extends Controller
 {
@@ -17,13 +16,9 @@ class AdminController extends Controller
     public function index()
     
     {
-        $company=CompanyParameters::all();
-        foreach($company ?? '' as $data){
-            $_ENV['APP_NAME1'] =$data->Name ;
-        }
        
         
-        return view('admin.dashboard',compact('company'));
+        return view('admin.dashboard');
     }
 
     /**

@@ -8,68 +8,78 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Dashboard</h1>
+                    <h3>Members</h3>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="{{url('admin')}}">Home</a></li>
-                        <li class="breadcrumb-item active">Dashboard</li>
+                        <li class="breadcrumb-item active">Members</li>
                     </ol>
                 </div>
             </div>
         </div><!-- /.container-fluid -->
     </section>
+
     <div class="row">
         <div class="col-md-1"></div>
         <div class="col-md-10">
 
-            <div class="card">
-                <div class="card-header">
-                    <h1 class="h3 mb-4 text-gray-800">Add Member</h1>
+            <div class="card bg-light text-dark ">
+                <div class="card-header bg-light">
+                    <h2 class="text-primary">Add Member</h2>
                 </div>
-                <br>
-                <div>
+                
+                <div class="card-body">
 
                     <form method="post" action="{{route('post_member')}}">
                         @csrf
+                        <h5>PERSONAL INFO</h5>
+                        <hr>
                         <div class="form-group row">
-                            <div class="col-sm-6 mb-3 mb-sm-0">
+                            <div class="col-sm-1"></div>
+                            <div class="col-sm-5 mb-3 mb-sm-0">
                                 <input type="text" name="Name" class="form-control form-control-user" placeholder="Full Name">
                             </div>
-                            <div class="col-sm-6">
+                            <div class="col-sm-5">
                                 <input type="text" name="Email" class="form-control form-control-user" placeholder="Email">
                             </div>
                         </div>
+                        <br>
+
                         <div class="form-group row">
-                            <div class="col-sm-6 mb-3 mb-sm-0">
+                            <div class="col-sm-1"></div>
+                            <div class="col-sm-5 mb-3 mb-sm-0">
                                 <input type="text" name="Address" class="form-control form-control-user" placeholder="Address">
                             </div>
-                            <div class="col-sm-6 mb-3 mb-sm-0">
+                            <div class="col-sm-5 mb-3 mb-sm-0">
                                 <input type="text" name="Mobile" class="form-control form-control-user" placeholder="Mobile">
                             </div>
 
-                       
+
                         </div>
+                        <br>
+
                         <div class="form-group row">
-                            <div class="col-sm-6 mb-3 mb-sm-0">
+                            <div class="col-sm-1"></div>
+                            <div class="col-sm-5 mb-3 mb-sm-0">
                                 <input type="text" name="IdNumber" class="form-control form-control-user" placeholder="ID Number">
                             </div>
-                            <div class="col-sm-6">
+                            <div class="col-sm-5">
                                 <input type="text" name="GroupCode" class="form-control form-control-user" placeholder="Group Name">
                             </div>
                         </div>
-                        <div class="card">
-                            <div class="card-header">
-                                <h4 class="h3 mb-4 text-gray-800">Next Of Kin</h4>
+                      
+                            <h5>NEXT OF KIN DETAILS</h5>
+                            <hr/>
+                       
+                        <div class="form-group row">
+                            <div class="col-sm-1"></div>
+                            <div class="col-sm-5 mb-2 mb-sm-0">
+                                <input type="text" name="KinName" class="form-control form-control-user" placeholder="Next of Kin Full Name">
                             </div>
-                            <br>
-                            <div class="form-group row">
-                                <div class="col-sm-6 mb-3 mb-sm-0">
-                                    <input type="text" name="KinName" class="form-control form-control-user" placeholder="Full Name">
-                                </div>
-                                <div class="col-sm-6">
-                                    <input type="text" name="KinMobile" class="form-control form-control-user" id="exampleLastName" placeholder="Kin Mobile">
-                                </div>
+
+                            <div class="col-sm-5">
+                                <input type="text" name="KinMobile" class="form-control form-control-user" id="exampleLastName" placeholder="Next of Kin Mobile">
                             </div>
                         </div>
                 </div>

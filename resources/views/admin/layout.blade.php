@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Floriday General Supplies Ltd.</title>
+  <title>{{$CompanyName}}</title>
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -62,22 +62,8 @@
       <!-- Navbar Search -->
       <li class="nav-item">
         
-       <b><h4 class="text-primary">SMM Solutions Ltd.</h4></b>
-        <div class="navbar-search-block">
-          <form class="form-inline">
-            <div class="input-group input-group-sm">
-              <input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
-              <div class="input-group-append">
-                <button class="btn btn-navbar" type="submit">
-                  <i class="fas fa-search"></i>
-                </button>
-                <button class="btn btn-navbar" type="button" data-widget="navbar-search">
-                  <i class="fas fa-times"></i>
-                </button>
-              </div>
-            </div>
-          </form>
-        </div>
+       <b><h5 class="text-primary">{{$CompanyName}}</h5></b>
+    
       </li>
 
      
@@ -136,10 +122,18 @@
             </a>
             
           </li>
-                 
+          <li class="nav-item">
+          <a href="{{route('admin/company')}}" class="nav-link">
+              <i class="nav-icon fas fa-city"></i>
+              <p>
+                Company Parameters
+               
+              </p>
+            </a>
+          </li>   
           <li class="nav-item">
             <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-table"></i>
+              <i class="nav-icon fas fa-user-circle"></i>
               <p>
                 Members
                 <i class="fas fa-angle-left right"></i>
@@ -147,29 +141,21 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Add</p>
+                <a href="{{route('members/add')}}" class="nav-link">
+                  <i class="fas fa-user-plus nav-icon"></i>
+                  <p>Add Member</p>
                 </a>
               </li>
               <li class="nav-item">
                 <a href="" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
+                  <i class="fas fa-list nav-icon"></i>
                   <p>All Members</p>
                 </a>
               </li>
              
             </ul>
           </li>
-          <li class="nav-item">
-          <a href="{{route('admin/company')}}" class="nav-link">
-              <i class="nav-icon fas fa-table"></i>
-              <p>
-                Company Parameters
-                <i class="fas fa-angle-left right"></i>
-              </p>
-            </a>
-          </li>
+          
             </ul>
           </li>
          
@@ -192,7 +178,7 @@
   </div>
   <!-- /.content-wrapper -->
   <footer class="main-footer">
-    <strong>Copyright &copy; <script>document.write(new Date().getFullYear());</script><a href="#"> Floriday General Supplies LTD</a>.</strong>
+    <strong>Copyright &copy; <script>document.write(new Date().getFullYear()); </script><a href="#"> {{ $CompanyName}}</a>.</strong>
     All rights reserved.Desiged by <b><a href="#">SMM</a></b>
     
   </footer>
