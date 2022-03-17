@@ -26,12 +26,12 @@
 
             <div class="card bg-light text-dark ">
                 <div class="card-header bg-light">
-                    <h2 class="text-primary">Add Member</h2>
+                    <h2 class="text-primary">Add Loans</h2>
                 </div>
                 
                 <div class="card-body">
 
-                    <form method="post" action="{{route('post_loanapplication')}}">
+                    <form method="post" action="{{route('AddLoan')}}">
                         @csrf
                         <h5>CLIENT INFORMATION</h5>
                         <hr>
