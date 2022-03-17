@@ -15,7 +15,12 @@ class MemberController extends Controller
      */
     public function index()
     {
-        return view('members.members');
+        return view('members.add_members');
+    }
+    public function show()
+    {
+        $members = Member::all();
+        return view('members.view_members',compact('members'));        
     }
 
     /**
@@ -36,6 +41,11 @@ class MemberController extends Controller
      */
     public function store(Request $request)
     {
+        if (Member::where('IdNumber', '=', $request->IdNumber)->exists()) {
+         
+            Alert::error('Already A Member','The Member with ID No.'.strtoupper($request->IdNumber).' '.' has Already Registered');
+            return redirect()->back();
+        }
         Member::create($request->all());
         Alert::success('Member Registration', 'You\'ve Successfully Registered');
         return redirect()->back();
@@ -47,9 +57,10 @@ class MemberController extends Controller
      * @param  \App\Models\Member  $member
      * @return \Illuminate\Http\Response
      */
-    public function show(Member $member)
-    {
-        //
+    public function membersdetails($id)
+    {      
+        $member = Member::firstOrFail();
+        return view('members.member_details',compact('member'));
     }
 
     /**

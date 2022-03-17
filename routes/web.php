@@ -26,6 +26,3 @@ Route::post('/post_company', [App\Http\Controllers\CompanyParametersController::
 
 Route::get('/members/add', [App\Http\Controllers\MemberController::class, 'index'])->name('members/add');
 Route::post('/post_member', [App\Http\Controllers\MemberController::class, 'store'])->name('post_member');
-
-Route::get('/members/loan', [App\Http\Controllers\LoanApplicationController::class, 'index'])->name('members/loan');
-Route::post('/AddLoan', [App\Http\Controllers\LoanApplicationController::class, 'store'])->name('AddLoan');

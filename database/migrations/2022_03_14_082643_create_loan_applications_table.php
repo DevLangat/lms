@@ -30,8 +30,7 @@ class CreateLoanApplicationsTable extends Migration
             $table->float('RepayAmount')->nullable(); 
             $table->integer('IsDisbursed')->default(0); 
             $table->string('ApprovedBy')->nullable(); 
-            $table->string('Modifiedby')->nullable();
-            $table->string('ApprovedBy')->nullable();
+            $table->string('Modifiedby')->nullable();            
             $table->datetime('ApprovedOn')->nullable();
             $table->datetime('ModifiedOn')->nullable();           
 

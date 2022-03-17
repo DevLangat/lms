@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\LoanApplication;
+use App\Models\LoanType;
 use Illuminate\Http\Request;
-use Alert;
-class LoanApplicationController extends Controller
+
+class LoanTypeController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,7 +14,7 @@ class LoanApplicationController extends Controller
      */
     public function index()
     {
-        return view('members.loanapplication');
+        //
     }
 
     /**
@@ -24,7 +24,7 @@ class LoanApplicationController extends Controller
      */
     public function create()
     {
-        
+        //
     }
 
     /**
@@ -35,18 +35,16 @@ class LoanApplicationController extends Controller
      */
     public function store(Request $request)
     {
-        LoanApplication::create($request->all());
-        Alert::success('Loan Application', 'You\'ve Successfully Applied');
-        return redirect()->back();
+        //
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\LoanApplication  $loanApplication
+     * @param  \App\Models\LoanType  $loanType
      * @return \Illuminate\Http\Response
      */
-    public function show(LoanApplication $loanApplication)
+    public function show(LoanType $loanType)
     {
         //
     }
@@ -54,10 +52,10 @@ class LoanApplicationController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\LoanApplication  $loanApplication
+     * @param  \App\Models\LoanType  $loanType
      * @return \Illuminate\Http\Response
      */
-    public function edit(LoanApplication $loanApplication)
+    public function edit(LoanType $loanType)
     {
         //
     }
@@ -66,10 +64,10 @@ class LoanApplicationController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\LoanApplication  $loanApplication
+     * @param  \App\Models\LoanType  $loanType
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, LoanApplication $loanApplication)
+    public function update(Request $request, LoanType $loanType)
     {
         //
     }
@@ -77,10 +75,10 @@ class LoanApplicationController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\LoanApplication  $loanApplication
+     * @param  \App\Models\LoanType  $loanType
      * @return \Illuminate\Http\Response
      */
-    public function destroy(LoanApplication $loanApplication)
+    public function destroy(LoanType $loanType)
     {
         //
     }
