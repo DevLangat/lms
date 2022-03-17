@@ -26,3 +26,8 @@ Route::post('/post_company', [App\Http\Controllers\CompanyParametersController::
 
 Route::get('/members/add', [App\Http\Controllers\MemberController::class, 'index'])->name('members/add');
 Route::post('/post_member', [App\Http\Controllers\MemberController::class, 'store'])->name('post_member');
+Route::get('/members/all', [App\Http\Controllers\MemberController::class, 'show'])->name('members/all');
+Route::get('/members_details/{id}', [App\Http\Controllers\MemberController::class, 'membersdetails'])->name('members_details');
+
+Route::get('/loanapplication', [App\Http\Controllers\LoanApplicationController::class, 'index'])->name('loanapplication');
+Route::post('/post_loanapplication', [App\Http\Controllers\MemberController::class, 'store'])->name('post_loanapplication');

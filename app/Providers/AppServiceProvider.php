@@ -25,10 +25,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function getName()
     {
-        $company = CompanyParameters::all();
-        foreach ($company ?? '' as $data) {
-            $web_name = $data->Name;
-        }
+        $company = DB::table('company_parameters')->first();
+      
+        $web_name=$company->Name;
+        
         $web_alt="Loan Management System";
         if (empty($web_name)) {
             return $web_alt;

@@ -26,9 +26,9 @@
 
             <div class="card bg-light text-dark ">
                 <div class="card-header bg-light">
-                    <h2 class="text-primary">Add Member</h2>
+                    <h2 class="text-primary">Loan Application </h2>
                 </div>
-                
+
                 <div class="card-body">
 
                     <form method="post" action="{{route('post_loanapplication')}}">
@@ -50,11 +50,11 @@
                         <br>
 
                         <h5>LOAN DETAILS</h5>
-                        <hr/>
+                        <hr />
                         <div class="form-group row">
                             <div class="col-sm-1"></div>
                             <div class="col-sm-3 mb-3 mb-sm-0">
-                                <input type="text" name="Loancode" class="form-control form-control-user" placeholder="Loan Type">
+                                <input type="dropdown" name="Loancode" class="form-control form-control-user" placeholder="Loan Type">
                             </div>
                             <div class="col-sm-3 mb-3 mb-sm-0">
                                 <input type="text" name="AmountApplied" class="form-control form-control-user" placeholder="Enter Amount to Apply">
@@ -82,10 +82,19 @@
                                 <input type="text" name="GroupCode" class="form-control form-control-user" placeholder="Group Name">
                             </div>
                         </div>
-                      
-                            <h5>NEXT OF KIN DETAILS</h5>
-                            <hr/>
-                       
+                        <div class="form-group form-floating  label-floating ">
+                           
+                            <label class="control-label">Assignment Type <p></p></label>
+                            <select class="form-control" name="assignment_type" required="" aria-required="true">
+                                <option disabled="" selected=""></option>
+                                <option value="Test"> Test</option>
+                                <option value="MATHEMATICS TEST"> MATHEMATICS TEST</option>
+                            </select>
+                            <span class="material-input"></span>
+                        </div>
+                        <h5>NEXT OF KIN DETAILS</h5>
+                        <hr />
+
                         <div class="form-group row">
                             <div class="col-sm-1"></div>
                             <div class="col-sm-5 mb-2 mb-sm-0">

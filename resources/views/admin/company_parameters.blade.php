@@ -24,57 +24,61 @@
         <div class="col-md-10">
 
 
-        <div class="card bg-light text-dark ">
+            <div class="card bg-light text-dark ">
                 <div class="card-header bg-light">
                     <h2 class="text-primary">Company Details</h2>
 
                 </div>
-                      <br>         
-                    <form method="post" action="{{route('post_company')}}">
-                        @csrf
-                        <div class="form-group row">
+                <br>
+                <form method="post" action="{{route('post_company')}}">
+                    @csrf
+                    <div class="form-group row">
                         <div class="col-sm-1"></div>
-                            <div class="col-sm-5 mb-3 mb-sm-0">
-                                <input type="text" name="Name" class="form-control form-control-user" placeholder="Full Name">
-                            </div>
-                            <div class="col-sm-5">
-                                <input type="text" name="Email" class="form-control form-control-user" placeholder="Email">
-                            </div>
+                        <div class="col-sm-5 form-floating mb-3 mt-3 mb-sm-0">
+                            <input type="text" name="Name" class="form-control"  placeholder="Enter Full Name" >
+                            <label>Full Name</label>
                         </div>
-                        <br>
-                        <div class="form-group row">
+                        <div class="col-sm-5 form-floating mb-3 mt-3 mb-sm-0">
+                            <input type="text"  name="Email" class="form-control"  placeholder="Enter Email Address" >
+                            <label>Email Address</label>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group row">
                         <div class="col-sm-1"></div>
-                            <div class="col-sm-5 mb-3 mb-sm-0">
-                                <input type="text" name="Address" class="form-control form-control-user" placeholder="Address">
-                            </div>
-                            <div class="col-sm-5 mb-3 mb-sm-0">
-                                <input type="text" name="Telephone" class="form-control form-control-user" placeholder="Telephone">
-                            </div>
-
-
+                        <div class="col-sm-5 form-floating mb-3 mt-3 mb-sm-0">
+                            <input type="text" name="Address" class="form-control"  placeholder="Enter Address" >
+                            <label>Physical Address</label>
                         </div>
-                        <br>
-                        <div class="form-group row">
+                        <div class="col-sm-5 form-floating mb-3 mt-3 mb-sm-0">
+                            <input type="text"  name="Telephone" class="form-control"  placeholder="Enter Telephone">
+                            <label>Telephone</label>
+                        </div>
+                    </div>                   
+                    <div class="form-group row">
                         <div class="col-sm-1"></div>
-                            <div class="col-sm-5 mb-3 mb-sm-0">
-                                <input type="text" name="ContactPerson" class="form-control form-control-user" placeholder="ContactPerson">
-                            </div>
-                            <div class="col-sm-5">
-                                <input type="text" name="PinNumber" class="form-control form-control-user" id="exampleLastName" placeholder="PinNumber">
-                            </div>
+                        <div class="col-sm-5 form-floating mb-3 mt-3 mb-sm-0">
+                            <input type="text" name="ContactPerson" class="form-control"  placeholder="Enter Contact Person" >
+                            <label>Contact Person</label>
                         </div>
-                        <div class="form-group row">
+                        <div class="col-sm-5 form-floating mb-3 mt-3 mb-sm-0">
+                            <input type="text"  name="PinNumber" class="form-control"  placeholder="Enter Pin Number">
+                            <label>Pin Number</label>
+                        </div>
+                    </div>                   
+                    <div class="form-group row">
                         <div class="col-sm-1"></div>
-                            <div class="col-sm-5 mb-3 mb-sm-0">
-                                <input type="text" name="Branch" class="form-control form-control-user" placeholder="Branch">
-                            </div>
+                        <div class="col-sm-5 form-floating mb-3 mt-3 mb-sm-0">
+                            <input type="text" name="Branch" class="form-control"  placeholder="Enter Branch" >
+                            <label>Contact Person</label>
+                        </div>                       
+                    </div>                  
+                  
 
-                        </div>
 
+                    <button type="submit" class="btn btn-block btn-primary">SUBMIT</button>
+                </form>
 
-                        <button type="submit" class="btn btn-block btn-primary">SUBMIT</button>
-                    </form>
-                
             </div>
         </div>
         <div class="col-md-1"></div>
