@@ -57,8 +57,8 @@ class DepositsController extends Controller
     public function show(Deposits $deposits)
     {
        
-        $members = Deposits::all();
-        return view('members.View_deposits',compact('Deposits'));  
+        $deposits = Deposits::all();
+        return view('members.View_deposits',compact('deposits'));  
     }
 
     /**

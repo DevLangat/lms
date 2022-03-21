@@ -155,6 +155,30 @@
              
             </ul>
           </li>
+          <li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-user-circle"></i>
+              <p>
+                Deposits
+                <i class="fas fa-angle-left right"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="{{route('deposits/add')}}" class="nav-link">
+                  <i class="fas fa-user-plus nav-icon"></i>
+                  <p>Add Deposit</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{route('deposits/all')}}" class="nav-link">
+                  <i class="fas fa-list nav-icon"></i>
+                  <p>All Deposits</p>
+                </a>
+              </li>
+             
+            </ul>
+          </li>
           
             </ul>
           </li>
