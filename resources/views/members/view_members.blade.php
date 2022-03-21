@@ -44,7 +44,7 @@
                 </thead>
                 <tbody>
 
-                  @foreach ($members as $member)
+                  @foreach ($members ?? '' as $member)
                   <tr>
                     <td>{{$member->IdNumber}}</td>
                     <td>{{$member->GroupCode}}</td>

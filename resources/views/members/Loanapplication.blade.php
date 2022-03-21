@@ -8,12 +8,12 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h3>Members</h3>
+                    <h3>Loans</h3>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="{{url('admin')}}">Home</a></li>
-                        <li class="breadcrumb-item active">Members</li>
+                        <li class="breadcrumb-item active">Loan Application</li>
                     </ol>
                 </div>
             </div>
@@ -34,17 +34,31 @@
                     <form method="post" action="{{route('AddLoan')}}">
                         @csrf
                         <h5>CLIENT INFORMATION</h5>
-                        <hr>
+                        <hr>                      
                         <div class="form-group row">
                             <div class="col-sm-1"></div>
-                            <div class="col-sm-3 mb-3 mb-sm-0">
-                                <input type="text" name="IDNo" class="form-control form-control-user" placeholder="National ID No">
+                            <div class="col-sm-3 form-floating mb-3 mt-3 mb-sm-0">
+                                
+                                <select class="form-control" name="MemberNo" id="idnumber" onchange="change_member();"> 
+                                @foreach ($members ?? '' as $member)
+                                <option value="{{$member->IdNumber}}">{{$member->Name}} </option>
+                                @endforeach
+                                </select>
+                                <label>Member Name</label>
+                                <script>
+                                    function change_member() {                                     
+                                        document.getElementById("IDNo").value = document.getElementById("idnumber").value;
+                                      
+                                    }
+                                  </script>
                             </div>
-                            <div class="col-sm-3">
-                                <input type="text" name="Name" class="form-control form-control-user" placeholder="Full Names">
+                            <div class="col-sm-3 form-floating mb-3 mt-3 mb-sm-0">
+                                <input type="text" name="IDNo" class="form-control" id="IDNo" >
+                                <label>ID Number</label>
                             </div>
-                            <div class="col-sm-3">
-                                <input type="text" name="Deposits" class="form-control form-control-user" placeholder="Deposits">
+                            <div class="col-sm-3 form-floating mb-3 mt-3 mb-sm-0">
+                                <input type="text" name="Deposits" class="form-control" placeholder="Enter Email Address">
+                                <label>Deposit</label>
                             </div>
                         </div>
                         <br>
@@ -119,5 +133,9 @@
 
 
 </div>
-
+<script type="text/javascript">
+    function change_subject(str){
+        document.getElementById("idnumber").value=str;
+    }
+</script>
 @endsection

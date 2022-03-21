@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\LoanApplication;
+use App\Models\Member;
 use Illuminate\Http\Request;
 use Alert;
 class LoanApplicationController extends Controller
@@ -14,7 +15,8 @@ class LoanApplicationController extends Controller
      */
     public function index()
     {
-        return view('members.loanapplication');
+        $members = Member::all();
+        return view('members.loanapplication',compact('members'));
     }
 
     /**
