@@ -15,16 +15,7 @@ class CompanyParameters extends Seeder
     {
         DB::table('company_parameters')->insert([
             'Name' => 'Loan Management System',
-            'SharesName' => 'Deposits',
-            'SharesAcc' => '673-054',
-            'InterestAcc' => '',
-            'LoanToShareRatio' => 3,
-            'UsedToGuarantee' => True,
-            'Withdrawable' => True,
-            'MinAmount' => 0,
-            'LowerLimit' =>0,
-            'IntRate' => 0,
-            'sharevalue' => 0,
+           
         ]);
     }
 }
