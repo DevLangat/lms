@@ -33,7 +33,7 @@
   <link rel="stylesheet" href="{{asset('plugins/datatables-bs4/css/dataTables.bootstrap4.min.css')}}">
   <link rel="stylesheet" href="{{asset('plugins/datatables-responsive/css/responsive.bootstrap4.min.css')}}">
   <link rel="stylesheet" href="{{asset('plugins/datatables-buttons/css/buttons.bootstrap4.min.css')}}">
-  <script src="{{ asset('js/app.js') }}" defer></script>
+  <script src="{{ asset('js/app.js') }}" ></script>
   
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -239,6 +239,7 @@
 <script src="{{asset('plugins/datatables-buttons/js/buttons.html5.min.js')}}"></script>
 <script src="{{asset('plugins/datatables-buttons/js/buttons.print.min.js')}}"></script>
 <script src="{{asset('plugins/datatables-buttons/js/buttons.colVis.min.js')}}"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </body>
 <script>
   $(function () {
@@ -257,5 +258,28 @@
     });
   });
  
+</script>
+<script>
+  $('#getdata').click(function(){
+       var userid = Number($('#IDNo').val().trim());
+
+       if(userid > 0){
+
+         // AJAX POST request
+         $.ajax({
+            url: "{{url('api/getUserbyid')}}",
+            type: 'post',
+            data: { userid: userid},
+            dataType: 'json',
+            success: function(response){                      
+             document.getElementById("Name").value = response.member['Name'];  
+             document.getElementById("IDNumber").value = response.member['IdNumber'];  
+            }
+         });
+       }
+
+    });
+
+
 </script>
 </html>

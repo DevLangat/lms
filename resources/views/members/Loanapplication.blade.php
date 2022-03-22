@@ -19,9 +19,10 @@
             </div>
         </div><!-- /.container-fluid -->
     </section>
-
+    
     <div class="row">
         <div class="col-md-1"></div>
+          
         <div class="col-md-10">
 
             <div class="card bg-light text-dark ">
@@ -30,31 +31,33 @@
                 </div>
 
                 <div class="card-body">
-
-                    <form method="post" action="{{route('post_loanapplication')}}">
-                        @csrf
-                        <h5>CLIENT INFORMATION</h5>
-                        <hr>                      
+                    <h5>CLIENT INFORMATION</h5>
+                        <hr> 
                         <div class="form-group row">
                             <div class="col-sm-1"></div>
-                            <div class="col-sm-3 form-floating mb-3 mt-3 mb-sm-0">
-                                
-                                <select class="form-control" name="MemberNo" id="idnumber" onchange="change_member();"> 
-                                @foreach ($members ?? '' as $member)
-                                <option value="{{$member->IdNumber}}">{{$member->Name}} </option>
-                                @endforeach
-                                </select>
-                                <label>Member Name</label>
-                                <script>
-                                    function change_member() {                                     
-                                        document.getElementById("IDNo").value = document.getElementById("idnumber").value;
+                    <div class="col-sm-3  mb-3 mt-3 mb-sm-0">        
+        
+                        <input type="text" name="IDNo" id="IDNo" class="form-control" placeholder="Enter Member ID"  > 
+                        <br>                       
+                        <button id="getdata" class="btn  float-right btn-primary" >Get Member </button>                              
+                       
+                    </div>
+                     
+                    <form method="post" action="{{route('post_loanapplication')}}">
+                        @csrf
                                       
-                                    }
-                                  </script>
-                            </div>
-                            <div class="col-sm-3 form-floating mb-3 mt-3 mb-sm-0">
-                                <input type="text" name="IDNo" class="form-control" id="IDNo" >
+                        <div class="form-group row">
+                            <div class="col-sm-1"></div>
+                            <div class="col-sm-3 form-floating mb-3 mt-3 mb-sm-0">        
+        
+                                <input type="text" name="IDNo" id="IDNumber"  readonly class="form-control" >
                                 <label>ID Number</label>
+                                                              
+                               
+                            </div>  
+                            <div class="col-sm-3 form-floating mb-3 mt-3 mb-sm-0">
+                                <input type="text" name="Name" class="form-control" id="Name" readonly >
+                                <label>Member Name</label>
                             </div>
                             <div class="col-sm-3 form-floating mb-3 mt-3 mb-sm-0">
                                 <input type="text" name="Deposits" class="form-control" placeholder="Enter Email Address">
@@ -133,9 +136,5 @@
 
 
 </div>
-<script type="text/javascript">
-    function change_subject(str){
-        document.getElementById("idnumber").value=str;
-    }
-</script>
+
 @endsection
