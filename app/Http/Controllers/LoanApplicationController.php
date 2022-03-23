@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\LoanApplication;
 use App\Models\Member;
 use Illuminate\Http\Request;
-use Alert;
+use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Support\Facades\Log;
 class LoanApplicationController extends Controller
 {
@@ -39,7 +39,7 @@ class LoanApplicationController extends Controller
     public function store(Request $request)
     {
         LoanApplication::create($request->all());
-        Alert::success('Loan Application', 'You\'ve Successfully Applied');
+        Alert::error('Loan Application', 'You\'ve Successfully Applied');
         return redirect()->back();
     }
 
@@ -59,13 +59,19 @@ class LoanApplicationController extends Controller
         $userid = $request->userid;
    
         $members = Member::select('*')->where('IdNumber', $userid)->get();
-   
-        // Fetch all records
+        if($members){
+             // Fetch all records
         foreach ($members as $member)
         Log::info($member->Name);
         return response()->json([
             'member'=> $member
         ]);
+        }
+        else{
+            Alert::error('No Member','The Member with ID No.'.strtoupper($request->userid).' '.' is not found');
+            
+        }
+       
      }
     /**
      * Show the form for editing the specified resource.

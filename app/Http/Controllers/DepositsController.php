@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Member;
+use App\Models\Deposits;
 use Illuminate\Http\Request;
-use RealRashid\SweetAlert\Facades\Alert;
-
-class MemberController extends Controller
+use Alert;
+class DepositsController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,12 +14,10 @@ class MemberController extends Controller
      */
     public function index()
     {
-        return view('members.add_members');
-    }
-    public function show()
-    {
-        $members = Member::all();
-        return view('members.view_members',compact('members'));        
+        
+            return view('members.Deposits');
+       
+         
     }
 
     /**
@@ -41,48 +38,48 @@ class MemberController extends Controller
      */
     public function store(Request $request)
     {
-        if (Member::where('IdNumber', '=', $request->IdNumber)->exists()) {
+        if (Deposits::where('ReceiptNo', '=', $request->ReceiptNo)->exists()) {
          
-            Alert::error('Already A Member','The Member with ID No.'.strtoupper($request->IdNumber).' '.' has Already Registered');
+            Alert::error('This Receipts has been posted'.strtoupper($request->ReceiptNo));
             return redirect()->back();
         }
-        Member::create($request->all());
-        Alert::success('Member Registration', 'You\'ve Successfully Registered');
+        Deposits::create($request->all());
+        Alert::success('Deposits Posting', 'Deposit Posting Successfull');
         return redirect()->back();
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Member  $member
+     * @param  \App\Models\Deposits  $deposits
      * @return \Illuminate\Http\Response
      */
-    public function membersdetails($id)
-    {      
-        $member = Member::firstOrFail();
-        return view('members.member_details',compact('member'));
+    public function show(Deposits $deposits)
+    {
+       
+        $deposits = Deposits::all();
+        return view('members.View_deposits',compact('deposits'));  
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Member  $member
+     * @param  \App\Models\Deposits  $deposits
      * @return \Illuminate\Http\Response
      */
-    public function edit(Member $member)
+    public function edit(Deposits $deposits)
     {
         //
     }
-   
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Member  $member
+     * @param  \App\Models\Deposits  $deposits
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Member $member)
+    public function update(Request $request, Deposits $deposits)
     {
         //
     }
@@ -90,10 +87,10 @@ class MemberController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Member  $member
+     * @param  \App\Models\Deposits  $deposits
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Member $member)
+    public function destroy(Deposits $deposits)
     {
         //
     }
