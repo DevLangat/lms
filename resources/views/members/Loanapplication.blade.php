@@ -44,7 +44,7 @@
                                   dataType: 'json',
                                   success: function(response){                      
                                    document.getElementById("Name").value = response.member['Name'];  
-                                   document.getElementById("IDNumber").value = response.member['IdNumber']; 
+                                   document.getElementById("IDNumber").value = response.member['MemberNo']; 
                                    document.getElementById("IDNo").value = ""; 
                                   }
                                });
@@ -59,7 +59,7 @@
                             <div class="col-sm-1"></div>
                             <div class="col-sm-3 form-floating mb-3 mt-3 mb-sm-0">        
         
-                                <input type="text" name="IDNo" id="IDNumber"  readonly class="form-control" >
+                                <input type="text" name="MemberNo" id="IDNumber"  readonly class="form-control" >
                                 <label>ID Number</label>
                                                               
                                
@@ -82,14 +82,14 @@
                             
                             <div class="col-sm-3 form-floating mb-3 mt-3 mb-sm-0">
                                
-                                <select class="form-control" name="LoanCode" id="Loancode" onchange="change_member();"> 
+                                <select class="form-control" name="LoanCode" id="Loancode" onchange="change_loantype();"> 
                                 @foreach ($loantypes ?? '' as $loantype)
                                 <option value="{{$loantype->LoanCode}}">{{$loantype->LoanType}} </option>
                                 @endforeach
                                 </select>
                                 <label>Loan Type</label>
                                 <script>
-                                    function change_member() {     
+                                    function change_loantype() {     
                                         var loancode = $('#Loancode').val().trim();                                   
                                   
                                         // AJAX POST request

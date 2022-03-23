@@ -47,7 +47,7 @@
 
                   @foreach ($members ?? '' as $member)
                   <tr>
-                    <td>{{$member->IdNumber}}</td>
+                    <td>{{$member->MemberNo}}</td>
                     <td>{{$member->GroupCode}}</td>
                     <td>{{$member->Name}}</td>
                     <td>{{$member->Mobile}}</td>

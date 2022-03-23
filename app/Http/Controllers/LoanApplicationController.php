@@ -41,12 +41,12 @@ class LoanApplicationController extends Controller
      */
     public function store(Request $request)
     {
-        $userid = $request->IDNo;
-        // if (LoanApplication::where('IDNo', '=', $request->IdNumber)->exists()) {
+        $userid = $request->MemberNo;
+        // if (LoanApplication::where('MemberNo', '=', $request->IdNumber)->exists()) {
         // }
         $count =  DB::table('loan_applications')
             ->select(DB::raw('count(*) as count'))
-            ->where('IDNo', $userid)
+            ->where('MemberNo', $userid)
             ->where('LoanCode', '=', $request->LoanCode)
             ->get();
         if ($count) {
@@ -59,7 +59,7 @@ class LoanApplicationController extends Controller
         }
 
            $loan= new LoanApplication;
-           $loan->IDNo=$request->IDNo;
+           $loan->MemberNo=$request->Mem;
            $loan->Loanno=$loan_number;      
            $loan->LoanCode=$request->LoanCode;
            $loan->AmountApplied=$request->AmountApplied;
@@ -99,7 +99,7 @@ class LoanApplicationController extends Controller
 
         $userid = $request->userid;
 
-        $members = Member::select('*')->where('IdNumber', $userid)->get();
+        $members = Member::select('*')->where('MemberNo', $userid)->get();
         if ($members) {
             // Fetch all records
             foreach ($members as $member)

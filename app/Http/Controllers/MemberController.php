@@ -41,9 +41,9 @@ class MemberController extends Controller
      */
     public function store(Request $request)
     {
-        if (Member::where('IdNumber', '=', $request->IdNumber)->exists()) {
+        if (Member::where('MemberNo', '=', $request->MemberNo)->exists()) {
          
-            Alert::error('Already A Member','The Member with ID No.'.strtoupper($request->IdNumber).' '.' has Already Registered');
+            Alert::error('Already A Member','The Member with ID No.'.strtoupper($request->MemberNo).' '.' has Already Registered');
             return redirect()->back();
         }
         Member::create($request->all());
