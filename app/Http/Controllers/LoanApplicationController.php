@@ -89,15 +89,14 @@ class LoanApplicationController extends Controller
      * @param  \App\Models\LoanApplication  $loanApplication
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show()
     {
         $showloans = LoanApplication::all();
         return view('members.View_LoanApplications',compact('showloans')); 
 
-        $showloans = LoanApplication::join('loan_applications', 'loan_applications.IDNo', '=', 'Members.IdNumber')
-        ->where('SalesDate', '>=', $now)
-        ->where('SalesDate', '<=', $to)
-        ->get(['sales.*', 'products.Productname']);
+        $showloans = LoanApplication::join('loan_applications', 'loan_applications.MemberNo', '=', 'Members.MemberNo')
+      
+        ->get(['loan_applications.*', 'Members.Name']);
 
     }
 
