@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Deposits;
 use Illuminate\Http\Request;
-use Alert;
-use DB;
+use RealRashid\SweetAlert\Facades\Alert;
+use Illuminate\Support\Facades\DB;
 class DepositsController extends Controller
 {
     /**
