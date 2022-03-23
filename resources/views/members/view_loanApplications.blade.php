@@ -7,12 +7,12 @@
     <div class="container-fluid">
       <div class="row mb-2">
         <div class="col-sm-6">
-          <h3>Deposits Transactions</h3>
+          <h3>LOAN APPLIED</h3>
         </div>
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
             <li class="breadcrumb-item"><a href="{{url('admin')}}">Home</a></li>
-            <li class="breadcrumb-item active">All DEPOSITS</li>
+            <li class="breadcrumb-item active">LOAN APPLIED</li>
           </ol>
         </div>
       </div>
@@ -34,29 +34,32 @@
                   <tr>
                     <th>Member No.</th>
                     <th>Names</th>
-                    <th>Receipt No</th>
-                    <th>Amount </th>
-                    <th>Deposit Type</th>
-                    <th>Transaction Date</th>  
+                    <th>Loanno</th>
+                    <th>Amount Applied</th>
+                    <th>Amount Approved </th>
+                    <th>Repay Rate </th>
+                    <th>Is Approved</th>
+                    <th>Application Date</th>  
+                    <th>Repayment Period</th> 
                     <th> Actions</th>                
                   </tr>
                 </thead>
                 <tbody>
 
-                  @foreach ($deposits ?? '' as $deposits)
+                  @foreach ($showloans ?? '' as $showloan)
                   <tr>
-                    <td>{{$deposits->MemberNo}}</td>
-                    <td>{{$deposits->Names}}</td>
-                    <td>{{$deposits->ReceiptNo}}</td>
-                    <td>{{$deposits->Amount}}</td>
-                    <td>{{$deposits->Sharetype}}</td>
-                    <td>{{$deposits->TransactionDate}}</td>
-                                 
+                    <td>{{$showloan->MemberNo}}</td>
+                    <td>{{$showloan->Names}}</td>
+                    <td>{{$showloan->Loanno}}</td>
+                    <td>{{$showloan->AmountApplied}}</td>
+                    <td>{{$showloan->ApprovedAmount}}</td>
+                    <td>{{$showloan->RepayAmount}}</td>
+                    <td>{{$showloan->Approved}}</td>
+                    <td>{{$showloan->ApplicationDate}}</td>
+                    <td>{{$showloan->Rperiod}}</td>                   
                     <td>
-                      <a href="{{url('Deposit_Details')."/".$deposits->id}}" title="View Details"><span class="right badge badge-info"><i class="fa fa-eye"></i></span></a>
-                      <!-- <a href="{{url('delete_deposit/'.$deposits->id)}}" title="Approve member"><span class="right badge badge-success"><i class="fa fa-check"></i></span></a>
-                                 <a href="" title="Review member"><span class="right badge badge-warning"><i class="fas fa-copy"></i></span></a>
-                                -->
+                      <a href="#" title="View Details"><span class="right badge badge-info"><i class="fa fa-eye"></i></span></a>
+                    
                     </td>
                   </tr>
                   @endforeach
@@ -65,11 +68,14 @@
                   <tr>
                     <th>Member No.</th>
                     <th>Names</th>
-                    <th>Receipt No</th>
-                    <th>Amount </th>
-                    <th>Deposit Type</th>
-                    <th>Transaction Date</th>
-                    <th> Actions</th>
+                    <th>Loanno</th>
+                    <th>Amount Applied</th>
+                    <th>Amount Approved </th>
+                    <th>Repay Rate </th>
+                    <th>Is Approved</th>
+                    <th>Application Date</th>  
+                    <th>Repayment Period</th> 
+                    <th> Actions</th>    
                   </tr>
                 </tfoot>
               </table>

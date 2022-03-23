@@ -91,6 +91,14 @@ class LoanApplicationController extends Controller
      */
     public function show($id)
     {
+        $showloans = LoanApplication::all();
+        return view('members.View_LoanApplications',compact('showloans')); 
+
+        $showloans = LoanApplication::join('loan_applications', 'loan_applications.IDNo', '=', 'Members.IdNumber')
+        ->where('SalesDate', '>=', $now)
+        ->where('SalesDate', '<=', $to)
+        ->get(['sales.*', 'products.Productname']);
+
     }
 
     public function getUserbyid(Request $request)

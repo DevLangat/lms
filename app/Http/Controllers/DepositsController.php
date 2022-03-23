@@ -4,7 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Deposits;
 use Illuminate\Http\Request;
-use Alert;
+use RealRashid\SweetAlert\Facades\Alert;
+use Illuminate\Support\Facades\DB;
 class DepositsController extends Controller
 {
     /**
@@ -18,6 +19,11 @@ class DepositsController extends Controller
             return view('members.Deposits');
        
          
+    }
+    public function getdeposits()
+    {
+        $countries = DB::table('deposit_types')->pluck("SharesName","SharesCode");
+        return view('dropdown',compact('deposits'));
     }
 
     /**
@@ -43,7 +49,18 @@ class DepositsController extends Controller
             Alert::error('This Receipts has been posted'.strtoupper($request->ReceiptNo));
             return redirect()->back();
         }
-        Deposits::create($request->all());
+        Deposits::create(  
+            [  
+            'MemberNo' => $request['MemberNo'],
+            'Amount' => $request['Amount'],
+            'TransBy' =>   [auth()->user()],
+            'sharescode' => $request['sharescode'],
+            'ReceiptNo' => $request['ReceiptNo'],
+            'Remarks' =>  ($request['Remarks']),
+            'TransactionDate' =>  ($request['TransactionDate']),
+
+        ]);
+     
         Alert::success('Deposits Posting', 'Deposit Posting Successfull');
         return redirect()->back();
     }
