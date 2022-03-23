@@ -31,7 +31,7 @@
 
                 <div class="card-body">
 
-                    <form method="post" action="{{route('AddLoan')}}">
+                    <form method="post" action="{{route('post_loanapplication')}}">
                         @csrf
                         <h5>CLIENT INFORMATION</h5>
                         <hr>                      
