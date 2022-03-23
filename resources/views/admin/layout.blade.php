@@ -301,6 +301,7 @@ $.ajax({
     success: function(response){                      
     document.getElementById("Name").value = response.member['Name'];  
     document.getElementById("IDNumber").value = response.member['IdNumber'];  
+    document.getElementById("IDNo").value = "";
     }
 });
 }

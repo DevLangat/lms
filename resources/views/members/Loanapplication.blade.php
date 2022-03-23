@@ -24,7 +24,7 @@
                             <div class="col-sm-1"></div>
                     <div class="col-sm-3  mb-3 mt-3 mb-sm-0">        
         
-                        <input type="text" name="IDNo" id="IDNo" class="form-control" placeholder="Enter Member ID"  > 
+                        <input type="text" name="IDNo" id="IDNo" class="form-control" placeholder="Enter Member ID" required  > 
                         
                     </div>
                     <div class="col-sm-2"> <button id="getdata" class="btn btn-primary mt-3" onclick="submitdata()" >Get Member </button>  </div>
@@ -44,7 +44,8 @@
                                   dataType: 'json',
                                   success: function(response){                      
                                    document.getElementById("Name").value = response.member['Name'];  
-                                   document.getElementById("IDNumber").value = response.member['IdNumber'];  
+                                   document.getElementById("IDNumber").value = response.member['IdNumber']; 
+                                   document.getElementById("IDNo").value = ""; 
                                   }
                                });
                              }
@@ -98,7 +99,9 @@
                                         data: { loancode: loancode},
                                         dataType: 'json',
                                         success: function(response){                      
-                                            document.getElementById("IntRate").value = response.loantype['Ratio'];  
+                                            document.getElementById("IntRate").value = response.loantype['Ratio']; 
+                                            document.getElementById("loantype").value = response.loantype['LoanType']; 
+                                             
                                             //document.getElementById("IDNumber").value = response.member['IdNumber'];  
                                         }
                                         });
@@ -114,8 +117,8 @@
                                 <label>Interest</label>
                             </div>
                             <div class="col-sm-3 form-floating mb-3 mt-3 mb-sm-0">
-                                <input type="date" name="ApplicationDate" class="form-control" >
-                                <label>Application Date</label>
+                                <input type="text" name="Loantype" id="loantype"  class="form-control" readonly >
+                                <label>Loan Type</label>
                             </div>                           
                            
                         </div>
@@ -148,40 +151,7 @@
                             <input type="date" name="ApplicationDate" class="form-control" >
                             <label>Application Date</label>
                         </div>  
-                        </div>
-                            <h5>NEXT OF KIN DETAILS</h5>
-                            <hr />
-                            <div class="col-sm-3 mb-3 mb-sm-0">
-                                <input type="date" name="ApplicationDate" class="form-control form-control-user" placeholder="Date Of Application">
-                            </div>
-
-
-                        </div>
-                        <br>
- 
                         
-    
-                        <div class="form-group row">
-                            <div class="col-sm-1"></div>
-                            <div class="col-sm-5 mb-3 mb-sm-0">
-                                <input type="text" name="IdNumber" class="form-control form-control-user" placeholder="ID Number">
-                            </div>
-                            <div class="col-sm-5">
-                                <input type="text" name="GroupCode" class="form-control form-control-user" placeholder="Group Name">yyyyyyyyyyyyyyyyyyyyyyyyyyyy
-                            </div>
-                        </div>
-                      
-
-                        <div class="form-group row">
-                            <div class="col-sm-1"></div>
-                            <div class="col-sm-5 mb-2 mb-sm-0">
-                                <input type="text" name="KinName" class="form-control form-control-user" placeholder="Next of Kin Full Name">
-                            </div>
-
-                            <div class="col-sm-5">
-                                <input type="text" name="KinMobile" class="form-control form-control-user" id="exampleLastName" placeholder="Next of Kin Mobile">
-                            </div>
-                        </div>
                 </div>
 
 

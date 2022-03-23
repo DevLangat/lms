@@ -8,6 +8,7 @@ use App\Models\Member;
 use Illuminate\Http\Request;
 use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Carbon;
 class LoanApplicationController extends Controller
 {
     /**
@@ -38,9 +39,38 @@ class LoanApplicationController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
-        LoanApplication::create($request->all());
-        Alert::error('Loan Application', 'You\'ve Successfully Applied');
+    {   
+        $userid=$request->IDNo;
+        // if (LoanApplication::where('IDNo', '=', $request->IdNumber)->exists()) {
+        // }
+        $count = LoanApplication::select('count(*)')->where('IDNo', $userid)
+               -> where('LoanCode', '=', $request->LoanCode)
+               ->get();  
+        if($count)
+    
+       $loan= new LoanApplication;
+       $loan->IDNo=$request->IDNo;
+       $loan->Loanno='1234';      
+       $loan->LoanCode=$request->LoanCode;
+       $loan->AmountApplied=$request->AmountApplied;
+       $loan->ApplicationDate=$request->ApplicationDate;
+       $loan->EffectDate= Carbon::now()->format('Y-m-d');
+       $loan->RecoverInterestFirst=true;
+       $loan->IntRate=$request->IntRate;
+       $loan->Rperiod=$request->Rperiod;
+       $loan->Createdby='User';
+       $loan->Approved=false;
+       $loan->ApprovedAmount='0';
+       $loan->RepayAmount='0';
+       $loan->IsDisbursed=false; 
+       $loan->ApprovedBy=$request->ApprovedBy; 
+       $loan->Modifiedby=$request->Modifiedby; 
+       $loan->ApprovedOn=$request->ApprovedOn; 
+        $loan->save();      
+
+
+
+        Alert::success('Loan Application', 'You\'ve Successfully Applied');
         return redirect()->back();
     }
 
@@ -110,7 +140,7 @@ class LoanApplicationController extends Controller
          
             $member=Member::all();
             return $member;
-            Log::info('Wjahtttts');
+           
         }
         
     }
