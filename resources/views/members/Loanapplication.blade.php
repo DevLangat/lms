@@ -1,6 +1,7 @@
 @extends('admin.layout')
 @section('content')
 @include('sweetalert::alert')
+
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -27,6 +28,29 @@
                         
                     </div>
                     <div class="col-sm-2"> <button id="getdata" class="btn btn-primary mt-3" onclick="submitdata()" >Get Member </button>  </div>
+                   
+                    <script>
+  
+                        function submitdata(){
+                          var userid = Number($('#IDNo').val().trim());
+                      
+                             if(userid > 0){
+                      
+                               // AJAX POST request
+                               $.ajax({
+                                  url: "{{url('api/getUserbyid')}}",
+                                  type: 'post',
+                                  data: { userid: userid},
+                                  dataType: 'json',
+                                  success: function(response){                      
+                                   document.getElementById("Name").value = response.member['Name'];  
+                                   document.getElementById("IDNumber").value = response.member['IdNumber'];  
+                                  }
+                               });
+                             }
+                        }
+                        
+                      </script>
                     <form method="post" action="{{route('post_loanapplication')}}">
                         @csrf
                                       
@@ -44,7 +68,7 @@
                                 <label>Member Name</label>
                             </div>
                             <div class="col-sm-3 form-floating mb-3 mt-3 mb-sm-0">
-                                <input type="text" name="Deposits" class="form-control" placeholder="Enter Email Address">
+                                <input type="text" name="Deposits" class="form-control" >
                                 <label>Deposit</label>
                             </div>
                         </div>
@@ -54,47 +78,99 @@
                         <hr />
                         <div class="form-group row">
                             <div class="col-sm-1"></div>
-                            <div class="col-sm-3 mb-3 mb-sm-0">
-                                <input type="dropdown" name="Loancode" class="form-control form-control-user" placeholder="Loan Type">
+                            
+                            <div class="col-sm-3 form-floating mb-3 mt-3 mb-sm-0">
+                               
+                                <select class="form-control" name="LoanCode" id="Loancode" onchange="change_member();"> 
+                                @foreach ($loantypes ?? '' as $loantype)
+                                <option value="{{$loantype->LoanCode}}">{{$loantype->LoanType}} </option>
+                                @endforeach
+                                </select>
+                                <label>Loan Type</label>
+                                <script>
+                                    function change_member() {     
+                                        var loancode = $('#Loancode').val().trim();                                   
+                                  
+                                        // AJAX POST request
+                                        $.ajax({
+                                        url: "{{url('api/getLoantypes')}}",
+                                        type: 'post',
+                                        data: { loancode: loancode},
+                                        dataType: 'json',
+                                        success: function(response){                      
+                                            document.getElementById("IntRate").value = response.loantype['Ratio'];  
+                                            //document.getElementById("IDNumber").value = response.member['IdNumber'];  
+                                        }
+                                        });
+                                                                
+                                                                            
+                                       
+                                    }
+                                    
+                                  </script>
+                              </div>
+                            <div class="col-sm-3 form-floating mb-3 mt-3 mb-sm-0">
+                                <input type="text" name="IntRate" id="IntRate" class="form-control" readonly >
+                                <label>Interest</label>
                             </div>
+                            <div class="col-sm-3 form-floating mb-3 mt-3 mb-sm-0">
+                                <input type="date" name="ApplicationDate" class="form-control" >
+                                <label>Application Date</label>
+                            </div>                           
+                           
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-sm-1"></div>
+                        <div class="col-sm-3 form-floating mb-3 mt-3 mb-sm-0">                           
+                                
+                            <select class="form-control" name="Rperiod" required="" aria-required="true">
+                                <option disabled="" selected=""></option>
+                                <option value="1"> 1 Month</option>
+                                <option value="2"> 2 Months</option>
+                                <option value="3"> 3 Months</option>
+                                <option value="4"> 4 Months</option>
+                                <option value="5"> 5 Months</option>
+                                <option value="6"> 6 Months</option>
+                                <option value="7"> 7 Months</option>
+                                <option value="8"> 8 Months</option>
+                                <option value="9"> 9 Months</option>
+                                <option value="10"> 10 Months</option>
+                                <option value="11"> 11 Months</option>
+                                <option value="12"> 12 Months</option>
+                            </select>
+                            <label >Repayment Period </label>
+                        </div>
+                        <div class="col-sm-3 form-floating mb-3 mt-3 mb-sm-0">
+                            <input type="dropdown" name="AmountApplied" class="form-control" placeholder="Amount Applied" >
+                            <label>Amount Applied</label>
+                        </div>
+                        <div class="col-sm-3 form-floating mb-3 mt-3 mb-sm-0">
+                            <input type="date" name="ApplicationDate" class="form-control" >
+                            <label>Application Date</label>
+                        </div>  
+                        </div>
+                            <h5>NEXT OF KIN DETAILS</h5>
+                            <hr />
                             <div class="col-sm-3 mb-3 mb-sm-0">
-                                <input type="text" name="AmountApplied" class="form-control form-control-user" placeholder="Enter Amount to Apply">
-                            </div>
-                            <div class="col-sm-3 mb-3 mb-sm-0">
-                                <input type="text" name="ApplicationDate" class="form-control form-control-user" placeholder="Date Of Application">
-                            </div>
-                            <div class="col-sm-3 mb-3 mb-sm-0">
-                                <input type="text" name="Rperiod" class="form-control form-control-user" placeholder="Repayment Period">
-                            </div>
-                            <div class="col-sm-3 mb-3 mb-sm-0">
-                                <input type="text" name="ApplicationDate" class="form-control form-control-user" placeholder="Date Of Application">
+                                <input type="date" name="ApplicationDate" class="form-control form-control-user" placeholder="Date Of Application">
                             </div>
 
 
                         </div>
                         <br>
-
+ 
+                        
+    
                         <div class="form-group row">
                             <div class="col-sm-1"></div>
                             <div class="col-sm-5 mb-3 mb-sm-0">
                                 <input type="text" name="IdNumber" class="form-control form-control-user" placeholder="ID Number">
                             </div>
                             <div class="col-sm-5">
-                                <input type="text" name="GroupCode" class="form-control form-control-user" placeholder="Group Name">
+                                <input type="text" name="GroupCode" class="form-control form-control-user" placeholder="Group Name">yyyyyyyyyyyyyyyyyyyyyyyyyyyy
                             </div>
                         </div>
-                        <div class="form-group form-floating  label-floating ">
-                           
-                            <label class="control-label">Assignment Type <p></p></label>
-                            <select class="form-control" name="assignment_type" required="" aria-required="true">
-                                <option disabled="" selected=""></option>
-                                <option value="Test"> Test</option>
-                                <option value="MATHEMATICS TEST"> MATHEMATICS TEST</option>
-                            </select>
-                            <span class="material-input"></span>
-                        </div>
-                        <h5>NEXT OF KIN DETAILS</h5>
-                        <hr />
+                      
 
                         <div class="form-group row">
                             <div class="col-sm-1"></div>

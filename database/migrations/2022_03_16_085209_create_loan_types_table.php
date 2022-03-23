@@ -15,8 +15,9 @@ class CreateLoanTypesTable extends Migration
     {
         Schema::create('loan_types', function (Blueprint $table) {
             $table->bigIncrements('ID');
-            $table->string('LoanCode');
+            $table->string('LoanCode')->unique();
             $table->string('LoanType');
+            $table->string('Ratio');
             $table->string('LoanAcc');
             $table->string('InterestAcc');
             $table->string('SharesCode');

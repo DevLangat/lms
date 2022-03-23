@@ -263,7 +263,7 @@
 <script src="{{asset('plugins/datatables-buttons/js/buttons.html5.min.js')}}"></script>
 <script src="{{asset('plugins/datatables-buttons/js/buttons.print.min.js')}}"></script>
 <script src="{{asset('plugins/datatables-buttons/js/buttons.colVis.min.js')}}"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
 </body>
 <script>
   $(function () {
@@ -283,35 +283,30 @@
   });
  
 </script>
-<script>
-  
-  function submitdata(){
-    var userid = Number($('#IDNo').val().trim());
 
-       if(userid > 0){
-
-         // AJAX POST request
-         $.ajax({
-            url: "{{url('api/getUserbyid')}}",
-            type: 'post',
-            data: { userid: userid},
-            dataType: 'json',
-            success: function(response){                      
-             document.getElementById("Name").value = response.member['Name'];  
-             document.getElementById("IDNumber").value = response.member['IdNumber'];  
-            }
-         });
-       }
-  }
-  
-</script>
 <script>
-  $('#IDNo').keydown(function (event) {
-    let keyPressed = event.keyCode || event.which;
-    if (keyPressed === 13) {
-      submitdata();
+    $('#IDNo').keydown(function (event) {
+      let keyPressed = event.keyCode || event.which;
+      if (keyPressed === 13) {
+        var userid = Number($('#IDNo').val().trim());
+
+if(userid > 0){
+
+// AJAX POST request
+$.ajax({
+    url: "{{url('api/getUserbyid')}}",
+    type: 'post',
+    data: { userid: userid},
+    dataType: 'json',
+    success: function(response){                      
+    document.getElementById("Name").value = response.member['Name'];  
+    document.getElementById("IDNumber").value = response.member['IdNumber'];  
     }
 });
+}
+      }
+  })
+                           
+      </script>
  
-  </script>
 </html>

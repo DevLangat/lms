@@ -26,6 +26,7 @@
         <div class="col-12">
           <div class="card">
             <div class="card-header">
+              
             </div>
             <!-- /.card-header -->
             <div class="card-body">
@@ -55,9 +56,7 @@
                     <td>{{$member->KinMobile}}</td>                   
                     <td>
                       <a href="{{url('members_details')."/".$member->id}}" title="View Details"><span class="right badge badge-info"><i class="fa fa-eye"></i></span></a>
-                      <!-- <a href="{{url('delete_member/'.$member->id)}}" title="Approve member"><span class="right badge badge-success"><i class="fa fa-check"></i></span></a>
-                                 <a href="" title="Review member"><span class="right badge badge-warning"><i class="fas fa-copy"></i></span></a>
-                                -->
+                     
                     </td>
                   </tr>
                   @endforeach

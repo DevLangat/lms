@@ -31,7 +31,7 @@
 
                 <div class="card-body">
 
-                    <form method="post" action="{{route('Deposits')}}">
+                    <form method="post" action="{{route('post_deposit')}}">
                         @csrf                       
                         <div class="form-group row">
                             <div class="col-sm-1"></div>

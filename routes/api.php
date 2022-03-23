@@ -21,4 +21,4 @@ Route::get('/member/{id}', [App\Http\Controllers\LoanApplicationController::clas
 
 
 Route::post('/getUserbyid', [App\Http\Controllers\LoanApplicationController::class, 'getUserbyid']);
-
+Route::post('/getLoantypes', [App\Http\Controllers\LoanApplicationController::class, 'getLoantypes']);
