@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\LoanApplication;
+use App\Models\LoanType;
 use App\Models\Member;
 use Illuminate\Http\Request;
 use RealRashid\SweetAlert\Facades\Alert;
@@ -16,8 +17,8 @@ class LoanApplicationController extends Controller
      */
     public function index()
     {
-        $members = Member::all();
-        return view('members.loanapplication',compact('members'));
+        $loantypes = LoanType::all();
+        return view('members.loanapplication',compact('loantypes'));
     }
 
     /**
@@ -65,6 +66,25 @@ class LoanApplicationController extends Controller
         Log::info($member->Name);
         return response()->json([
             'member'=> $member
+        ]);
+        }
+        else{
+            Alert::error('No Member','The Member with ID No.'.strtoupper($request->userid).' '.' is not found');
+            
+        }
+       
+     }
+    public function getLoantypes(Request $request){
+ 
+        $loancode = $request->loancode;
+   
+        $loantypes = LoanType::select('*')->where('LoanCode', $loancode)->get();
+        if($loantypes){
+             // Fetch all records
+        foreach ($loantypes as $loantype)
+        Log::info($loantype->Ratio);
+        return response()->json([
+            'loantype'=> $loantype
         ]);
         }
         else{
