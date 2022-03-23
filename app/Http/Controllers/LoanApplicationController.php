@@ -5,7 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\LoanApplication;
 use App\Models\Member;
 use Illuminate\Http\Request;
-use Alert;
+use RealRashid\SweetAlert\Facades\Alert;
+use Illuminate\Support\Facades\Log;
 class LoanApplicationController extends Controller
 {
     /**
@@ -38,7 +39,7 @@ class LoanApplicationController extends Controller
     public function store(Request $request)
     {
         LoanApplication::create($request->all());
-        Alert::success('Loan Application', 'You\'ve Successfully Applied');
+        Alert::error('Loan Application', 'You\'ve Successfully Applied');
         return redirect()->back();
     }
 
@@ -48,11 +49,30 @@ class LoanApplicationController extends Controller
      * @param  \App\Models\LoanApplication  $loanApplication
      * @return \Illuminate\Http\Response
      */
-    public function show(LoanApplication $loanApplication)
+    public function show($id)
     {
-        //
+        
     }
-
+ 
+    public function getUserbyid(Request $request){
+ 
+        $userid = $request->userid;
+   
+        $members = Member::select('*')->where('IdNumber', $userid)->get();
+        if($members){
+             // Fetch all records
+        foreach ($members as $member)
+        Log::info($member->Name);
+        return response()->json([
+            'member'=> $member
+        ]);
+        }
+        else{
+            Alert::error('No Member','The Member with ID No.'.strtoupper($request->userid).' '.' is not found');
+            
+        }
+       
+     }
     /**
      * Show the form for editing the specified resource.
      *
@@ -62,6 +82,17 @@ class LoanApplicationController extends Controller
     public function edit(LoanApplication $loanApplication)
     {
         //
+    }
+    public function getmember(Request $request)
+    {
+        Log::info($request->ID);
+        if (Member::where('IdNumber', '=', $request->ID)->exists()) {
+         
+            $member=Member::all();
+            return $member;
+            Log::info('Wjahtttts');
+        }
+        
     }
 
     /**

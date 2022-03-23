@@ -31,7 +31,9 @@ Route::get('/members/all', [App\Http\Controllers\MemberController::class, 'show'
 Route::get('/members_details/{id}', [App\Http\Controllers\MemberController::class, 'membersdetails'])->name('members_details');
 //Loan Routes
 Route::get('/loanapplication', [App\Http\Controllers\LoanApplicationController::class, 'index'])->name('loanapplication');
-Route::post('/post_loanapplication', [App\Http\Controllers\MemberController::class, 'store'])->name('post_loanapplication');
+Route::post('/post_loanapplication', [App\Http\Controllers\LoanApplicationController::class, 'store'])->name('post_loanapplication');
+Route::get('/getDetails/{id}', [App\Http\Controllers\LoanApplicationController::class, 'getDetails'])->name('getDetails');
+Route::post('/getUserbyid', [App\Http\Controllers\LoanApplicationController::class, 'getUserbyid']);
 
 //Deposits Routes
 Route::get('/deposits/add', [App\Http\Controllers\DepositsController::class, 'index'])->name('deposits/add');

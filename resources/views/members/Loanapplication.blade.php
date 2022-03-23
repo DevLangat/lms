@@ -4,57 +4,44 @@
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
-    <section class="content-header">
-        <div class="container-fluid">
-            <div class="row mb-2">
-                <div class="col-sm-6">
-                    <h3>Loans</h3>
-                </div>
-                <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="{{url('admin')}}">Home</a></li>
-                        <li class="breadcrumb-item active">Loan Application</li>
-                    </ol>
-                </div>
-            </div>
-        </div><!-- /.container-fluid -->
-    </section>
-
-    <div class="row">
+    
+    
+    <div class="row ">
         <div class="col-md-1"></div>
+          
         <div class="col-md-10">
 
-            <div class="card bg-light text-dark ">
+            <div class="card bg-light text-dark mt-2 ">
                 <div class="card-header bg-light">
                     <h2 class="text-primary">Loan Application </h2>
                 </div>
 
                 <div class="card-body">
-
-                    <form method="post" action="{{route('post_loanapplication')}}">
-                        @csrf
-                        <h5>CLIENT INFORMATION</h5>
-                        <hr>                      
+                    <p>CLIENT INFORMATION</p>
+                        <hr> 
                         <div class="form-group row">
                             <div class="col-sm-1"></div>
-                            <div class="col-sm-3 form-floating mb-3 mt-3 mb-sm-0">
-                                
-                                <select class="form-control" name="MemberNo" id="idnumber" onchange="change_member();"> 
-                                @foreach ($members ?? '' as $member)
-                                <option value="{{$member->IdNumber}}">{{$member->Name}} </option>
-                                @endforeach
-                                </select>
-                                <label>Member Name</label>
-                                <script>
-                                    function change_member() {                                     
-                                        document.getElementById("IDNo").value = document.getElementById("idnumber").value;
+                    <div class="col-sm-3  mb-3 mt-3 mb-sm-0">        
+        
+                        <input type="text" name="IDNo" id="IDNo" class="form-control" placeholder="Enter Member ID"  > 
+                        
+                    </div>
+                    <div class="col-sm-2"> <button id="getdata" class="btn btn-primary mt-3" onclick="submitdata()" >Get Member </button>  </div>
+                    <form method="post" action="{{route('post_loanapplication')}}">
+                        @csrf
                                       
-                                    }
-                                  </script>
-                            </div>
-                            <div class="col-sm-3 form-floating mb-3 mt-3 mb-sm-0">
-                                <input type="text" name="IDNo" class="form-control" id="IDNo" >
+                        <div class="form-group row">
+                            <div class="col-sm-1"></div>
+                            <div class="col-sm-3 form-floating mb-3 mt-3 mb-sm-0">        
+        
+                                <input type="text" name="IDNo" id="IDNumber"  readonly class="form-control" >
                                 <label>ID Number</label>
+                                                              
+                               
+                            </div>  
+                            <div class="col-sm-3 form-floating mb-3 mt-3 mb-sm-0">
+                                <input type="text" name="Name" class="form-control" id="Name" readonly >
+                                <label>Member Name</label>
                             </div>
                             <div class="col-sm-3 form-floating mb-3 mt-3 mb-sm-0">
                                 <input type="text" name="Deposits" class="form-control" placeholder="Enter Email Address">
@@ -130,12 +117,5 @@
     <div class="col-md-1"></div>
 
 </div>
-
-
 </div>
-<script type="text/javascript">
-    function change_subject(str){
-        document.getElementById("idnumber").value=str;
-    }
-</script>
 @endsection
