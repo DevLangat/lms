@@ -105,7 +105,7 @@ class LoanApplicationController extends Controller
     {
         $userid = $request->userid;
         $members = Member::join('members', 'members.MemberNo', '=', 'deposits.MemberNo')
-            ->where('MemberNo', $userid)
+            ->where('members.MemberNo', $userid)
             ->get(['members.*', 'Sum(deposits.Amount) as Deposits']);
 
 
