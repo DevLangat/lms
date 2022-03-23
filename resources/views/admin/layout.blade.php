@@ -159,6 +159,30 @@
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-user-circle"></i>
               <p>
+                Loans
+                <i class="fas fa-angle-left right"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="{{route('loanapplication')}}" class="nav-link">
+                  <i class="fas fa-user-plus nav-icon"></i>
+                  <p>Loan Application</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{route('loans/all')}}" class="nav-link">
+                  <i class="fas fa-list nav-icon"></i>
+                  <p>All Loans</p>
+                </a>
+              </li>
+             
+            </ul>
+          </li>
+          <li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-user-circle"></i>
+              <p>
                 Deposits
                 <i class="fas fa-angle-left right"></i>
               </p>
