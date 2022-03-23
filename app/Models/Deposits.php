@@ -8,5 +8,5 @@ use Illuminate\Database\Eloquent\Model;
 class Deposits extends Model
 {
     use HasFactory;
-    protected $fillable=['MemberNo','Amount','TransBy','ReceiptNo','Remarks','sharescode','TransactionDate'];
+    protected $fillable=['MemberNo','Amount','TransBy','ReceiptNo','mpesacode','Remarks','sharescode','TransactionDate'];
 }
