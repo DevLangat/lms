@@ -34,7 +34,7 @@
 
                 <p class="text-muted">
                   Name:  {{$member->Name}} <br>                
-                  National ID: {{$member->IdNumber}} <br> 
+                  National ID: {{$member->MemberNo}} <br> 
                   GroupCode : {{$member->GroupCode}} <br>                
                                   
                 </p>

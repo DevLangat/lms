@@ -58,7 +58,7 @@
                         <div class="form-group row">
                             <div class="col-sm-1"></div>
                             <div class="col-sm-5 form-floating mb-3 mt-3 mb-sm-0">
-                                <input type="text" name="IdNumber" class="form-control" placeholder="Enter ID Number">
+                                <input type="text" name="MemberNo" class="form-control" placeholder="Enter ID Number">
                                 <label>National ID Number</label>
                             </div>
                             <div class="col-sm-5 form-floating mb-3 mt-3 mb-sm-0">

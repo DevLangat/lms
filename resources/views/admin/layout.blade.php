@@ -300,7 +300,8 @@ $.ajax({
     dataType: 'json',
     success: function(response){                      
     document.getElementById("Name").value = response.member['Name'];  
-    document.getElementById("IDNumber").value = response.member['IdNumber'];  
+    document.getElementById("IDNumber").value = response.member['MemberNo'];  
+    document.getElementById("IDNo").value = "";
     }
 });
 }
