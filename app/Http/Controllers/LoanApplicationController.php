@@ -50,33 +50,32 @@ class LoanApplicationController extends Controller
             ->where('LoanCode', '=', $request->LoanCode)
             ->get();
         if ($count) {
-            foreach($count as $loan_count){               
-                    $newcount=$loan_count->count+1;
-                    $loan_number=$request->LoanCode.$userid.'-'.$newcount;
-                    Log::info($loan_number);
-                
+            foreach ($count as $loan_count) {
+                $newcount = $loan_count->count + 1;
+                $loan_number = $request->LoanCode . $userid . '-' . $newcount;
+                Log::info($loan_number);
             }
         }
 
-           $loan= new LoanApplication;
-           $loan->MemberNo=$request->Mem;
-           $loan->Loanno=$loan_number;      
-           $loan->LoanCode=$request->LoanCode;
-           $loan->AmountApplied=$request->AmountApplied;
-           $loan->ApplicationDate=$request->ApplicationDate;
-           $loan->EffectDate= Carbon::now()->format('Y-m-d');
-           $loan->RecoverInterestFirst=true;
-           $loan->IntRate=$request->IntRate;
-           $loan->Rperiod=$request->Rperiod;
-           $loan->Createdby='User';
-           $loan->Approved=false;
-           $loan->ApprovedAmount='0';
-           $loan->RepayAmount='0';
-           $loan->IsDisbursed=false; 
-           $loan->ApprovedBy=$request->ApprovedBy; 
-           $loan->Modifiedby=$request->Modifiedby; 
-           $loan->ApprovedOn=$request->ApprovedOn; 
-            $loan->save();      
+        $loan = new LoanApplication;
+        $loan->MemberNo = $request->Mem;
+        $loan->Loanno = $loan_number;
+        $loan->LoanCode = $request->LoanCode;
+        $loan->AmountApplied = $request->AmountApplied;
+        $loan->ApplicationDate = $request->ApplicationDate;
+        $loan->EffectDate = Carbon::now()->format('Y-m-d');
+        $loan->RecoverInterestFirst = true;
+        $loan->IntRate = $request->IntRate;
+        $loan->Rperiod = $request->Rperiod;
+        $loan->Createdby = 'User';
+        $loan->Approved = false;
+        $loan->ApprovedAmount = '0';
+        $loan->RepayAmount = '0';
+        $loan->IsDisbursed = false;
+        $loan->ApprovedBy = $request->ApprovedBy;
+        $loan->Modifiedby = $request->Modifiedby;
+        $loan->ApprovedOn = $request->ApprovedOn;
+        $loan->save();
 
 
 
@@ -96,14 +95,17 @@ class LoanApplicationController extends Controller
 
     public function getUserbyid(Request $request)
     {
-
         $userid = $request->userid;
+        $members = Member::join('members', 'members.MemberNo', '=', 'deposits.MemberNo')
+            ->where('MemberNo', $userid)
+            ->get(['members.*', 'Sum(deposits.Amount) as Deposits']);
 
-        $members = Member::select('*')->where('MemberNo', $userid)->get();
+
         if ($members) {
             // Fetch all records
             foreach ($members as $member)
                 Log::info($member->Name);
+                Log::info($member->Deposits);
             return response()->json([
                 'member' => $member
             ]);
@@ -171,3 +173,9 @@ class LoanApplicationController extends Controller
         //
     }
 }
+
+
+//Max loan amount add (deposits*3)
+//check if loan applied==maxloanamount
+//sum of deposits
+//

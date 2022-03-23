@@ -28,7 +28,14 @@
                         
                     </div>
                     <div class="col-sm-2"> <button id="getdata" class="btn btn-primary mt-3" onclick="submitdata()" >Get Member </button>  </div>
-                   
+                    <div class="col-sm-3 form-floating mb-3 mt-3 mb-sm-0">        
+        
+                        <input type="text" name="MaxAmount" id="MaxAmount"  readonly class="form-control" >
+                        <label>Maximum Laon Limit</label>
+                                                      
+                       
+                    </div>      
+                </div>
                     <script>
   
                         function submitdata(){
@@ -45,6 +52,9 @@
                                   success: function(response){                      
                                    document.getElementById("Name").value = response.member['Name'];  
                                    document.getElementById("IDNumber").value = response.member['MemberNo']; 
+                                   document.getElementById("Deposits").value = response.member['Deposits'];
+                                   $maxamount= response.member['Deposits']*3;
+                                   document.getElementById("MaxAmount").value =$maxamount;
                                    document.getElementById("IDNo").value = ""; 
                                   }
                                });
