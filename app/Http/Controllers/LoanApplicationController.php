@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Deposits;
 use App\Models\LoanApplication;
 use App\Models\LoanType;
 use App\Models\Member;
@@ -57,29 +58,36 @@ class LoanApplicationController extends Controller
             }
         }
 
-        $loan = new LoanApplication;
-        $loan->MemberNo = $request->Mem;
-        $loan->Loanno = $loan_number;
-        $loan->LoanCode = $request->LoanCode;
-        $loan->AmountApplied = $request->AmountApplied;
-        $loan->ApplicationDate = $request->ApplicationDate;
-        $loan->EffectDate = Carbon::now()->format('Y-m-d');
-        $loan->RecoverInterestFirst = true;
-        $loan->IntRate = $request->IntRate;
-        $loan->Rperiod = $request->Rperiod;
-        $loan->Createdby = 'User';
-        $loan->Approved = false;
-        $loan->ApprovedAmount = '0';
-        $loan->RepayAmount = '0';
-        $loan->IsDisbursed = false;
-        $loan->ApprovedBy = $request->ApprovedBy;
-        $loan->Modifiedby = $request->Modifiedby;
-        $loan->ApprovedOn = $request->ApprovedOn;
-        $loan->save();
+        $deposit = $request->Deposits;
+        $loanlimit = ($deposit) * 3;
+        $loanapplied = $request->AmountApplied;
+        if ($loanapplied > $loanlimit) {
+            Alert::error('Loan Limit', 'Your Loan Limit is: ' . strtoupper($loanlimit) . ' ' . '');
+        } else {
+            $loan = new LoanApplication;
+            $loan->MemberNo = $userid;
+            $loan->Loanno = $loan_number;
+            $loan->LoanCode = $request->LoanCode;
+            $loan->AmountApplied = $request->AmountApplied;
+            $loan->ApplicationDate =Carbon::now()->format('Y-m-d');;
+            $loan->EffectDate = Carbon::now()->format('Y-m-d');
+            $loan->RecoverInterestFirst = true;
+            $loan->IntRate = $request->IntRate;
+            $loan->Rperiod = $request->Rperiod;
+            $loan->Createdby = 'User';
+            $loan->Approved = false;
+            $loan->ApprovedAmount = '0';
+            $loan->RepayAmount = '0';
+            $loan->IsDisbursed = false;
+            $loan->ApprovedBy = $request->ApprovedBy;
+            $loan->Modifiedby = $request->Modifiedby;
+            $loan->ApprovedOn = $request->ApprovedOn;
+            $loan->save();
 
 
 
-        Alert::success('Loan Application', 'You\'ve Successfully Applied');
+            Alert::success('Loan Application', 'You\'ve Successfully Applied');
+        }
         return redirect()->back();
     }
 
@@ -89,34 +97,50 @@ class LoanApplicationController extends Controller
      * @param  \App\Models\LoanApplication  $loanApplication
      * @return \Illuminate\Http\Response
      */
-    public function show()
+    public function show($id)
     {
-        $showloans = LoanApplication::all();
-        return view('members.View_LoanApplications',compact('showloans')); 
-
-        $showloans = LoanApplication::join('loan_applications', 'loan_applications.MemberNo', '=', 'Members.MemberNo')
-      
-        ->get(['loan_applications.*', 'Members.Name']);
-
     }
 
     public function getUserbyid(Request $request)
     {
         $userid = $request->userid;
-        $members = Member::join('members', 'members.MemberNo', '=', 'deposits.MemberNo')
-            ->where('members.MemberNo', $userid)
-            ->get(['members.*', 'Sum(deposits.Amount) as Deposits']);
+
+        $members_check = Member::select('*')->where('MemberNo', $userid)->get();
+        if ($members_check) {
+            // Fetch all records           
+            $members = Member::select('*')
+                ->where('MemberNo', $userid)
+                ->get();
+
+            $deposits = Deposits::select(DB::raw('SUM(Amount) as Deposits'))
+                ->where('MemberNo', $userid)
+                ->get();
 
 
-        if ($members) {
-            // Fetch all records
-            foreach ($members as $member)
+            foreach ($deposits as $deposit) {
+
+                $maxlimit = ($deposit->Deposits) * 3;
+            }
+
+            foreach ($members as $member) {
                 Log::info($member->Name);
-                Log::info($member->Deposits);
-            return response()->json([
-                'member' => $member
-            ]);
-        } else {
+                Log::info($maxlimit);
+                if(empty($deposit->Deposits)){
+                  
+                return response()->json([
+                    'member' => $member,
+                    'loanlimit' => 0,
+                    'deposit' => 0
+                ]);  
+                }
+
+                return response()->json([
+                    'member' => $member,
+                    'loanlimit' => $maxlimit,
+                    'deposit' => $deposit->Deposits
+                ]);
+            }
+        }  else {
             Alert::error('No Member', 'The Member with ID No.' . strtoupper($request->userid) . ' ' . ' is not found');
         }
     }
@@ -185,4 +209,3 @@ class LoanApplicationController extends Controller
 //Max loan amount add (deposits*3)
 //check if loan applied==maxloanamount
 //sum of deposits
-//

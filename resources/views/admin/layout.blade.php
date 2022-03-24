@@ -323,9 +323,11 @@ $.ajax({
     data: { userid: userid},
     dataType: 'json',
     success: function(response){                      
-    document.getElementById("Name").value = response.member['Name'];  
-    document.getElementById("IDNumber").value = response.member['MemberNo'];  
-    document.getElementById("IDNo").value = "";
+      document.getElementById("Name").value = response.member['Name'];  
+      document.getElementById("IDNumber").value = response.member['MemberNo']; 
+      document.getElementById("Deposits").value = response.deposit;                                 
+      document.getElementById("MaxAmount").value =response.loanlimit;
+      document.getElementById("IDNo").value = ""; 
     }
 });
 }

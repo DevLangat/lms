@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,3 +23,15 @@ Route::get('/member/{id}', [App\Http\Controllers\LoanApplicationController::clas
 
 Route::post('/getUserbyid', [App\Http\Controllers\LoanApplicationController::class, 'getUserbyid']);
 Route::post('/getLoantypes', [App\Http\Controllers\LoanApplicationController::class, 'getLoantypes']);
+
+Route::post('/auth/register', [App\Http\Controllers\AuthController::class, 'register']);
+
+Route::post('/auth/login', [App\Http\Controllers\AuthController::class, 'login']);
+
+Route::group(['middleware' => ['auth:sanctum']], function () {
+    Route::get('/me', function (Request $request) {
+        return auth()->user();
+    });
+    Route::post('/auth/logout', [AuthController::class, 'logout']);
+   
+});
