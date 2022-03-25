@@ -30,8 +30,8 @@
                     <div class="col-sm-2"> <button id="getdata" class="btn btn-primary mt-3" onclick="submitdata()" >Get Member </button>  </div>
                     <div class="col-sm-3 form-floating mb-3 mt-3 mb-sm-0">        
         
-                        <input type="text" name="MaxAmount" id="MaxAmount"  readonly class="form-control" >
-                        <label>Maximum Laon Limit</label>
+                        <input type="number" name="LoanLimit" id="MaxAmount"  readonly class="form-control" >
+                        <label>Maximum Loan Limit</label>
                                                       
                        
                     </div>      
@@ -52,9 +52,8 @@
                                   success: function(response){                      
                                    document.getElementById("Name").value = response.member['Name'];  
                                    document.getElementById("IDNumber").value = response.member['MemberNo']; 
-                                   document.getElementById("Deposits").value = response.member['Deposits'];
-                                   $maxamount= response.member['Deposits']*3;
-                                   document.getElementById("MaxAmount").value =$maxamount;
+                                   document.getElementById("Deposits").value = response.deposit;                                 
+                                   document.getElementById("MaxAmount").value =response.loanlimit;
                                    document.getElementById("IDNo").value = ""; 
                                   }
                                });
@@ -69,17 +68,17 @@
                             <div class="col-sm-1"></div>
                             <div class="col-sm-3 form-floating mb-3 mt-3 mb-sm-0">        
         
-                                <input type="text" name="MemberNo" id="IDNumber"  readonly class="form-control" >
+                                <input type="text" name="MemberNo" id="IDNumber"  readonly class="form-control" required >
                                 <label>ID Number</label>
                                                               
                                
                             </div>  
                             <div class="col-sm-3 form-floating mb-3 mt-3 mb-sm-0">
-                                <input type="text" name="Name" class="form-control" id="Name" readonly >
+                                <input type="text" name="Name" class="form-control" id="Name" readonly  required>
                                 <label>Member Name</label>
                             </div>
                             <div class="col-sm-3 form-floating mb-3 mt-3 mb-sm-0">
-                                <input type="text" name="Deposits" class="form-control" >
+                                <input type="number" name="Deposits" id="Deposits" class="form-control" readonly required>
                                 <label>Deposit</label>
                             </div>
                         </div>
@@ -123,11 +122,11 @@
                                   </script>
                               </div>
                             <div class="col-sm-3 form-floating mb-3 mt-3 mb-sm-0">
-                                <input type="text" name="IntRate" id="IntRate" class="form-control" readonly >
+                                <input type="text" name="IntRate" id="IntRate" class="form-control" readonly  required>
                                 <label>Interest</label>
                             </div>
                             <div class="col-sm-3 form-floating mb-3 mt-3 mb-sm-0">
-                                <input type="text" name="Loantype" id="loantype"  class="form-control" readonly >
+                                <input type="text" name="Loantype" id="loantype"  class="form-control" readonly required >
                                 <label>Loan Type</label>
                             </div>                           
                            
@@ -154,13 +153,10 @@
                             <label >Repayment Period </label>
                         </div>
                         <div class="col-sm-3 form-floating mb-3 mt-3 mb-sm-0">
-                            <input type="dropdown" name="AmountApplied" class="form-control" placeholder="Amount Applied" >
+                            <input type="text" name="AmountApplied" class="form-control" placeholder="Amount Applied" required>
                             <label>Amount Applied</label>
                         </div>
-                        <div class="col-sm-3 form-floating mb-3 mt-3 mb-sm-0">
-                            <input type="date" name="ApplicationDate" class="form-control" >
-                            <label>Application Date</label>
-                        </div>  
+                       
                         
                 </div>
 
