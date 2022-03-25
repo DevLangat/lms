@@ -24,7 +24,7 @@ class AuthController extends Controller
 
         $user = User::create([
             'name' => $request->name,
-            'phone' => $request->phone,
+            'phone' => '078990000',
             'password' => bcrypt($request->password),
             'email' => $request->email,
            
