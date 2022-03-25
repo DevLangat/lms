@@ -171,11 +171,12 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a href="{{route('loans/all')}}" class="nav-link">
+                <a href="{{route('repayments/add')}}" class="nav-link">
                   <i class="fas fa-list nav-icon"></i>
-                  <p>All Loans</p>
+                  <p>Repayments</p>
                 </a>
               </li>
+             
              
             </ul>
           </li>

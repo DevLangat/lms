@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Deposits;
+use App\Models\DepositTypes;
 use Illuminate\Http\Request;
-use RealRashid\SweetAlert\Facades\Alert;
+use RealRashid\SweetAlert\Facades\Alert; 
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 class DepositsController extends Controller
 {
@@ -20,12 +23,32 @@ class DepositsController extends Controller
        
          
     }
+    
     public function getdeposits()
     {
         $countries = DB::table('deposit_types')->pluck("SharesName","SharesCode");
         return view('dropdown',compact('deposits'));
-    }
 
+
+        
+    }
+    public function getdeposittypes(Request $request)
+    {
+
+        $sharescode = $request->sharecode;
+
+        $sharetypes = DepositTypes::select('*')->where('sharescode', $sharescode)->get();
+        if ($sharetypes) {
+            // Fetch all records
+            foreach ($sharetypes as $sharetype)
+                Log::info($sharetype->Ratio);
+            return response()->json([
+                'Sharesname' => $sharetype
+            ]);
+        } else {
+            Alert::error('No Member', 'The Member with ID No.' . strtoupper($request->userid) . ' ' . ' is not found');
+        }
+    }
     /**
      * Show the form for creating a new resource.
      *
@@ -53,12 +76,12 @@ class DepositsController extends Controller
             [  
             'MemberNo' => $request['MemberNo'],
             'Amount' => $request['Amount'],
-            'TransBy' =>   'User',
+            'TransBy' =>   [auth()->user()],
+                      'TransBy' =>   'User',
             'sharescode' => $request['sharescode'],
             'ReceiptNo' => $request['ReceiptNo'],
             'mpesacode' => $request['ReceiptNo'],
-            'Remarks' =>  ($request['Remarks']),
-            'TransactionDate' =>  ($request['TransactionDate']),
+   'TransactionDate' =>  ($request['TransactionDate']),
 
         ]);
      
@@ -72,7 +95,8 @@ class DepositsController extends Controller
      * @param  \App\Models\Deposits  $deposits
      * @return \Illuminate\Http\Response
      */
-    public function show(Deposits $deposits)
+ 
+   public function show(Deposits $deposits)
     {
        
         $deposits = Deposits::all();
