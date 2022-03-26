@@ -40,7 +40,7 @@ trait ApiResponser
      * @param  array|string|null  $data
      * @return \Illuminate\Http\JsonResponse
      */
-	protected function error(string $message = null, int $code, $data = null)
+	protected function error(string $message = null, int $code=401, $data)
 	{
 		return response()->json([
 			'status' => 'Error',

@@ -49,7 +49,7 @@
                   @foreach ($showloans ?? '' as $showloan)
                   <tr>
                     <td>{{$showloan->MemberNo}}</td>
-                    <td>{{$showloan->Names}}</td>
+                    <td>{{$showloan->Name}}</td>
                     <td>{{$showloan->Loanno}}</td>
                     <td>{{$showloan->AmountApplied}}</td>
                     <td>{{$showloan->ApprovedAmount}}</td>

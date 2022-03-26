@@ -97,8 +97,10 @@ class LoanApplicationController extends Controller
      * @param  \App\Models\LoanApplication  $loanApplication
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show()
     {
+        $showloans=LoanApplication::all();
+        return view('members.view_loanApplications',compact('showloans'));
     }
 
     public function getUserbyid(Request $request)
@@ -188,9 +190,9 @@ class LoanApplicationController extends Controller
      * @param  \App\Models\LoanApplication  $loanApplication
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, LoanApplication $loanApplication)
+    public function Approve(Request $request, LoanApplication $loanApplication)
     {
-        //
+        
     }
 
     /**

@@ -24,14 +24,16 @@ class AuthController extends Controller
 
         $user = User::create([
             'name' => $request->name,
-            'phone' => '078990000',
+            'phone' => $request->phone,
             'password' => bcrypt($request->password),
             'email' => $request->email,
            
         ]);
 
         if (!Auth::attempt($attr)) {
-            return $this->error('Credentials not match', 401);
+            return $this->error('Credentials not match', 401,[
+                'message'=>'Email already taken/registered'
+            ]);
         }
         // get the user
         $authuser = Auth::user();
@@ -57,7 +59,9 @@ class AuthController extends Controller
                 'user' => $user
             ]);
         }else{
-            return $this->error('Credentials not match', 401);
+            return $this->error('Credentials not match', 401,[
+                'message'=>'Wrong username or password'
+            ]);
         }
 
 
