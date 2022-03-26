@@ -177,6 +177,14 @@
                 </a>
               </li>
              
+              <li class="nav-item">
+                <a href="{{route('repayments/add')}}" class="nav-link">
+                  <i class="fas fa-list nav-icon"></i>
+                  <p>Repayments</p>
+                </a>
+              </li>
+             
+             
             </ul>
           </li>
           <li class="nav-item">

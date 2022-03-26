@@ -8,12 +8,12 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h3>Deposits</h3>
+                    <h3>Loan Repayments</h3>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="{{url('admin')}}">Home</a></li>
-                        <li class="breadcrumb-item active">Deposits</li>
+                        <li class="breadcrumb-item active">Loan Repayments</li>
                     </ol>
                 </div>
             </div>
@@ -26,12 +26,36 @@
 
             <div class="card bg-light text-dark ">
                 <div class="card-header bg-light">
-                    <h5 class="text-primary">Post Deposits Receipts</h5>
+                    <h5 class="text-primary">Post Repayment Receipts</h5>
                 </div>
 
                 <div class="card-body">
 
-                    <form method="post" action="{{route('post_deposit')}}">
+
+                    <script>
+  
+                        function submitdata(){
+                          var userid = Number($('#MemberNo').val().trim());
+                      
+                             if(userid > 0){
+                      
+                               // AJAX POST request
+                               $.ajax({
+                                  url: "{{url('api/getUserbyid')}}",
+                                  type: 'post',
+                                  data: { userid: userid},
+                                  dataType: 'json',
+                                  success: function(response){                      
+                                   document.getElementById("Name").value = response.member['Name'];  
+                                   document.getElementById("MemberNo").value = response.member['MemberNo']; 
+                                    
+                               });
+                             }
+                        }
+                        
+                      </script>
+
+                    <form method="post" action="{{route('repayments/add')}}">
                         @csrf                       
                         <div class="form-group row">
                             <div class="col-sm-1"></div>
@@ -50,9 +74,9 @@
                         <hr />
                         <div class="form-group row">
                             <div class="col-sm-1"></div>
-                            <div class="col-sm-5 form-floating mb-3 mt-3 msharescodeb-sm-0">
-                                <input type="dropdown" name="sharescode" class="form-control" placeholder="Choose Deposit Type">
-                                <label>Deposit Type</label>
+                            <div class="col-sm-5 form-floating mb-3 mt-3 mb-sm-0">
+                                <input type="dropdown" name="Loanno" class="form-control" placeholder="Choose Loanno">
+                                <label>Loan</label>
 
                                 {{-- <label for="deposit">Select Deposit Type:</label>
                                 <select name="deposit" class="form-control" style="width:250px">
@@ -63,7 +87,7 @@
                                 </select> --}}
                                 <script>
                                     function getdeposittypes() {     
-                                        var loancode = $('#sharescode').val().trim();                                   
+                                        var loancode = $('#Loanno').val().trim();                                   
                                   
                                         // AJAX POST request
                                         $.ajax({
@@ -72,14 +96,13 @@
                                         data: { sharescode: sharescode},
                                         dataType: 'json',
                                         success: function(response){                      
-                                            document.getElementById("sharesname").value = response.loantype['sharesname']; 
+                                            document.getElementById("Loanno").value = response.loantype['Loanno']; 
                                             //document.getElementById("loantype").value = response.loantype['LoanType']; 
                                              
                                             //document.getElementById("IDNumber").value = response.member['IdNumber'];  
                                         }
                                         });
-                                                                
-                                                                            
+                                                                         
                                        
                                     }
                                     
@@ -87,20 +110,21 @@
 
                             </div>
                             <div class="col-sm-5 form-floating mb-3 mt-3 mb-sm-0">
-                                <input type="text" name="Balance" class="form-control" placeholder="Deposit Balance">
-                                <label>Deposit Balance</label>
+                                <input type="text" name="amount" class="form-control" placeholder="amount">
+                                <label>Amount</label>
                             </div>
                         </div>
                         <div class="form-group row">
                             <div class="col-sm-1"></div>
                             <div class="col-sm-5 form-floating mb-3 mt-3 mb-sm-0">
-                                <input type="text" name="Amount" class="form-control" placeholder="Enter Deposit Amount" required>
-                                <label>Deposit Amount</label>
+                                <input type="text" name="Principal" class="form-control" placeholder="Principal" required>
+                                <label>Principal Amount</label>
                             </div>
                             <div class="col-sm-5 form-floating mb-3 mt-3 mb-sm-0">
-                                <input type="date" name="TransactionDate" class="form-control" placeholder="Choose Date">
-                                <label>Transaction Date</label>
+                                <input type="text" name="Interest" class="form-control" placeholder="Interest" required>
+                                <label>Interest Amount</label>
                             </div>
+                           
                         </div>                       
 
 
@@ -109,6 +133,16 @@
                             <div class="col-sm-5 form-floating mb-3 mt-3 mb-sm-0">
                                 <input type="text" name="ReceiptNo" class="form-control" placeholder="Enter Receipt">
                                 <label>Receipt Number</label>
+                            </div>
+                            <div class="col-sm-5 form-floating mb-3 mt-3 mb-sm-0">
+                                <input type="text" name="MobileNo" class="form-control" placeholder="Enter MobileNo">
+                                <label>Receipt Number</label>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-1"></div>
+                            <div class="col-sm-5 form-floating mb-3 mt-3 mb-sm-0">
+                                <input type="date" name="TransactionDate" class="form-control" placeholder="Choose Date">
+                                <label>Transaction Date</label>
                             </div>
                             <div class="col-sm-5 form-floating mb-3 mt-3 mb-sm-0">
                                 <input type="text" name="Remarks" class="form-control" placeholder="Enter Remarks">
@@ -120,8 +154,7 @@
                             </div> --}}
                         </div>                      
                 </div>
-
-
+              
                 <button type="submit" class="btn btn-block btn-primary">SUBMIT</button>
                 </form>
             </div>
