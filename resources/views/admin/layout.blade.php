@@ -171,6 +171,13 @@
                 </a>
               </li>
               <li class="nav-item">
+                <a href="{{route('loans/all')}}" class="nav-link">
+                  <i class="fas fa-list nav-icon"></i>
+                  <p>All Loans</p>
+                </a>
+              </li>
+             
+              <li class="nav-item">
                 <a href="{{route('repayments/add')}}" class="nav-link">
                   <i class="fas fa-list nav-icon"></i>
                   <p>Repayments</p>
