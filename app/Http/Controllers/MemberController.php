@@ -59,7 +59,7 @@ class MemberController extends Controller
      */
     public function membersdetails($id)
     {      
-        $member = Member::firstOrFail();
+        $member = Member::find($id);
         return view('members.member_details',compact('member'));
     }
 

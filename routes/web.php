@@ -36,9 +36,12 @@ Route::get('/getDetails/{id}', [App\Http\Controllers\LoanApplicationController::
 Route::post('/getUserbyid', [App\Http\Controllers\LoanApplicationController::class, 'getUserbyid']);
 Route::post('/getLoantypes', [App\Http\Controllers\LoanApplicationController::class, 'getLoantypes']);
 Route::get('/loans/all', [App\Http\Controllers\LoanApplicationController::class, 'show'])->name('loans/all');
-Route::get('/repayments/add', [App\Http\Controllers\RepaymentsController::class, 'index'])->name('repayments/add');
+Route::post('/loan/approve', [App\Http\Controllers\LoanApplicationController ::class, 'approve'])->name('loan/approve');
+Route::get('/loan_details/{id}', [App\Http\Controllers\LoanApplicationController::class, 'loan_details'])->name('loan_details');
+
+Route::get('/repayments/all', [App\Http\Controllers\RepaymentsController::class, 'index'])->name('repayments/all');
 Route::post('/repayments/add', [App\Http\Controllers\RepaymentsController ::class, 'store'])->name('repayments/add');//repayment_Details
-//Route::get('/repayment_Details/{id}', [App\Http\Controllers\LoanApplicationController::class, 'repayment_Details'])->name('repayment_Details');
+
 
 //Deposits Routes
 Route::get('/deposits/add', [App\Http\Controllers\DepositsController::class, 'index'])->name('deposits/add');

@@ -30,7 +30,7 @@
                     <div class="col-sm-2"> <button id="getdata" class="btn btn-primary mt-3" onclick="submitdata()" >Get Member </button>  </div>
                     <div class="col-sm-3 form-floating mb-3 mt-3 mb-sm-0">        
         
-                        <input type="number" name="LoanLimit" id="MaxAmount"  readonly class="form-control" >
+                        <input type="text" id="MaxAmount"  readonly class="form-control" >
                         <label>Maximum Loan Limit</label>
                                                       
                        
@@ -54,6 +54,7 @@
                                    document.getElementById("IDNumber").value = response.member['MemberNo']; 
                                    document.getElementById("Deposits").value = response.deposit;                                 
                                    document.getElementById("MaxAmount").value =response.loanlimit;
+                                   document.getElementById("MaxAmountForm").value =response.loanlimit;
                                    document.getElementById("IDNo").value = ""; 
                                   }
                                });
@@ -63,7 +64,7 @@
                       </script>
                     <form method="post" action="{{route('post_loanapplication')}}">
                         @csrf
-                                      
+                        <input type="text" name="LoanLimit" id="MaxAmountForm"  readonly class="form-control" hidden="true" >             
                         <div class="form-group row">
                             <div class="col-sm-1"></div>
                             <div class="col-sm-3 form-floating mb-3 mt-3 mb-sm-0">        
@@ -92,6 +93,7 @@
                             <div class="col-sm-3 form-floating mb-3 mt-3 mb-sm-0">
                                
                                 <select class="form-control" name="LoanCode" id="Loancode" onchange="change_loantype();"> 
+                                <option disabled="" selected=""></option>
                                 @foreach ($loantypes ?? '' as $loantype)
                                 <option value="{{$loantype->LoanCode}}">{{$loantype->LoanType}} </option>
                                 @endforeach

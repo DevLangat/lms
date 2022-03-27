@@ -1,5 +1,6 @@
 @extends('admin.layout')
 @section('content')
+@include('sweetalert::alert')
 <div class="content-wrapper" style="min-height: 1635.56px;">
     <!-- Content Header (Page header) -->
     <section class="content-header">
@@ -74,81 +75,78 @@
           <!-- /.col -->
           <div class="col-md-9">
             <div class="card">
-              <div class="card-header p-2">
-         
-                <ul class="nav nav-tabs">
-                  <li class="nav-item"><a class="nav-link active" href="#activity" data-toggle="tab">LOANS</a></li>                  
-                </ul>
-                <td>{{$showloan->MemberNo}}</td>
-                <td>{{$showloan->Names}}</td>
-                <td>{{$showloan->Loanno}}</td>
-                <td>{{$showloan->AmountApplied}}</td>
-                <td>{{$showloan->ApprovedAmount}}</td>
-                <td>{{$showloan->RepayAmount}}</td>
-                <td>{{$showloan->Approved}}</td>
-                <td>{{$showloan->ApplicationDate}}</td>
-                <td>{{$showloan->Rperiod}}</td>
+              <div class="card-header p-2">        
+                <h3>Loan Details </h3>
+                
               </div><!-- /.card-header -->
               <div class="card-body">
-                <div class="tab-content">
-                  <div class="tab-pane fade in active" id="activity">
+               
                     <!-- Post -->
-                    <div class="post">
+                    <form method="POST" action="{{route('loan/approve')}}">
+                        @csrf
+                    <div>
                       <div class="row">
-                        <div class="col-md-4">
-                          <h3>LOANS</h3>
+                      <input type="text" name="Approved" value="{{$showloan->Approved}}"  class="form-control" readonly hidden="true" >
+                      <input type="text" name="MemberNo" value="{{$member->MemberNo}}"  class="form-control" readonly hidden="true" >
+                      <input type="text" name="IntRate" value="{{$showloan->IntRate}}"  class="form-control" readonly hidden="true" >
+                        
                           <div class="row">
-                              <div class="col sm-3"><h3>Loan Code: </h3> <b><h3>{{$showloan->Loanno}}</h3></b></div>
-                              <div class="col sm-3"><h3>Amount Applied: </h3> <b><h3>{{$showloan->AmountApplied}}</h3></b></div>
-                              <div class="col sm-3"><h3>Application Date: </h3> <b><h3>{{$showloan->ApplicationDate}}</h3></b></div>                             
-                              <div class="col sm-3"><h3>Laon Type: </h3> <b><h3>{{$showloan->Loantype}}</h3></b></div>                             
-                          </div>
-                          <div class="row">
-                              <form>
                             <div class="col-sm-3 form-floating mb-3 mt-3 mb-sm-0">
-                                <input type="text" name="Loantype" id="loantype"  class="form-control" readonly required >
-                                <label>Amount to Approve</label>
-                            </div> 
-                            <div class="col-sm-3 form-floating mb-3 mt-3 mb-sm-0">
-                                <input type="text" name="Loantype" id="loantype"  class="form-control" readonly required >
-                                <label>Remarks</label>
+                                <input type="text" name="Loanno" value="{{$showloan->Loanno}}"  class="form-control" readonly >
+                                <label>Loan Code</label>
                             </div>
-                            <button type="submit" class="btn btn-block btn-primary">SUBMIT</button>
-                              </form> 
+                            <div class="col-sm-3 form-floating mb-3 mt-3 mb-sm-0">
+                                <input type="text" name="AmountApplied" value="{{$showloan->AmountApplied}}"  class="form-control" readonly >
+                                <label>Amount Applied</label>
+                            </div>
+                            <div class="col-sm-3 form-floating mb-3 mt-3 mb-sm-0">
+                                <input type="text" name="Rperiod" value="{{$showloan->Rperiod}}"  class="form-control" readonly >
+                                <label>Repayment Period</label>
+                            </div>
+                            <div class="col-sm-3 form-floating mb-3 mt-3 mb-sm-0">
+                                <input type="text" name="ApplicationDate" value="{{$showloan->ApplicationDate}}"  class="form-control" readonly >
+                                <label>Application Date</label>
+                            </div>
+                                                         
+                          </div>
+                         
+                          <div class="card mt-4">
+                            <div class="card-header p-2">        
+                           
+                              <h2>Approve Loan</h2>
+                            </div><!-- /.card-header -->
+                            <div class="card-body">
+                                <div class="form-group">
+                                   
+                                      <div class="row">
+                                  <div class="col-md-6 form-floating mb-3 mt-3 mb-sm-0">
+                                      <input type="text" name="ApprovedAmount"   class="form-control"  required >
+                                      <label>Amount to Approve</label>
+                                  </div> 
+                                  <div class="col-md-6 form-floating mb-3 mt-3 mb-sm-0">
+                                      <input type="date" name="ApprovedOn"   class="form-control"  required >
+                                      <label>Approval Date</label>
+                                  </div>
+                                  <div>
+                                      <br>
+                                  <button type="submit" class="btn btn-block btn-primary">SUBMIT</button>
+                                  </div>
+                                    </form> 
+                                </div>
+                            </div>  
+                          </div>            
                           </div>
                         
-                        </div>
+                       
                       
                       </div>
                       <br>
                      
                     </div>
-                  </div>
+                  
+                  
                   <!-- /.tab-pane -->
-                  <div class="tab-pane fade" id="lbalance">
-                    <div class="row">
-                      <div class="col-md-4">
-                        <h3>Result Slip</h3>
-                        
-                      </div>
-                      <div class="col-md-4">
-                        <h3>ID/Birth Certificate</h3>
-                       
-                      </div>
-                      <div class="col-md-4">
-                        <h3>Bank Slip</h3>
-                        <!-- <a href="{{url('download/bank_slip/'.$member->bank_slip)}}">{{$member->bank_slip}} <span><i class="fa fa-download"></i></span></a> -->
-                      </div>
-                    </div>
-                  </div>
-                  <!-- /.tab-pane -->
-
-                  <div class="tab-pane fade" id="repayment">
-                   Page 3
-                  </div>
-                  <!-- /.tab-pane -->
-                </div>
-                <!-- /.tab-content -->
+              
               </div><!-- /.card-body -->
             </div>
             <!-- /.card -->

@@ -23,6 +23,7 @@ class CreateMembersTable extends Migration
             $table->string('GroupCode');
             $table->string('KinName');
             $table->string('KinMobile');  
+            $table->string('MaxLoan')->default('2000');  
             $table->timestamps();
         });
     }

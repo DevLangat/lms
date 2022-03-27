@@ -5,8 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Member extends Model
+class LoanInterest extends Model
 {
     use HasFactory;
-    protected $fillable=['MemberNo','Name','Address','Email','Mobile','KinName','KinMobile','GroupCode','MaxLoan'];
+    protected $fillable = ['Loanno','MemberNo','ApprovedAmount','InterestAmount','ApprovedBy'];
 }

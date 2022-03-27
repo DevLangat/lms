@@ -49,7 +49,7 @@
                   @foreach ($showloans ?? '' as $showloan)
                   <tr>
                     <td>{{$showloan->MemberNo}}</td>
-                    <td>{{$showloan->Name}}</td>
+                    <td>{{$showloan->Names}}</td>
                     <td>{{$showloan->Loanno}}</td>
                     <td>{{$showloan->AmountApplied}}</td>
                     <td>{{$showloan->ApprovedAmount}}</td>
@@ -58,7 +58,7 @@
                     <td>{{$showloan->ApplicationDate}}</td>
                     <td>{{$showloan->Rperiod}}</td>                   
                     <td>
-                      <a href="#" title="View Details"><span class="right badge badge-info"><i class="fa fa-eye"></i></span></a>
+                      <a href="{{url('loan_details')."/".$showloan->id}}" title="View Details"><span class="right badge badge-info"><i class="fa fa-eye"></i></span></a>
                     
                     </td>
                   </tr>
