@@ -12,6 +12,7 @@ use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class LoanApplicationController extends Controller
 {
@@ -78,7 +79,7 @@ class LoanApplicationController extends Controller
             $loan->RecoverInterestFirst = true;
             $loan->IntRate = $request->IntRate;
             $loan->Rperiod = $request->Rperiod;
-            $loan->Createdby = 'User';
+            $loan->Createdby = Auth::user()->name;
             $loan->Approved = false;
             $loan->ApprovedAmount = '0';
             $loan->RepayAmount = '0';
@@ -222,7 +223,7 @@ class LoanApplicationController extends Controller
                         'Approved' => true,
                         'ApprovedAmount' => $request->ApprovedAmount,
                         'RepayAmount' => $repayAmount,
-                        'ApprovedBy' => 'Kevin',
+                        'ApprovedBy' => Auth::user()->name,
                         'ApprovedOn' => $request->ApprovedOn
                     ]);
                    // 'Loanno','MemberNo','ApprovedAmount','InterestAmount','ApprovedBy

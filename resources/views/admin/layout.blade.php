@@ -8,7 +8,7 @@
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
   <!-- Font Awesome -->
-  <link rel="stylesheet" href="{{asset('plugins/fontawesome-free/css/all.min.css"')}}>
+  <link rel="stylesheet" href="{{asset('plugins/fontawesome-free/css/all.min.css"')}}">
   <!-- Ionicons -->
   <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
   <!-- Tempusdominus Bootstrap 4 -->
@@ -76,6 +76,7 @@
     <!-- Brand Logo -->
  
 
+  
     <!-- Sidebar -->
     <div class="sidebar">
       <!-- Sidebar user panel (optional) -->
@@ -85,26 +86,14 @@
         <ul class="navbar-nav ms-auto  z-index-n6 ">
           <li class="nav-item dropdown ">
             <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-            
-            </a>
-
-            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-              <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                {{ __('Logout') }}
-              </a>
-
-              <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                @csrf
-              </form>
-            </div>
+              {{ Auth::user()->name }}
+            </a>           
           </li>
         </ul>
         </div>
          <!-- SidebarSearch Form -->
-      <div style="height:60px;"></div>
+      <div style="height:20px;"></div>
       </div>
-
      
 
       <!-- Sidebar Menu -->
@@ -216,7 +205,18 @@
           </li>
          
         </ul>
+        
       </nav>
+      <div class=" mt-5 form-group">
+        <a class="form-control text-white btn-info" href="{{ route('logout') }}" onclick="event.preventDefault();
+                                               document.getElementById('logout-form').submit();">
+          {{ __('Logout') }}
+        </a>
+
+        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+          @csrf
+        </form>
+      </div>
       <!-- /.sidebar-menu -->
     </div>
     <!-- /.sidebar -->
