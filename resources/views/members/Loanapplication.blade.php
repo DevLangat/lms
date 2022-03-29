@@ -30,7 +30,7 @@
                     <div class="col-sm-2"> <button id="getdata" class="btn btn-primary mt-3" onclick="submitdata()" >Get Member </button>  </div>
                     <div class="col-sm-3 form-floating mb-3 mt-3 mb-sm-0">        
         
-                        <input type="text" id="MaxAmount"  readonly class="form-control" >
+                        <input type="text" id="MaxAmount" readonly class="form-control" >
                         <label>Maximum Loan Limit</label>
                                                       
                        
@@ -64,7 +64,7 @@
                       </script>
                     <form method="post" action="{{route('post_loanapplication')}}">
                         @csrf
-                        <input type="text" name="LoanLimit" id="MaxAmountForm"  readonly class="form-control" hidden="true" >             
+                                  
                         <div class="form-group row">
                             <div class="col-sm-1"></div>
                             <div class="col-sm-3 form-floating mb-3 mt-3 mb-sm-0">        
@@ -84,7 +84,7 @@
                             </div>
                         </div>
                         <br>
-
+                        <input type="number" name="LoanLimit" id="MaxAmountForm"  readonly class="form-control" hidden="true" >  
                         <h5>LOAN DETAILS</h5>
                         <hr />
                         <div class="form-group row">
