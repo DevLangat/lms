@@ -171,7 +171,13 @@
                   <p>Approved Loans</p>
                 </a>
               </li>
-             
+              <li class="nav-item">
+                <a href="{{route('loansrejected/all')}}" class="nav-link">
+                  <i class="fas fa-list nav-icon"></i>
+                  <p>Rejected Loans</p>
+                </a>
+              </li>
+              
               <li class="nav-item">
                 <a href="{{route('repayments/add')}}" class="nav-link">
                   <i class="fas fa-list nav-icon"></i>
