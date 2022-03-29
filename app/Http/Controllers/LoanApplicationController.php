@@ -24,7 +24,7 @@ class LoanApplicationController extends Controller
     public function index()
     {
         $loantypes = LoanType::all();
-        return view('members.loanapplication', compact('loantypes'));
+        return view('members.Loanapplication', compact('loantypes'));
     }
 
     /**
@@ -109,6 +109,7 @@ class LoanApplicationController extends Controller
             "members.name as Names"
         )
         ->join("members", "members.MemberNo", "=", "loan_applications.MemberNo")
+        ->where ('loan_applications.Approved',"=",'0')
         ->get();
         return view('members.view_loanApplications', compact('showloans'));
     }

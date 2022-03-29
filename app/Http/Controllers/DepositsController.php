@@ -100,9 +100,17 @@ class DepositsController extends Controller
  
    public function show(Deposits $deposits)
     {
-       
-        $deposits = Deposits::all();
+        $deposits = Deposits::select(
+            "deposits.*",             
+            "members.name as Names"
+        )
+        ->join("members", "members.MemberNo", "=", "deposits.MemberNo")
+        ->get();
         return view('members.View_deposits',compact('deposits'));  
+         
+
+
+       
     }
 
     /**
