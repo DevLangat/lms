@@ -35,3 +35,10 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('/auth/logout', [AuthController::class, 'logout']);
    
 });
+
+
+//mpesa
+Route::post('validation', [App\Http\Controllers\MpesaTransactionController::class, 'validation']);
+Route::post('confirmation', [App\Http\Controllers\MpesaTransactionController::class, 'confirmation_url']);
+Route::get('accesstoken', [App\Http\Controllers\MpesaTransactionController::class, 'get_access_token']);
+

@@ -85,6 +85,7 @@ class DepositsController extends Controller
             'Remarks'=>$request->Remarks
 
         ]);
+        
      
         Alert::success('Deposits Posting', 'Deposit Posting Successfull');
         return redirect()->back();
@@ -110,10 +111,7 @@ class DepositsController extends Controller
      * @param  \App\Models\Deposits  $deposits
      * @return \Illuminate\Http\Response
      */
-    public function edit(Deposits $deposits)
-    {
-        //
-    }
+   
 
     /**
      * Update the specified resource in storage.
