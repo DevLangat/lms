@@ -84,7 +84,7 @@
                             </div>
                         </div>
                         <br>
-                        <input type="number" name="LoanLimit" id="MaxAmountForm"  readonly class="form-control" hidden="true" >  
+                        <input type="number" name="LoanLimit" id="MaxAmountForm"  class="form-control" hidden="true" >  
                         <h5>LOAN DETAILS</h5>
                         <hr />
                         <div class="form-group row">
