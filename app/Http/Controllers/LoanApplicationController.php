@@ -60,11 +60,12 @@ class LoanApplicationController extends Controller
             }
         }
 
-        $deposit = $request->Deposits;
+        $Rperiod = $request->Rperiod;
         //$loanlimit = ($deposit) * 3;
         $loanlimit=$request->LoanLimit;
+        Log::info($Rperiod);
         Log::info($loanlimit);
-    
+       
         $loanapplied = $request->AmountApplied;
         if ($loanapplied > $loanlimit) {
             Alert::error('Loan Limit', 'Your Loan Limit is: ' . $loanlimit . ' ' . '');

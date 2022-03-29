@@ -137,8 +137,8 @@
                             <div class="col-sm-1"></div>
                         <div class="col-sm-3 form-floating mb-3 mt-3 mb-sm-0">                           
                                 
-                            <select class="form-control" name="Rperiod" required="" aria-required="true">
-                                <option disabled="" selected=""></option>
+                            <select class="form-control" name="Rperiod"  aria-required="true">
+                                <option value="0">Please Select Your Period</option>
                                 <option value="1"> 1 Month</option>
                                 <option value="2"> 2 Months</option>
                                 <option value="3"> 3 Months</option>
