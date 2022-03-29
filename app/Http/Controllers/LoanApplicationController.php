@@ -80,7 +80,7 @@ class LoanApplicationController extends Controller
             $loan->IntRate = $request->IntRate;
             $loan->Rperiod = $request->Rperiod;
             $loan->Createdby = Auth::user()->name;
-            $loan->Approved = false;
+            $loan->Approved = 0;
             $loan->ApprovedAmount = '0';
             $loan->RepayAmount = '0';
             $loan->IsDisbursed = false;
@@ -110,6 +110,28 @@ class LoanApplicationController extends Controller
         )
         ->join("members", "members.MemberNo", "=", "loan_applications.MemberNo")
         ->where ('loan_applications.Approved',"=",'0')
+        ->get();
+        return view('members.view_loanApplications', compact('showloans'));
+    }
+    public function showApproved()
+    {        
+        $showloans = LoanApplication::select(
+            "loan_applications.*",             
+            "members.name as Names"
+        )
+        ->join("members", "members.MemberNo", "=", "loan_applications.MemberNo")
+        ->where ('loan_applications.Approved',"=",'1')
+        ->get();
+        return view('members.view_loanApplications', compact('showloans'));
+    }
+    public function showRejectedloans()
+    {        
+        $showloans = LoanApplication::select(
+            "loan_applications.*",             
+            "members.name as Names"
+        )
+        ->join("members", "members.MemberNo", "=", "loan_applications.MemberNo")
+        ->where ('loan_applications.Approved',"=",'2')
         ->get();
         return view('members.view_loanApplications', compact('showloans'));
     }
@@ -221,7 +243,7 @@ class LoanApplicationController extends Controller
             } else {
                 LoanApplication::where('Loanno', $loan_number)
                     ->update([
-                        'Approved' => true,
+                        'Approved' => 1,
                         'ApprovedAmount' => $request->ApprovedAmount,
                         'RepayAmount' => $repayAmount,
                         'ApprovedBy' => Auth::user()->name,

@@ -36,6 +36,8 @@ Route::get('/getDetails/{id}', [App\Http\Controllers\LoanApplicationController::
 Route::post('/getUserbyid', [App\Http\Controllers\LoanApplicationController::class, 'getUserbyid']);
 Route::post('/getLoantypes', [App\Http\Controllers\LoanApplicationController::class, 'getLoantypes']);
 Route::get('/loans/all', [App\Http\Controllers\LoanApplicationController::class, 'show'])->name('loans/all')->middleware('auth');
+Route::get('/loansApproved/all', [App\Http\Controllers\LoanApplicationController::class, 'showApproved'])->name('loansApproved/all')->middleware('auth');
+
 Route::post('/loan/approve', [App\Http\Controllers\LoanApplicationController ::class, 'approve'])->name('loan/approve')->middleware('auth');
 Route::get('/loan_details/{id}', [App\Http\Controllers\LoanApplicationController::class, 'loan_details'])->name('loan_details')->middleware('auth');
 
