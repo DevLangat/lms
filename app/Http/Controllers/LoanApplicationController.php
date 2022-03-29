@@ -67,7 +67,7 @@ class LoanApplicationController extends Controller
     
         $loanapplied = $request->AmountApplied;
         if ($loanapplied > $loanlimit) {
-            Alert::error('Loan Limit', 'Your Loan Limit is: ' . strtoupper($loanlimit) . ' ' . '');
+            Alert::error('Loan Limit', 'Your Loan Limit is: ' . $loanlimit . ' ' . '');
         } else {
             $loan = new LoanApplication;
             $loan->MemberNo = $userid;
