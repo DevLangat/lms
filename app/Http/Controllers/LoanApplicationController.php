@@ -81,7 +81,7 @@ class LoanApplicationController extends Controller
             $loan->IntRate = $request->IntRate;
             $loan->Rperiod = $request->Rperiod;
             $loan->Createdby = Auth::user()->name;
-            $loan->Approved = false;
+            $loan->Approved = 0;
             $loan->ApprovedAmount = '0';
             $loan->RepayAmount = '0';
             $loan->IsDisbursed = false;
@@ -113,6 +113,28 @@ class LoanApplicationController extends Controller
         ->where ('loan_applications.Approved',"=",'0')
         ->get();
         return view('members.view_loanApplications', compact('showloans'));
+    }
+    public function showApproved()
+    {        
+        $showloans = LoanApplication::select(
+            "loan_applications.*",             
+            "members.name as Names"
+        )
+        ->join("members", "members.MemberNo", "=", "loan_applications.MemberNo")
+        ->where ('loan_applications.Approved',"=",'1')
+        ->get();
+        return view('members.view_loansapproved', compact('showloans'));
+    }
+    public function showRejectedloans()
+    {        
+        $showloans = LoanApplication::select(
+            "loan_applications.*",             
+            "members.name as Names"
+        )
+        ->join("members", "members.MemberNo", "=", "loan_applications.MemberNo")
+        ->where ('loan_applications.Approved',"=",'2')
+        ->get();
+        return view('members.view_loansrejected', compact('showloans'));
     }
 
     public function getUserbyid(Request $request)
@@ -222,7 +244,7 @@ class LoanApplicationController extends Controller
             } else {
                 LoanApplication::where('Loanno', $loan_number)
                     ->update([
-                        'Approved' => true,
+                        'Approved' => 1,
                         'ApprovedAmount' => $request->ApprovedAmount,
                         'RepayAmount' => $repayAmount,
                         'ApprovedBy' => Auth::user()->name,
@@ -241,7 +263,7 @@ class LoanApplicationController extends Controller
                 Alert::success('Loan Approval', 'Approval Successfully');
             }
         }
-        return redirect()->back();
+         return redirect('/loans/all');
     }
     public function loan_details($id)
     {
@@ -259,9 +281,25 @@ class LoanApplicationController extends Controller
      * @param  \App\Models\LoanApplication  $loanApplication
      * @return \Illuminate\Http\Response
      */
-    public function destroy(LoanApplication $loanApplication)
+    public function destroy(Request $request)
     {
-        //
+         
+             $loan_number = $request->Loanno;        
+             
+                 LoanApplication::where('Loanno', $loan_number)
+                     ->update([
+                         'Approved' => 2,
+                         'ApprovedAmount' =>0,
+                         'RepayAmount' => 0,
+                         'ApprovedBy' => Auth::user()->name,
+                         'ApprovedOn' => $request->ApprovedOn
+                     ]);
+                    
+                 
+                 Alert::success('Loan Rejection', 'Rejection Done Successfully');
+             
+         
+         return redirect('/loans/all');
     }
 }
 

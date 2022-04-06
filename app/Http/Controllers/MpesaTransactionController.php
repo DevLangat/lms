@@ -110,6 +110,13 @@ class MpesaTransactionController extends Controller
         'MSISDN'=>$MSISDN,
         'TransAmount'=>$TransAmount,
         'OrgAccountBalance'=>$OrgAccountBalance]);
+
+    
+        //get totalDeposits
+        //get loanBalance
+            //create sms
+            //call automessaging
+
         // write to file
         $log = fopen($logFile, 'a');
         fwrite($log, $mpesaResponse);

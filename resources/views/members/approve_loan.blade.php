@@ -131,7 +131,16 @@
                                       <br>
                                   <button type="submit" class="btn btn-block btn-primary">SUBMIT</button>
                                   </div>
+                                 
                                     </form> 
+                                    <form method="POST" action="{{route('loan/reject')}}">
+                                      @csrf
+                                    <div>
+                                      <br>
+                                      <input type="text" name="Loanno" value="{{$showloan->Loanno}}"  class="form-control" readonly hidden="true"  >
+                                  <button type="submit" class="btn btn-block btn-danger">Reject</button>
+                                  </div>
+                                  </form>
                                 </div>
                             </div>  
                           </div>            

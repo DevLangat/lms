@@ -7,12 +7,12 @@
     <div class="container-fluid">
       <div class="row mb-2">
         <div class="col-sm-6">
-          <h3>Applied Loans</h3>
+          <h3>Approved Loans</h3>
         </div>
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
             <li class="breadcrumb-item"><a href="{{url('admin')}}">Home</a></li>
-            <li class="breadcrumb-item active">Applied Loans</li>
+            <li class="breadcrumb-item active">Approved Loans</li>
           </ol>
         </div>
       </div>
@@ -58,7 +58,7 @@
                     <td>{{$showloan->ApplicationDate}}</td>
                     <td>{{$showloan->Rperiod}}</td>                   
                     <td>
-                      <a href="{{url('loan_details')."/".$showloan->id}}" title="View Details"><span class="right badge badge-info"><i class="fa fa-eye"></i></span></a>
+                     
                     
                     </td>
                   </tr>
