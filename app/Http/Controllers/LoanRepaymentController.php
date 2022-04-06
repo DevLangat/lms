@@ -35,7 +35,8 @@ class LoanRepaymentController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        //store
+        
     }
 
     /**
