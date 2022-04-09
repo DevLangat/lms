@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Member;
 use App\Traits\ApiResponser;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -25,8 +26,11 @@ class AuthController extends Controller
         $user = User::create([
             'name' => $request->name,
             'phone' => $request->phone,
+            'user_role' => $request->user_role,
+            'address' => $request->address,
             'password' => bcrypt($request->password),
             'email' => $request->email,
+            'memberno' => $request->memberno,
            
         ]);
 
@@ -37,16 +41,35 @@ class AuthController extends Controller
         }
         // get the user
         $authuser = Auth::user();
+        if (Member::where('MemberNo', '=', $request->MemberNo)->exists()) {
+            return $this->error('Credentials not match', 401,[
+                'message'=>'Member already Exist'
+            ]);
+           
+        }
+        Member::create([
+            'MemberNo'=> $request->memberno,
+            'Name'=>$request->name,
+            'Address'=>$request->address,
+            'Email'=>$request->email,
+            'Mobile'=>$request->phone,
+            'KinName'=>$request->kinName,
+            'GroupCode'=>'M_001',
+            'KinMobile'=>$request->kinMobile
+
+        ]);
         return $this->success([
             'token' => $user->createToken('API Token')->plainTextToken,
             'user' => $authuser,
             'message'=>'Successfully Registered'
         ]);
-    }
+      
 
+    }
+     
     public function login(Request $request)
     {
-
+        
 
         $request->headers->set("Accept", "application/json");
         if(Auth::attempt(['phone' => request('phone'), 'password' => request('password')])
