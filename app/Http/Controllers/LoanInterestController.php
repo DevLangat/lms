@@ -44,9 +44,17 @@ class LoanInterestController extends Controller
      * @param  \App\Models\LoanInterest  $loanInterest
      * @return \Illuminate\Http\Response
      */
-    public function show(LoanInterest $loanInterest)
+    public function show()
     {
-        //
+        $showinterests = LoanInterest::select(
+            "loan_interests.*",             
+            "members.name as Names"
+        )
+        ->join("members", "members.MemberNo", "=", "loan_interests.MemberNo")
+        // ->where ('LoanInterest.Approved',"=",'2')
+        ->get();
+        return view('members.view_interests', compact('showinterests'));
+        //['Loanno','MemberNo','ApprovedAmount','InterestAmount','ApprovedBy']
     }
 
     /**

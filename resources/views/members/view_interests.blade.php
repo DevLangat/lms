@@ -7,12 +7,12 @@
     <div class="container-fluid">
       <div class="row mb-2">
         <div class="col-sm-6">
-          <h3>Applied Loans</h3>
+          <h3>All Loan Interests</h3>
         </div>
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
             <li class="breadcrumb-item"><a href="{{url('admin')}}">Home</a></li>
-            <li class="breadcrumb-item active">Applied Loans</li>
+            <li class="breadcrumb-item active">All Loan Interests</li>
           </ol>
         </div>
       </div>
@@ -34,31 +34,26 @@
                   <tr>
                     <th>Member No.</th>
                     <th>Names</th>
-                    <th>Loanno</th>
-                    <th>Amount Applied</th>
+                    <th>Loanno</th>                     
                     <th>Amount Approved </th>
-                    <th>Repay Rate </th>
-                    <th>Is Approved</th>
-                    <th>Application Date</th>  
-                    <th>Repayment Period</th> 
+                    <th>InterestAmount </th>
+                    <th>ApprovedBy</th> 
                     <th> Actions</th>                
                   </tr>
                 </thead>
                 <tbody>
 
-                  @foreach ($showloans ?? '' as $showloan)
+                  @foreach ($showinterests ?? '' as $showinterests)
                   <tr>
-                    <td>{{$showloan->MemberNo}}</td>
-                    <td>{{$showloan->Names}}</td>
-                    <td>{{$showloan->Loanno}}</td>
-                    <td>{{$showloan->AmountApplied}}</td>
-                    <td>{{$showloan->ApprovedAmount}}</td>
-                    <td>{{$showloan->RepayAmount}}</td>
-                    <td>{{$showloan->Approved}}</td>
-                    <td>{{$showloan->ApplicationDate}}</td>
-                    <td>{{$showloan->Rperiod}}</td>                   
+                    <td>{{$showinterests->MemberNo}}</td>
+                    <td>{{$showinterests->Names}}</td>
+                    <td>{{$showinterests->Loanno}}</td>                    
+                    <td>{{$showinterests->ApprovedAmount}}</td>
+                    <td>{{$showinterests->InterestAmount}}</td>
+                    <td>{{$showinterests->ApprovedBy}}</td>                            
                     <td>
-                      <a href="{{url('loan_details')."/".$showloan->id}}" title="View Details"><span class="right badge badge-info"><i class="fa fa-eye"></i></span></a>
+                      {{-- ['Loanno','MemberNo','ApprovedAmount','InterestAmount','ApprovedBy'] --}}
+                      {{-- <a href="{{url('loan_details')."/".$showloan->id}}" title="View Details"><span class="right badge badge-info"><i class="fa fa-eye"></i></span></a> --}}
                     
                     </td>
                   </tr>
@@ -68,13 +63,10 @@
                   <tr>
                     <th>Member No.</th>
                     <th>Names</th>
-                    <th>Loanno</th>
-                    <th>Amount Applied</th>
+                    <th>Loanno</th>                     
                     <th>Amount Approved </th>
-                    <th>Repay Rate </th>
-                    <th>Is Approved</th>
-                    <th>Application Date</th>  
-                    <th>Repayment Period</th> 
+                    <th>InterestAmount </th>
+                    <th>ApprovedBy</th>                     
                     <th> Actions</th>    
                   </tr>
                 </tfoot>

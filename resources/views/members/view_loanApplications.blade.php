@@ -35,19 +35,19 @@
                     <th>Member No.</th>
                     <th>Names</th>
                     <th>Loanno</th>
-                    <th>Amount Applied</th>
+                    <th>AmountApplied</th>
                     <th>Amount Approved </th>
                     <th>Repay Rate </th>
                     <th>Is Approved</th>
                     <th>Application Date</th>  
                     <th>Repayment Period</th> 
-                    <th> Actions</th>                
+                    <th>Actions</th>    
                   </tr>
                 </thead>
                 <tbody>
 
                   @foreach ($showloans ?? '' as $showloan)
-                  <tr>
+                  <tr  style="height:1px;padding:-10px;">
                     <td>{{$showloan->MemberNo}}</td>
                     <td>{{$showloan->Names}}</td>
                     <td>{{$showloan->Loanno}}</td>
@@ -64,6 +64,14 @@
                   </tr>
                   @endforeach
                 </tbody>
+                  <tr>
+                    <td colspan="8"></td>
+                    @foreach($loanapplied as $data)
+                    <td colspan="2">Totals: {{$data->total}}</td>
+
+                    @endforeach
+                  </tr>
+                
                 <tfoot>
                   <tr>
                     <th>Member No.</th>

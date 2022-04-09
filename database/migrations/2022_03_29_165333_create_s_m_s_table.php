@@ -18,7 +18,7 @@ class CreateSMSTable extends Migration
             $table->string('phoneNo');
             $table->string('Message');
             $table->string('Rtype');
-            $table->int('Status');
+            $table->integer('Status');
             $table->timestamps();
         });
     }

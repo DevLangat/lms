@@ -7,6 +7,7 @@ use App\Models\LoanApplication;
 use App\Models\LoanType;
 use App\Models\Member;
 use App\Models\LoanInterest;
+use App\Models\Repayments;
 use Illuminate\Http\Request;
 use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Support\Facades\Log;
@@ -47,53 +48,76 @@ class LoanApplicationController extends Controller
         $userid = $request->MemberNo;
         // if (LoanApplication::where('MemberNo', '=', $request->IdNumber)->exists()) {
         // }
+       
         $count =  DB::table('loan_applications')
             ->select(DB::raw('count(*) as count'))
             ->where('MemberNo', $userid)
             ->where('LoanCode', '=', $request->LoanCode)
             ->get();
-        if ($count) {
-            foreach ($count as $loan_count) {
-                $newcount = $loan_count->count + 1;
-                $loan_number = $request->LoanCode . $userid . '-' . $newcount;
-                Log::info($loan_number);
+
+           
+
+            $loanlimiamt = DB::table('members')->where('MemberNo', $userid)->pluck('MaxLoan') ->sum();
+            $amount = DB::table('loan_applications')->where('MemberNo', $userid)->pluck('ApprovedAmount') ->sum();
+            $payment = DB::table('repayments')->where('MemberNo', $userid)->pluck('amount') ->sum();
+            $balance = $amount - $payment;
+            // $balance = $ApprovedAmount-$RepaidAmount;
+            Log::info($payment);
+            Log::info($amount);
+            Log::info($balance);
+            $zero=0;
+            
+            if($balance>0)
+            {              
+                 Alert::error('Loan Balance', 'Your Have Pending Loans: ' .strtoupper ($balance) . ' ' . '');
+                Log::info($balance);
+                redirect()->back();
+            }else{
+                if ($count) {
+                    foreach ($count as $loan_count) {
+                        $newcount = $loan_count->count + 1;
+                        $loan_number = $request->LoanCode . $userid . '-' . $newcount;
+                        Log::info($loan_number);
+                    }
+                }
+        
+                $Rperiod = $request->Rperiod;
+                //$loanlimit = ($deposit) * 3;
+                $loanlimit=$loanlimiamt;
+                Log::info($Rperiod);
+                Log::info($loanlimiamt);
+               
+                $loanapplied = $request->AmountApplied;
+                if ($loanapplied > $loanlimit) {
+                    Alert::error('Loan Limit', 'Your Loan Limit is: ' . $loanlimit . ' ' . '');
+                } else {
+                    $loan = new LoanApplication;
+                    $loan->MemberNo = $userid;
+                    $loan->Loanno = $loan_number;
+                    $loan->LoanCode = $request->LoanCode;
+                    $loan->AmountApplied = $request->AmountApplied;
+                    $loan->ApplicationDate = Carbon::now()->format('Y-m-d');;
+                    $loan->EffectDate = Carbon::now()->format('Y-m-d');
+                    $loan->RecoverInterestFirst = true;
+                    $loan->IntRate = $request->IntRate;
+                    $loan->Rperiod = $request->Rperiod;
+                    $loan->Createdby = Auth::user()->name;
+                    $loan->Approved = 0;
+                    $loan->ApprovedAmount = '0';
+                    $loan->RepayAmount = '0';
+                    $loan->IsDisbursed = false;
+                    $loan->ApprovedBy = $request->ApprovedBy;
+                    $loan->Modifiedby = $request->Modifiedby;
+                    $loan->ApprovedOn = $request->ApprovedOn;
+                    $loan->save();
+        
+        
+        
+                    Alert::success('Loan Application', 'You\'ve Successfully Applied');
+                }
             }
-        }
-
-        $Rperiod = $request->Rperiod;
-        //$loanlimit = ($deposit) * 3;
-        $loanlimit=$request->LoanLimit;
-        Log::info($Rperiod);
-        Log::info($loanlimit);
-       
-        $loanapplied = $request->AmountApplied;
-        if ($loanapplied > $loanlimit) {
-            Alert::error('Loan Limit', 'Your Loan Limit is: ' . $loanlimit . ' ' . '');
-        } else {
-            $loan = new LoanApplication;
-            $loan->MemberNo = $userid;
-            $loan->Loanno = $loan_number;
-            $loan->LoanCode = $request->LoanCode;
-            $loan->AmountApplied = $request->AmountApplied;
-            $loan->ApplicationDate = Carbon::now()->format('Y-m-d');;
-            $loan->EffectDate = Carbon::now()->format('Y-m-d');
-            $loan->RecoverInterestFirst = true;
-            $loan->IntRate = $request->IntRate;
-            $loan->Rperiod = $request->Rperiod;
-            $loan->Createdby = Auth::user()->name;
-            $loan->Approved = 0;
-            $loan->ApprovedAmount = '0';
-            $loan->RepayAmount = '0';
-            $loan->IsDisbursed = false;
-            $loan->ApprovedBy = $request->ApprovedBy;
-            $loan->Modifiedby = $request->Modifiedby;
-            $loan->ApprovedOn = $request->ApprovedOn;
-            $loan->save();
-
-
-
-            Alert::success('Loan Application', 'You\'ve Successfully Applied');
-        }
+             
+        
         return redirect()->back();
     }
 
@@ -105,14 +129,41 @@ class LoanApplicationController extends Controller
      */
     public function show()
     {        
-        $showloans = LoanApplication::select(
-            "loan_applications.*",             
-            "members.name as Names"
-        )
-        ->join("members", "members.MemberNo", "=", "loan_applications.MemberNo")
-        ->where ('loan_applications.Approved',"=",'0')
-        ->get();
-        return view('members.view_loanApplications', compact('showloans'));
+        
+
+
+
+        // if ($request->from_date && $request->to_date) {
+        //     $now = $request->from_date;
+        //     $to = $request->to_date;
+        //     $sales = Sales::join('products', 'sales.ProductCode', '=', 'products.ProductCode')
+        //         ->where('SalesDate', '>=', $now)
+        //         ->where('SalesDate', '<=', $to)
+        //         ->get(['sales.*', 'products.Productname']);
+        //     $result = DB::table('sales')
+        //         ->join('products', 'sales.ProductCode', '=', 'products.ProductCode')
+        //         ->select(DB::raw('SUM(Amount) as total'))
+        //         ->where('SalesDate', '>=', $now)
+        //         ->where('SalesDate', '<=', $to)
+        //         ->get();
+
+        //     return view('admin.sales', compact('sales', 'result'));
+        // } else {
+
+            $showloans = LoanApplication::select(
+                "loan_applications.*",             
+                "members.name as Names"
+            )
+            ->join("members", "members.MemberNo", "=", "loan_applications.MemberNo")
+            ->where ('loan_applications.Approved',"=",'0')
+            ->get();
+
+            $loanapplied = DB::table('loan_applications')                
+                ->select(DB::raw('SUM(AmountApplied) as total'))
+                ->where ('loan_applications.Approved',"=",'0')
+                ->get();
+            return view('members.view_loanApplications', compact('showloans','loanapplied'));
+        // }
     }
     public function showApproved()
     {        
