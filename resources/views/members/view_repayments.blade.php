@@ -48,17 +48,18 @@
                   @foreach ($repayments ?? '' as $repayments)
                   <tr>
                     <td>{{$repayments->MemberNo}}</td>
-                    <td>{{$repayments->Names}}</td>
-                    <td>{{$repayments->ReceiptNo}}</td>
+                    <td>{{$repayments->Names}}</td>                   
+                    <td>{{$repayments->ReceiptNo}}</td>                   
                     <td>{{$repayments->Amount}}</td>
+                    <td>{{$repayments->Loanno}}</td>
                     <td>{{$repayments->TransactionDate}}</td>
                     <td>{{$repayments->Principal}}</td>
-                    <td>{{$repayments->Interest}}</td>ssss
+                    <td>{{$repayments->Interest}}</td>
                                  
                     <td>
-                      <a href="{{url('repayment_Details')."/".$repayments->id}}" title="View Details"><span class="right badge badge-info"><i class="fa fa-eye"></i></span></a>
+                      {{-- <a href="{{url('repayment_Details')."/".$repayments->id}}" title="View Details"><span class="right badge badge-info"><i class="fa fa-eye"></i></span></a>
                       <!-- <a href="{{url('delete_deposit/'.$repayments->id)}}" title="Approve member"><span class="right badge badge-success"><i class="fa fa-check"></i></span></a>
-                                 <a href="" title="Review member"><span class="right badge badge-warning"><i class="fas fa-copy"></i></span></a>
+                                 <a href="" title="Review member"><span class="right badge badge-warning"><i class="fas fa-copy"></i></span></a> --}}
                                 -->
                     </td>
                   </tr>

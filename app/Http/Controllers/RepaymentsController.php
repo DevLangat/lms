@@ -70,7 +70,7 @@ class RepaymentsController extends Controller
     public function show(Repayments $repayments)
     {
         $repayments = repayments::all();
-        return view('repayments.view_repayments',compact('repayments'));   
+        return view('members.view_repayments',compact('repayments'));   
     }
 
     /**

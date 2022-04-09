@@ -1,9 +1,10 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Illuminate\Support\Facades\DB;
 use App\Models\MpesaTransaction;
 use App\Models\Deposits;
+use App\Models\Repayments;
 use App\Models\Member;
 use Illuminate\Http\Request;
 use App\Models\MpesaAPI;
@@ -80,10 +81,62 @@ class MpesaTransactionController extends Controller
         $MemberNo=$memno[0];
         $Remarks=$memno[1];
         Log::info($MemberNo);
-
+$loanno="";
+$userid = $MemberNo ;
         //check deposit no
         $RecietNo=Deposits::getdepositsRecieptNo();
-       
+       if ($Remarks='R')
+       {
+        $amount = DB::table('loan_applications')->where('MemberNo', $userid)->pluck('ApprovedAmount') ->sum();
+        $payment = DB::table('repayments')->where('MemberNo', $userid)->pluck('amount') ->sum();
+        $balance = $amount - $payment;
+        
+        if($balance=$TransAmount)
+        {
+        $loanamount=$TransAmount    ;
+        }
+        else if($balance>$TransAmount)
+        {
+            $loanamount=$TransAmount;
+        }
+        else if($balance<$TransAmount)
+        {
+            $loanamount=$balance;
+            $Depositbal=$TransAmount-$balance;
+        }
+        if ($Depositbal>0)
+        {
+            Deposits::create(  
+                [  
+                'MemberNo' => $MemberNo,
+                'Amount' => $Depositbal,            
+                'TransBy' =>  $FirstName,
+                'sharescode' => '',
+                'ReceiptNo' => $RecietNo,
+                'mpesacode' => $TransID,
+                'TransactionDate' => $TransTime,
+                'Remarks'=>$Remarks
+    
+            ]);
+        }
+         repayments::created(
+            ['Active'=>1,
+            'MemberNo'=> $MemberNo,
+            'Loanno'=> $loanno,
+            'amount'=> $loanamount,
+            'Principal'=> $loanamount,
+            'Interest'=> 0,
+            'ReceiptNo'=> $RecietNo,
+            'MobileNo'=> $MSISDN,
+            'payment_status'=> 1,
+            'TransactionDate'=> $TransTime,
+            'AuditTime'=> $TransTime
+            ]) ;      
+        
+
+       }
+       else
+       {
         Deposits::create(  
             [  
             'MemberNo' => $MemberNo,
@@ -96,6 +149,7 @@ class MpesaTransactionController extends Controller
             'Remarks'=>$Remarks
 
         ]);
+    }
        MpesaTransaction::create([
         'FirstName'=>$FirstName,
         'MiddleName'=>'',

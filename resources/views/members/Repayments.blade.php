@@ -30,32 +30,7 @@
                 </div>
 
                 <div class="card-body">
-
-
-                    <script>
-  
-                        function submitdata(){
-                          var userid = Number($('#MemberNo').val().trim());
-                      
-                             if(userid > 0){
-                      
-                               // AJAX POST request
-                               $.ajax({
-                                  url: "{{url('api/getUserbyid')}}",
-                                  type: 'post',
-                                  data: { userid: userid},
-                                  dataType: 'json',
-                                  success: function(response){                      
-                                   document.getElementById("Name").value = response.member['Name'];  
-                                   document.getElementById("MemberNo").value = response.member['MemberNo']; 
-                                    
-                               });
-                             }
-                        }
-                        
-                      </script>
-
-                    <form method="post" action="{{route('repayments/add')}}">
+                    <form method="post" action="{{route('post_repayments')}}">
                         @csrf                       
                         <div class="form-group row">
                             <div class="col-sm-1"></div>
