@@ -41,6 +41,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 Route::post('validation', [App\Http\Controllers\MpesaTransactionController::class, 'validation']);
 Route::post('confirmation', [App\Http\Controllers\MpesaTransactionController::class, 'confirmation_url']);
 Route::get('accesstoken', [App\Http\Controllers\MpesaTransactionController::class, 'get_access_token']);
+Route::post('stkpush', [App\Http\Controllers\MpesaTransactionController::class, 'customerMpesaSTKPush']);
 Route::get('/members_details/{memberno}', [App\Http\Controllers\ApiController::class, 'membersdetails'])->name('members_details');
 
 

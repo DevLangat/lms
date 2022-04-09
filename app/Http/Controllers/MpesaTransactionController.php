@@ -124,6 +124,44 @@ class MpesaTransactionController extends Controller
 
         echo $response;
     }
+    public function lipaNaMpesaPassword()
+    {
+        $lipa_time = Carbon::rawParse('now')->format('YmdHms');
+        $passkey = env('MPESA_PASS_KEY');
+        $BusinessShortCode = 4088191;
+        $timestamp =$lipa_time;
+        $lipa_na_mpesa_password = base64_encode($BusinessShortCode.$passkey.$timestamp);
+        return $lipa_na_mpesa_password;
+    }
+    public function customerMpesaSTKPush(Request $request)
+    {
+        Log::info($request->all());
+        exit();
+        $url = 'https://api.safaricom.co.ke/mpesa/stkpush/v1/processrequest';
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_URL, $url);
+        curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-Type:application/json','Authorization:Bearer CW8t7c1ymUoXnPWme5i0IEEG1Jk2 '));
+        $curl_post_data = [
+            //Fill in the request parameters with valid values
+            'BusinessShortCode' =>env('MPESA_SHORTCODE'),
+            'Password' => $this->lipaNaMpesaPassword(),
+            'Timestamp' => Carbon::rawParse('now')->format('YmdHms'),
+            'TransactionType' => 'CustomerPayBillOnline',
+            'Amount' => $request->amount,
+            'PartyA' => $request->phone, // replace this with your phone number
+            'PartyB' => env('MPESA_SHORTCODE'),
+            'PhoneNumber' =>  $request->phone, // replace this with your phone number
+            'CallBackURL' => 'http://floridaylimited.co.ke/',
+            'AccountReference' =>$request->Account,
+            'TransactionDesc' => "Pay Loan"
+        ];
+        $data_string = json_encode($curl_post_data);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($curl, CURLOPT_POST, true);
+        curl_setopt($curl, CURLOPT_POSTFIELDS, $data_string);
+        $curl_response = curl_exec($curl);
+        return $curl_response;
+    }
 
     /**
      * Store a newly created resource in storage.
