@@ -136,7 +136,7 @@ class ApiController extends Controller
             'loan' => $loan,
             'message' => 'Successfully Applied'
         ]);
-    }
+    
         $members_check = Member::select('*')->where('MemberNo', $userid)->get();
         foreach ($members_check as $members_checks) {
             $phone = $members_checks->KinMobile;
@@ -155,5 +155,6 @@ class ApiController extends Controller
             SMS::Sendsms();
             //  Alert::success('Loan Application', 'You\'ve Successfully Applied');
         }
+    }
     }
 }
