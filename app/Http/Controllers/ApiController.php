@@ -23,8 +23,7 @@ class ApiController extends Controller
             "loan_applications.*"
         )
         ->join("loan_applications", "members.MemberNo", "=", "loan_applications.MemberNo")
-        ->where('members.MemberNo',"=",$memberno)->first()
-        ; 
+        ->where('members.MemberNo',"=",$memberno)->first() ; 
          
         Log::info($loan);
        // foreach($loans as $loan)

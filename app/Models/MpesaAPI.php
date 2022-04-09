@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Models;
-
+use Illuminate\Support\Facades\Log;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -57,11 +57,11 @@ class MpesaAPI extends Model
     {
 
         try {
-            $consumer_key = env('MPESA_B2C_CONSUMER_KEY');
-            $consumer_secret = env('MPESA_B2C_CONSUMER_SECRET');
+            $consumer_key = env('MPESA_CONSUMER_KEY');
+            $consumer_secret = env('MPESA_CONSUMER_SECRET');
         } catch (\Throwable $th) {
-            $consumer_key = self::env('MPESA_B2C_CONSUMER_KEY');
-            $consumer_secret = self::env('MPESA_B2C_CONSUMER_SECRET');
+            $consumer_key = self::env('MPESA_CONSUMER_KEY');
+            $consumer_secret = self::env('MPESA_CONSUMER_SECRET');
         }
 
         if (!isset($consumer_key) || !isset($consumer_secret)) {
@@ -70,7 +70,7 @@ class MpesaAPI extends Model
 
         /** Get Access Token */
 
-        $environment = env('MPESA_B2C_ENV');
+        $environment = env('MPESA_ENV');
         if ($environment == 'live') {
             $url = 'https://api.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials';
         } elseif ($environment == 'sandbox') {
@@ -88,8 +88,10 @@ class MpesaAPI extends Model
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
 
         $curl_response = curl_exec($curl);
+    
 
         return json_decode($curl_response)->access_token;
+        
     }
 }
 

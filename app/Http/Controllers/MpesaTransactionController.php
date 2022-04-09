@@ -136,11 +136,13 @@ class MpesaTransactionController extends Controller
     public function customerMpesaSTKPush(Request $request)
     {
         Log::info($request->all());
-        exit();
+        $access_token = MpesaAPI::generateC2BAccessToken();
         $url = 'https://api.safaricom.co.ke/mpesa/stkpush/v1/processrequest';
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_URL, $url);
-        curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-Type:application/json','Authorization:Bearer CW8t7c1ymUoXnPWme5i0IEEG1Jk2 '));
+        Log::info($access_token);
+
+        curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-Type:application/json','Authorization:Bearer '.$access_token));
         $curl_post_data = [
             //Fill in the request parameters with valid values
             'BusinessShortCode' =>env('MPESA_SHORTCODE'),
