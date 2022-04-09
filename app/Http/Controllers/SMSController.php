@@ -35,7 +35,11 @@ class SMSController extends Controller
      */
     public function store(Request $request)
     {
-        //
+       //    SMS::create($request->all());
+        // $this->data['phone'] =$request->phone;
+        // $this->data['message'] =$request->message;
+        // $this->data['rType'] =$request->rType;
+        // $this->data['status'] =$request->status;
     }
 
     /**

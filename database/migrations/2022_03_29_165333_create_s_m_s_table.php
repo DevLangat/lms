@@ -15,10 +15,13 @@ class CreateSMSTable extends Migration
     {
         Schema::create('s_m_s', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('phoneNo');
-            $table->string('Message');
-            $table->string('Rtype');
-            $table->integer('Status');
+            $table->string('phone');
+            $table->string('rType');
+            $table->string('message');
+            $table->string('status');
+            $table->string('SNo')->nullable();
+            $table->string('MessagID')->nullable();
+            $table->string('remarks')->nullable();
             $table->timestamps();
         });
     }

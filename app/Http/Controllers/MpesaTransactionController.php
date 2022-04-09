@@ -119,7 +119,7 @@ $userid = $MemberNo ;
     
             ]);
         }
-         repayments::created(
+         repayments::create(
             ['Active'=>1,
             'MemberNo'=> $MemberNo,
             'Loanno'=> $loanno,

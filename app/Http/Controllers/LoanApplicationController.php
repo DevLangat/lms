@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
-
+use App\Models\SMS;
 class LoanApplicationController extends Controller
 {
     /**
@@ -55,16 +55,14 @@ class LoanApplicationController extends Controller
             ->where('LoanCode', '=', $request->LoanCode)
             ->get();
 
-           
-
             $loanlimiamt = DB::table('members')->where('MemberNo', $userid)->pluck('MaxLoan') ->sum();
             $amount = DB::table('loan_applications')->where('MemberNo', $userid)->pluck('ApprovedAmount') ->sum();
             $payment = DB::table('repayments')->where('MemberNo', $userid)->pluck('amount') ->sum();
             $balance = $amount - $payment;
             // $balance = $ApprovedAmount-$RepaidAmount;
-            Log::info($payment);
-            Log::info($amount);
-            Log::info($balance);
+            // Log::info($payment);
+            // Log::info($amount);
+            // Log::info($balance);
             $zero=0;
             
             if($balance>0)
@@ -77,15 +75,15 @@ class LoanApplicationController extends Controller
                     foreach ($count as $loan_count) {
                         $newcount = $loan_count->count + 1;
                         $loan_number = $request->LoanCode . $userid . '-' . $newcount;
-                        Log::info($loan_number);
+                        // Log::info($loan_number);
                     }
                 }
         
                 $Rperiod = $request->Rperiod;
                 //$loanlimit = ($deposit) * 3;
                 $loanlimit=$loanlimiamt;
-                Log::info($Rperiod);
-                Log::info($loanlimiamt);
+                // Log::info($Rperiod);
+                // Log::info($loanlimiamt);
                
                 $loanapplied = $request->AmountApplied;
                 if ($loanapplied > $loanlimit) {
@@ -96,6 +94,7 @@ class LoanApplicationController extends Controller
                     $loan->Loanno = $loan_number;
                     $loan->LoanCode = $request->LoanCode;
                     $loan->AmountApplied = $request->AmountApplied;
+                   $loanApplied= $request->AmountApplied;
                     $loan->ApplicationDate = Carbon::now()->format('Y-m-d');;
                     $loan->EffectDate = Carbon::now()->format('Y-m-d');
                     $loan->RecoverInterestFirst = true;
@@ -109,14 +108,35 @@ class LoanApplicationController extends Controller
                     $loan->ApprovedBy = $request->ApprovedBy;
                     $loan->Modifiedby = $request->Modifiedby;
                     $loan->ApprovedOn = $request->ApprovedOn;
-                    $loan->save();
-        
-        
-        
-                    Alert::success('Loan Application', 'You\'ve Successfully Applied');
+                    $loan->save();                      
+
+                    $members_check = Member::select('*')->where('MemberNo', $userid)->get();
+                    foreach($members_check as $members_checks)
+                    {
+                         $phone=$members_checks->KinMobile;
+                         $clientnames=$members_checks->Name;
+                         $Names=$members_checks->KinName;
+                         $message='Dear '. $Names.','. $clientnames .' has applied for a loan of KES:'.$loanApplied.' at Vanlin Investments ltd,regards Vanlin.0710418966';
+                         Log::info($Names);
+                         Log::info($phone);
+                         
+              $createsms=new SMS;
+              $createsms->phone =$phone;
+              $createsms->message =$message;
+              $createsms->rType ='json';
+              $createsms->status =0;
+              $createsms->save();
+              SMS::Sendsms();
+                         Alert::success('Loan Application', 'You\'ve Successfully Applied');
+                      }
+                  }
+                    
+                    // $phone = DB::table('members')->where('MemberNo', $userid)->pluck('KinMobile'); 
+                    // $clientnames = DB::table('members')->where('MemberNo', $userid)->pluck('Name');   
+                    //  $Names = DB::table('members')->where('MemberNo', $userid)->pluck('KinName') ;      
+                    
+
                 }
-            }
-             
         
         return redirect()->back();
     }
@@ -282,7 +302,8 @@ class LoanApplicationController extends Controller
         if ($request->Approved) {
            
            Alert::error('Loan Approval', 'The Loan is already Approved');
-        } else {
+        }
+         else {
             $date = Carbon::now()->format('Y-m-d');
             $loan_number = $request->Loanno;
             $repayAmount = ($request->ApprovedAmount) / $request->Rperiod;
