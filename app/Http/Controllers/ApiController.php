@@ -49,6 +49,33 @@ class ApiController extends Controller
       
 
     }
+    public function loandetails($memberno){
+        
+        $loanlimiamt = DB::table('members')->where('MemberNo', $memberno)->pluck('MaxLoan') ->sum();
+      
+        $amount = DB::table('loan_applications')->where('MemberNo', $memberno)->pluck('ApprovedAmount') ->sum();
+        $deposit = DB::table('deposits')->where('MemberNo', $memberno)->pluck('Amount') ->sum();
+        $payment = DB::table('repayments')->where('MemberNo', $memberno)->pluck('amount') ->sum();
+        $balance = $amount - $payment;
+
+        Log::info("Loan Details");
+        Log::info($balance);
+        Log::info($loanlimiamt);
+
+        return response()->json(
+            [
+                'success' => true,
+                'loanbalance' => $balance,
+                'loanlimit'=>$loanlimiamt,
+                'deposit'=>$deposit
+                
+            ]
+        );
+       
+       
+      
+
+    }
     public function store(Request $request)
     {
         $userid = $request->MemberNo;

@@ -43,6 +43,7 @@ Route::post('confirmation', [App\Http\Controllers\MpesaTransactionController::cl
 Route::get('accesstoken', [App\Http\Controllers\MpesaTransactionController::class, 'get_access_token']);
 Route::post('stkpush', [App\Http\Controllers\MpesaTransactionController::class, 'customerMpesaSTKPush']);
 Route::get('/members_details/{memberno}', [App\Http\Controllers\ApiController::class, 'membersdetails'])->name('members_details');
+Route::get('/loandetails/{memberno}', [App\Http\Controllers\ApiController::class, 'loandetails'])->name('loandetails');
 
 
 //loans
