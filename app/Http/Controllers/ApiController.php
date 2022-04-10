@@ -94,42 +94,42 @@ class ApiController extends Controller
                 Log::info($loan_number);
             }
         }
-        $loans_check = Member::select('*')
-            ->where('loan_applications', $userid)
-            ->where('Approved', 0)
-            ->get();
-        if ($loans_check) {
-            foreach ($loans_check as $loan_checks) {
-                $Pendingapproval = $loans_check->AmountApplied;
-            }
-
-            if ($Pendingapproval > 0) {
-                Alert::error('Loan Balance', 'Your Have Pending Loans to be Approved: ' );
-                // return $this->([
-                //     'loan' => $loan,
-                //     'message' => 'Successfully Applied'
-                // ]);
-                redirect()->back();
-            }
-        }
-        else
-        {
-        $loanlimiamt = DB::table('members')->where('MemberNo', $userid)->pluck('MaxLoan')->sum();
-        $amount = DB::table('loan_applications')->where('MemberNo', $userid)->pluck('ApprovedAmount')->sum();
-        $amountpendingapproval = DB::table('loan_applications')->where('MemberNo', $userid)->pluck('AmountApplied')->sum();
-        $payment = DB::table('repayments')->where('MemberNo', $userid)->pluck('amount')->sum();
-        $balance = $amount - $payment;
+        // $loans_check = LoanApplication::select('*')
+        //     ->where('MemberNo', $userid)
+        //     ->where('Approved', 0)
+        //     ->get();
+        // if ($loans_check) {
+        //     foreach ($loans_check as $loan_checks) {
+        //         $Pendingapproval = $loan_checks->AmountApplied;
+        //         if ($Pendingapproval > 0) {
+                   
+        //             return $this->success([                        
+        //                 'message' => 'Loan Pending Approval'
+        //             ]);
+                   
+        //         }
+        //     }
+           
+            
+        // }
+        // else
+        // {
+        // $loanlimiamt = DB::table('members')->where('MemberNo', $userid)->pluck('MaxLoan')->sum();
+        // $amount = DB::table('loan_applications')->where('MemberNo', $userid)->pluck('ApprovedAmount')->sum();
+        // // $amountpendingapproval = DB::table('loan_applications')->where('MemberNo', $userid)->pluck('AmountApplied')->sum();
+        // $payment = DB::table('repayments')->where('MemberNo', $userid)->pluck('amount')->sum();
+        // $balance = $amount - $payment;
         // $balance = $ApprovedAmount-$RepaidAmount;
         // Log::info($payment);
         // Log::info($amount);
         // Log::info($balance);
         $zero = 0;
 
-        if ($balance > 0) {
-            Alert::error('Loan Balance', 'Your Have Pending Loans: ' . strtoupper($balance) . ' ' . '');
-            Log::info($balance);
-            redirect()->back();
-        }
+        // if ($balance > 0) {
+        //     Alert::error('Loan Balance', 'Your Have Pending Loans: ' . strtoupper($balance) . ' ' . '');
+        //     Log::info($balance);
+        //     redirect()->back();
+        // }
 
         $Rperiod = $request->Rperiod;
         //$loanlimit = ($deposit) * 3;
@@ -137,7 +137,7 @@ class ApiController extends Controller
         Log::info($Rperiod);
         Log::info($loanlimit);
 
-        $loanapplied = $request->AmountApplied;
+       
 
         $loan = new LoanApplication;
         $loan->MemberNo = $userid;
@@ -159,10 +159,7 @@ class ApiController extends Controller
         $loan->Modifiedby = $request->Modifiedby;
         $loan->ApprovedOn = $request->ApprovedOn;
         $loan->save();
-        return $this->success([
-            'loan' => $loan,
-            'message' => 'Successfully Applied'
-        ]);
+     
     
         $members_check = Member::select('*')->where('MemberNo', $userid)->get();
         foreach ($members_check as $members_checks) {
@@ -179,9 +176,17 @@ class ApiController extends Controller
             $createsms->rType = 'json';
             $createsms->status = 0;
             $createsms->save();
-            SMS::Sendsms();
-            //  Alert::success('Loan Application', 'You\'ve Successfully Applied');
+
+           $smsend= SMS::Sendsms();
+           if($smsend){
+
+            return $this->success([
+                'loan' => $loan,
+                'message' => 'Successfully Applied'
+            ]);
         }
-    }
+            //  Alert::success('Loan Application', 'You\'ve Successfully Applied');
+    //     }
+     }
     }
 }

@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use Illuminate\Support\Facades\DB;
 use App\Models\MpesaTransaction;
 use App\Models\Deposits;
@@ -10,6 +11,7 @@ use Illuminate\Http\Request;
 use App\Models\MpesaAPI;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Log;
+
 class MpesaTransactionController extends Controller
 {
     /**
@@ -64,7 +66,7 @@ class MpesaTransactionController extends Controller
         // $OrgAccountBalance = $jsonMpesaResponse['OrgAccountBalance'];
         // $MSISDN = $jsonMpesaResponse['MSISDN'];
 
-        
+
         $TransactionType = $jsonMpesaResponse['TransactionType'];
         $TransID = $jsonMpesaResponse['TransID'];
         $TransAmount = $jsonMpesaResponse['TransAmount'];
@@ -77,99 +79,103 @@ class MpesaTransactionController extends Controller
         // $MiddleName = $jsonMpesaResponse['MiddleName'];
         // $LastName = $jsonMpesaResponse['LastName'];
         $TransTime = $jsonMpesaResponse['TransTime'];
+        if (strpos($BillRefNumber,'-')!==false)
+        {
         $memno = explode('-', $BillRefNumber);
-        $MemberNo=$memno[0];
-        $Remarks=$memno[1];
+        $MemberNo = $memno[0];
+        $Remarks = $memno[1];
+        }
+        else{
+            $MemberNo = $BillRefNumber;
+            $Remarks ='D';   
+        }
         Log::info($MemberNo);
-$loanno="";
-$userid = $MemberNo ;
+        Log::info($Remarks);
+
+        $loanno = "";
+        $userid = $MemberNo;
         //check deposit no
-        $RecietNo=Deposits::getdepositsRecieptNo();
-       if ($Remarks='R')
-       {
-        $amount = DB::table('loan_applications')->where('MemberNo', $userid)->pluck('ApprovedAmount') ->sum();
-        $payment = DB::table('repayments')->where('MemberNo', $userid)->pluck('amount') ->sum();
-        $balance = $amount - $payment;
-        
-        if($balance=$TransAmount)
-        {
-        $loanamount=$TransAmount    ;
-        }
-        else if($balance>$TransAmount)
-        {
-            $loanamount=$TransAmount;
-        }
-        else if($balance<$TransAmount)
-        {
-            $loanamount=$balance;
-            $Depositbal=$TransAmount-$balance;
-        }
-        if ($Depositbal>0)
-        {
-            Deposits::create(  
-                [  
-                'MemberNo' => $MemberNo,
-                'Amount' => $Depositbal,            
-                'TransBy' =>  $FirstName,
-                'sharescode' => '',
-                'ReceiptNo' => $RecietNo,
-                'mpesacode' => $TransID,
-                'TransactionDate' => $TransTime,
-                'Remarks'=>$Remarks
-    
-            ]);
-        }
-         repayments::create(
-            ['Active'=>1,
-            'MemberNo'=> $MemberNo,
-            'Loanno'=> $loanno,
-            'amount'=> $loanamount,
-            'Principal'=> $loanamount,
-            'Interest'=> 0,
-            'ReceiptNo'=> $RecietNo,
-            'MobileNo'=> $MSISDN,
-            'payment_status'=> 1,
-            'TransactionDate'=> $TransTime,
-            'AuditTime'=> $TransTime
-            ]) ;      
-        
+        $RecietNo = Deposits::getdepositsRecieptNo();
+        if ($Remarks == 'R') {
+            $amount = DB::table('loan_applications')->where('MemberNo', $userid)->pluck('ApprovedAmount')->sum();
+            $payment = DB::table('repayments')->where('MemberNo', $userid)->pluck('amount')->sum();
+            $balance = $amount - $payment;
 
-       }
-       else
-       {
-        Deposits::create(  
-            [  
-            'MemberNo' => $MemberNo,
-            'Amount' => $TransAmount,            
-            'TransBy' =>  $FirstName,
-            'sharescode' => '',
-            'ReceiptNo' => $RecietNo,
-            'mpesacode' => $TransID,
-            'TransactionDate' => $TransTime,
-            'Remarks'=>$Remarks
+            if ($balance = $TransAmount) {
+                $loanamount = $TransAmount;
+            } else if ($balance > $TransAmount) {
+                $loanamount = $TransAmount;
+            } else if ($balance < $TransAmount) {
+                $loanamount = $balance;
+                $Depositbal = $TransAmount - $balance;
 
+                if ($Depositbal > 0) {
+                    Deposits::create(
+                        [
+                            'MemberNo' => $MemberNo,
+                            'Amount' => $Depositbal,
+                            'TransBy' =>  $FirstName,
+                            'sharescode' => '',
+                            'ReceiptNo' => $RecietNo,
+                            'mpesacode' => $TransID,
+                            'TransactionDate' => $TransTime,
+                            'Remarks' => $Remarks
+
+                        ]
+                    );
+                }
+            }
+            repayments::create(
+                [
+                    'Active' => 1,
+                    'MemberNo' => $MemberNo,
+                    'Loanno' => $loanno,
+                    'amount' => $loanamount,
+                    'Principal' => $loanamount,
+                    'Interest' => 0,
+                    'ReceiptNo' => $RecietNo,
+                    'MobileNo' => $MSISDN,
+                    'payment_status' => 1,
+                    'TransactionDate' => $TransTime,
+                    'AuditTime' => $TransTime
+                ]
+            );
+        } else   {
+            Deposits::create(
+                [
+                    'MemberNo' => $MemberNo,
+                    'Amount' => $TransAmount,
+                    'TransBy' =>  $FirstName,
+                    'sharescode' => '',
+                    'ReceiptNo' => $RecietNo,
+                    'mpesacode' => $TransID,
+                    'TransactionDate' => $TransTime,
+                    'Remarks' => $Remarks
+
+                ]
+            );
+        }
+        MpesaTransaction::create([
+            'FirstName' => $FirstName,
+            'MiddleName' => '',
+            'LastName' => '',
+            'TransactionType' => $TransactionType,
+            'TransID' => $TransID,
+            'TransTime' => $TransTime,
+            'BusinessShortCode' => $BusinessShortCode,
+            'BillRefNumber' => $BillRefNumber,
+            'InvoiceNumber' => $InvoiceNumber,
+            'ThirdPartyTransID' => "",
+            'MSISDN' => $MSISDN,
+            'TransAmount' => $TransAmount,
+            'OrgAccountBalance' => $OrgAccountBalance
         ]);
-    }
-       MpesaTransaction::create([
-        'FirstName'=>$FirstName,
-        'MiddleName'=>'',
-        'LastName'=>'',
-        'TransactionType'=>$TransactionType,
-        'TransID'=>$TransID,
-        'TransTime'=>$TransTime,
-        'BusinessShortCode'=>$BusinessShortCode,
-        'BillRefNumber'=>$BillRefNumber,
-        'InvoiceNumber'=>$InvoiceNumber,
-        'ThirdPartyTransID'=>"",
-        'MSISDN'=>$MSISDN,
-        'TransAmount'=>$TransAmount,
-        'OrgAccountBalance'=>$OrgAccountBalance]);
 
-    
+
         //get totalDeposits
         //get loanBalance
-            //create sms
-            //call automessaging
+        //create sms
+        //call automessaging
 
         // write to file
         $log = fopen($logFile, 'a');
@@ -183,8 +189,8 @@ $userid = $MemberNo ;
         $lipa_time = Carbon::rawParse('now')->format('YmdHms');
         $passkey = env('MPESA_PASS_KEY');
         $BusinessShortCode = 4088191;
-        $timestamp =$lipa_time;
-        $lipa_na_mpesa_password = base64_encode($BusinessShortCode.$passkey.$timestamp);
+        $timestamp = $lipa_time;
+        $lipa_na_mpesa_password = base64_encode($BusinessShortCode . $passkey . $timestamp);
         return $lipa_na_mpesa_password;
     }
     public function customerMpesaSTKPush(Request $request)
@@ -199,7 +205,7 @@ $userid = $MemberNo ;
         curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-Type:application/json','Authorization:Bearer '.$access_token));
         $curl_post_data = [
             //Fill in the request parameters with valid values
-            'BusinessShortCode' =>env('MPESA_SHORTCODE'),
+            'BusinessShortCode' => env('MPESA_SHORTCODE'),
             'Password' => $this->lipaNaMpesaPassword(),
             'Timestamp' => Carbon::rawParse('now')->format('YmdHms'),
             'TransactionType' => 'CustomerPayBillOnline',
@@ -208,7 +214,7 @@ $userid = $MemberNo ;
             'PartyB' => env('MPESA_SHORTCODE'),
             'PhoneNumber' =>  $request->phone, // replace this with your phone number
             'CallBackURL' => 'http://floridaylimited.co.ke/',
-            'AccountReference' =>$request->Account,
+            'AccountReference' => $request->Account,
             'TransactionDesc' => "Pay Loan"
         ];
         $data_string = json_encode($curl_post_data);
@@ -244,7 +250,6 @@ $userid = $MemberNo ;
             "ResultCode": 0,
             "ResultDesc": "Validation Received Successfully"
         }';
-
     }
 
     /**
