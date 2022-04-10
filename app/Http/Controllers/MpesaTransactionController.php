@@ -79,9 +79,16 @@ class MpesaTransactionController extends Controller
         // $MiddleName = $jsonMpesaResponse['MiddleName'];
         // $LastName = $jsonMpesaResponse['LastName'];
         $TransTime = $jsonMpesaResponse['TransTime'];
+        if (strpos($BillRefNumber,'-')!==false)
+        {
         $memno = explode('-', $BillRefNumber);
         $MemberNo = $memno[0];
         $Remarks = $memno[1];
+        }
+        else{
+            $MemberNo = $BillRefNumber;
+            $Remarks ='D';   
+        }
         Log::info($MemberNo);
         Log::info($Remarks);
 
