@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Deposits;
 use App\Models\SMS;
 use App\Models\Member;
+use App\Models\LoanInterest;
 use App\Models\LoanApplication;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -77,6 +79,40 @@ class ApiController extends Controller
       
 
     }
+    public function getAllDetails(){
+        $date=Carbon::now()->format('Y-m-d');
+        $count_member = Member::all()->count();
+        $count_loans = LoanApplication::all()->count();
+        $count_pendingloans = LoanApplication::all()
+        ->where ('Approved',"=",'0')
+        ->count();
+        $count_approvedloans = LoanApplication::all()
+        ->where ('Approved',"=",'1')
+        ->count();
+        $count_rejectedloans = LoanApplication::all()
+        ->where ('Approved',"=",'2')
+        ->count();
+        $sum_deposits = Deposits::all()->sum();
+        $count_todayapproveloans = LoanApplication::all()
+        ->where ('Approved',"=",'1')
+        ->where('ApprovedOn','=',$date)
+        ->count();
+        Log::info($count_todayapproveloans);
+        return response()->json(
+            [
+                'success' => true,
+                'count_member' => $count_member,
+                'count_loans'=>$count_loans,
+                'sum_deposits'=>$sum_deposits,
+                'count_pendingloans'=>$count_pendingloans,
+                'count_approvedloans'=>$count_approvedloans,
+                'count_rejectedloans'=>$count_rejectedloans,
+                'count_todayapproveloans'=>$count_todayapproveloans,
+                
+            ]
+        );
+       
+    }
     public function store(Request $request)
     {
         $userid = $request->MemberNo;
@@ -145,7 +181,7 @@ class ApiController extends Controller
         $loan->LoanCode = $request->LoanCode;
         $loan->AmountApplied = $request->AmountApplied;
         $loanApplied = $request->AmountApplied;
-        $loan->ApplicationDate = Carbon::now()->format('Y-m-d');;
+        $loan->ApplicationDate = Carbon::now()->format('Y-m-d');
         $loan->EffectDate = Carbon::now()->format('Y-m-d');
         $loan->RecoverInterestFirst = true;
         $loan->IntRate = $request->IntRate;
@@ -189,4 +225,59 @@ class ApiController extends Controller
     //     }
      }
     }
+    public function approve(Request $request)
+    {
+              
+            $date = Carbon::now()->format('Y-m-d');
+            Log::info($request->ApprovedAmount);
+            Log::info($request->IntRate);
+            Log::info($request->Rperiod);
+            $loan_number = $request->Loanno;
+            $repayAmount = ($request->ApprovedAmount) / $request->Rperiod;
+            $interest=(($request->ApprovedAmount)*$request->IntRate)*0.01; 
+           
+           
+            LoanApplication::where('Loanno', $loan_number)
+                    ->update([
+                        'Approved' => 1,
+                        'ApprovedAmount' => $request->ApprovedAmount,
+                        'RepayAmount' => $repayAmount,
+                        'ApprovedBy' => $request->Name,
+                        'ApprovedOn' => $date
+                    ]);
+                   // 'Loanno','MemberNo','ApprovedAmount','InterestAmount','ApprovedBy
+            LoanInterest::where('Loanno', $loan_number)
+                    ->updateOrCreate([
+                        'Loanno'=>$loan_number,
+                        'MemberNo' =>$request->MemberNo,
+                        'ApprovedAmount'=>$request->ApprovedAmount,
+                        'InterestAmount'=>$interest,
+                        'ApprovedBy'=>$request->Name
+                    ]);
+                    return $this->success([                        
+                        'message' => 'Successfully Approved'
+                    ]);
+       
+    }
+    public function destroy(Request $request)
+    {
+         
+             $loan_number = $request->Loanno;        
+             $date = Carbon::now()->format('Y-m-d');
+                 LoanApplication::where('Loanno', $loan_number)
+                     ->update([
+                         'Approved' => 2,
+                         'ApprovedAmount' =>0,
+                         'RepayAmount' => 0,
+                         'ApprovedBy' => $request->Name,
+                         'ApprovedOn' => $date
+                     ]);
+                    
+                 
+                     return $this->success([                        
+                        'message' => 'Successfully Rejected'
+                    ]);
+          
+    }
 }
+

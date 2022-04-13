@@ -48,3 +48,8 @@ Route::get('/loandetails/{memberno}', [App\Http\Controllers\ApiController::class
 
 //loans
 Route::post('/post_loanapplication', [App\Http\Controllers\ApiController::class, 'store'])->name('post_loanapplication');
+Route::post('/loan/approve', [App\Http\Controllers\ApiController::class, 'approve'])->name('approve');
+Route::post('/loan/destroy', [App\Http\Controllers\ApiController::class, 'destroy'])->name('destroy');
+Route::get('/loans/all', [App\Http\Controllers\LoanApplicationController::class, 'show'])->name('loans/all'); 
+Route::get('/details', [App\Http\Controllers\ApiController::class, 'getAllDetails'])->name('/details'); 
+
