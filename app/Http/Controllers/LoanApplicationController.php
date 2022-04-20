@@ -158,6 +158,15 @@ class LoanApplicationController extends Controller
             ->join("members", "members.MemberNo", "=", "loan_applications.MemberNo")
             ->where ('loan_applications.Approved',"=",'0')
             ->get();
+            if($showloans){
+                
+                Log::info($showloans);
+                return response()->json(
+                    [
+                        'loans' => $showloans,                      
+                    ]
+                ); 
+            }
 
             $loanapplied = DB::table('loan_applications')                
                 ->select(DB::raw('SUM(AmountApplied) as total'))
@@ -302,7 +311,8 @@ class LoanApplicationController extends Controller
             if ($loanApproved > $loanApplied) {
 
                 Alert::error('Error', 'Approval Amount Cannot be Higher than Amount Applied');
-            } else {
+            } 
+            else {
                 LoanApplication::where('Loanno', $loan_number)
                     ->update([
                         'Approved' => 1,
