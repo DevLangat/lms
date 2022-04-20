@@ -104,7 +104,7 @@ class DepositsController extends Controller
             "deposits.*",             
             "members.name as Names"
         )
-        ->join("members", "members.MemberNoh", "=", "deposits.MemberNo")
+        ->join("members", "members.MemberNo", "=", "deposits.MemberNo")
         ->get();
         return view('members.View_deposits',compact('deposits'));  
          

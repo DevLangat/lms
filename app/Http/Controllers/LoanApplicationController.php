@@ -149,26 +149,7 @@ class LoanApplicationController extends Controller
      */
     public function show()
     {        
-        
-
-
-
-        // if ($request->from_date && $request->to_date) {
-        //     $now = $request->from_date;
-        //     $to = $request->to_date;
-        //     $sales = Sales::join('products', 'sales.ProductCode', '=', 'products.ProductCode')
-        //         ->where('SalesDate', '>=', $now)
-        //         ->where('SalesDate', '<=', $to)
-        //         ->get(['sales.*', 'products.Productname']);
-        //     $result = DB::table('sales')
-        //         ->join('products', 'sales.ProductCode', '=', 'products.ProductCode')
-        //         ->select(DB::raw('SUM(Amount) as total'))
-        //         ->where('SalesDate', '>=', $now)
-        //         ->where('SalesDate', '<=', $to)
-        //         ->get();
-
-        //     return view('admin.sales', compact('sales', 'result'));
-        // } else {
+       
 
             $showloans = LoanApplication::select(
                 "loan_applications.*",             
@@ -310,6 +291,14 @@ class LoanApplicationController extends Controller
             $interest=(($request->ApprovedAmount)*$request->IntRate)*0.01; 
             $loanApplied = $request->AmountApplied;
             $loanApproved = $request->ApprovedAmount;
+            $effectivedate=$request->ApprovedOn;
+           
+            // $final =  $effectivedate->addDays(30);
+            // $final1 =  $effectivedate->addMonth(1);
+            $newDateTime = Carbon::now()->addMonth();
+            Log::info($newDateTime);
+            // Log::info($final1);
+
             if ($loanApproved > $loanApplied) {
 
                 Alert::error('Error', 'Approval Amount Cannot be Higher than Amount Applied');
@@ -320,7 +309,8 @@ class LoanApplicationController extends Controller
                         'ApprovedAmount' => $request->ApprovedAmount,
                         'RepayAmount' => $repayAmount,
                         'ApprovedBy' => Auth::user()->name,
-                        'ApprovedOn' => $request->ApprovedOn
+                        'ApprovedOn' => $request->ApprovedOn,
+                        'EffectDate' => $newDateTime
                     ]);
                    // 'Loanno','MemberNo','ApprovedAmount','InterestAmount','ApprovedBy
                 LoanInterest::where('Loanno', $loan_number)
@@ -337,6 +327,7 @@ class LoanApplicationController extends Controller
         }
          return redirect('/loans/all');
     }
+    
     public function loan_details($id)
     {
         $showloan = LoanApplication::find($id);

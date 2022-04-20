@@ -12,6 +12,16 @@ class LoanApplication extends Model
     ,'RecoverInterestFirst','IntRate','Rperiod','Createdby','Approved','ApprovedAmount','RepayAmount','IsDisbursed'
     ,'ApprovedBy','Modifiedby','ApprovedOn','ModifiedOn'];
 
-      
+    public static function checkDefaults()
+    { 
+        $showpendingloans = LoanApplication::select(
+            "loan_applications.*",             
+            "repayments.name as Names"
+        )
+        ->leftJoin("repayments", "repayments.loanno", "=", "loan_applications.loanno")
+        ->where ('datediff'('loan_applications.effectivedate','repayments.TransactionDate'),'>','1')
+        ->get();
+  }
+
+    
 }
-// IDNo	Loanno	Loancode	AmountApplied	ApplicationDate	EffectDate	RecoverInterestFirst	IntRate	Rperiod	Createdby	Approved	ApprovedAmount	RepayAmount	IsDisbursed	ApprovedBy	Modifiedby	ApprovedOn	ModifiedOn	created_at	updated_at
