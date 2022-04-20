@@ -59,55 +59,201 @@ class ApiController extends Controller
         $amount = DB::table('loan_applications')->where('MemberNo', $memberno)->pluck('ApprovedAmount') ->sum();
         $deposit = DB::table('deposits')->where('MemberNo', $memberno)->pluck('Amount') ->sum();
         $payment = DB::table('repayments')->where('MemberNo', $memberno)->pluck('amount') ->sum();
+        
+
         $balance = $amount - $payment;
 
         Log::info("Loan Details");
-        Log::info($balance);
-        Log::info($loanlimiamt);
+        // Log::info($balance);
+         
+         if (LoanApplication::where('MemberNo',$memberno)->exists()){
+            $status=DB::table('loan_applications')->select('Approved')->where('MemberNo', $memberno)->get();  
+            Log::info($status);
+            if (!$status==null){
+                foreach($status as $loanstatus)
+                    Log::info($loanstatus->Approved);
+                
+                return response()->json(
+                    [
+                        'success' => true,
+                        'loanbalance' => $balance,
+                        'loanlimit'=>$loanlimiamt,
+                        'deposit'=>$deposit,
+                        'loanstatus'=>$loanstatus->Approved
+                        
+                    ]
+                );
+            
+            }
+        }
+           
+      
 
         return response()->json(
             [
                 'success' => true,
                 'loanbalance' => $balance,
                 'loanlimit'=>$loanlimiamt,
-                'deposit'=>$deposit
+                'deposit'=>$deposit,
+                'loanstatus'=>'no loan'
+                
+            ]
+        );   
+       
+      
+
+    }
+    public function getmyloan($memberno){
+        $myloans=LoanApplication::where('MemberNo','=',$memberno)->get();
+        Log::info("May Laoys");
+        return response()->json(
+            [
+                'success' => true,
+                'loanhistory' => $myloans,                
                 
             ]
         );
-       
-       
-      
+
+
+    }
+    public function getAllLoans(){
+        
+        $all_loans = LoanApplication::select(
+            "loan_applications.*",             
+            "members.name as Names"
+        )
+        ->join("members", "members.MemberNo", "=", "loan_applications.MemberNo")           
+        ->get();
+        if($all_loans){
+         
+            return response()->json(
+                [
+                    'success'=>true,
+                    'loans' => $all_loans,                      
+                ]
+            ); 
+        }
+
+    }
+    public function getAllPendingLoans(){
+        
+        $pending_loans = LoanApplication::select(
+            "loan_applications.*",             
+            "members.name as Names"
+        )
+        ->join("members", "members.MemberNo", "=", "loan_applications.MemberNo")
+        ->where ('loan_applications.Approved',"=",'0')
+        ->get();
+        if($pending_loans){
+            Log::info("Pending Loans");
+            Log::info($pending_loans);
+            return response()->json(
+                [
+                    'success'=>true,
+                    'loans' => $pending_loans,                      
+                ]
+            ); 
+        }
+
+
+    }
+    public function getAllApprovedLoans(){
+        
+        $approved_loans = LoanApplication::select(
+            "loan_applications.*",             
+            "members.name as Names"
+        )
+        ->join("members", "members.MemberNo", "=", "loan_applications.MemberNo")
+        ->where ('loan_applications.Approved',"=",'1')
+        ->get();
+        if($approved_loans){
+            Log::info("Approved Loans");
+            Log::info($approved_loans);
+            return response()->json(
+                [
+                    'success'=>true,
+                    'loans' => $approved_loans,                      
+                ]
+            ); 
+        }
+
+
+    }
+
+    public function getAllRejectedLoans(){
+        
+        $rejected_loans = LoanApplication::select(
+            "loan_applications.*",             
+            "members.name as Names"
+        )
+        ->join("members", "members.MemberNo", "=", "loan_applications.MemberNo")
+        ->where ('loan_applications.Approved',"=",'2')
+        ->get();
+        if($rejected_loans){
+            Log::info("Rejected Loans");
+            Log::info($rejected_loans);
+            return response()->json(
+                [
+                    'success'=>true,
+                    'loans' => $rejected_loans,                      
+                ]
+            ); 
+        }
+
+
+    }
+    public function getAllDeposits(){
+        
+        $all_deposits = Deposits::select(
+            "deposits.*",             
+            "members.name as Names"
+        )
+        ->join("members", "members.MemberNo", "=", "deposits.MemberNo")        
+        ->get();
+        if($all_deposits){
+            
+            Log::info($all_deposits);
+            return response()->json(
+                [
+                    'success'=>true,
+                    'all_deposits' => $all_deposits,                      
+                ]
+            ); 
+        }
+
 
     }
     public function getAllDetails(){
         $date=Carbon::now()->format('Y-m-d');
         $count_member = Member::all()->count();
-        $count_loans = LoanApplication::all()->count();
-        $count_pendingloans = LoanApplication::all()
-        ->where ('Approved',"=",'0')
-        ->count();
-        $count_approvedloans = LoanApplication::all()
-        ->where ('Approved',"=",'1')
-        ->count();
-        $count_rejectedloans = LoanApplication::all()
-        ->where ('Approved',"=",'2')
-        ->count();
-        $sum_deposits = Deposits::all()->sum();
-        $count_todayapproveloans = LoanApplication::all()
+       // $count_loans = LoanApplication::all()->count();
+        $total_loans = DB::table('loan_applications')->pluck('ApprovedAmount') ->sum();
+        // $deposit = DB::table('deposits')->where('MemberNo', $memberno)->pluck('Amount') ->sum();
+        $total_pendingloans =DB::table('loan_applications')->where ('Approved',"=",'0')->pluck('AmountApplied')->sum();
+        $total_approvedloans = DB::table('loan_applications')->where ('Approved',"=",'1')->pluck('ApprovedAmount')->sum();
+        $total_rejectedloans = DB::table('loan_applications') ->where ('Approved',"=",'2')->pluck('AmountApplied') ->sum();  
+        $sum_deposits = DB::table('deposits')->pluck('Amount') ->sum();
+        $total_todayapproveloans = LoanApplication::all()
         ->where ('Approved',"=",'1')
         ->where('ApprovedOn','=',$date)
         ->count();
-        Log::info($count_todayapproveloans);
+        $total_todayrejectedloans = LoanApplication::all()
+        ->where ('Approved',"=",'2')
+        ->where('ApprovedOn','=',$date)
+        ->count();
+        // Log::info($total_approvedloans);
         return response()->json(
             [
                 'success' => true,
                 'count_member' => $count_member,
-                'count_loans'=>$count_loans,
+                'total_loans'=>$total_loans,
                 'sum_deposits'=>$sum_deposits,
-                'count_pendingloans'=>$count_pendingloans,
-                'count_approvedloans'=>$count_approvedloans,
-                'count_rejectedloans'=>$count_rejectedloans,
-                'count_todayapproveloans'=>$count_todayapproveloans,
+                'total_pendingloans'=>$total_pendingloans,
+                'total_approvedloans'=>$total_approvedloans,
+                'total_rejectedloans'=>$total_rejectedloans,
+                'total_todayapproveloans'=>$total_todayapproveloans,
+                'total_todayrejectedloans'=>$total_todayrejectedloans,
+
                 
             ]
         );

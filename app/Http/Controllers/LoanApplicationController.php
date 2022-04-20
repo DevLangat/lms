@@ -322,7 +322,8 @@ class LoanApplicationController extends Controller
             if ($loanApproved > $loanApplied) {
 
                 Alert::error('Error', 'Approval Amount Cannot be Higher than Amount Applied');
-            } else {
+            } 
+            else {
                 LoanApplication::where('Loanno', $loan_number)
                     ->update([
                         'Approved' => 1,

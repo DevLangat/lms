@@ -50,6 +50,11 @@ Route::get('/loandetails/{memberno}', [App\Http\Controllers\ApiController::class
 Route::post('/post_loanapplication', [App\Http\Controllers\ApiController::class, 'store'])->name('post_loanapplication');
 Route::post('/loan/approve', [App\Http\Controllers\ApiController::class, 'approve'])->name('approve');
 Route::post('/loan/destroy', [App\Http\Controllers\ApiController::class, 'destroy'])->name('destroy');
-Route::get('/loans/all', [App\Http\Controllers\LoanApplicationController::class, 'show'])->name('loans/all'); 
 Route::get('/details', [App\Http\Controllers\ApiController::class, 'getAllDetails'])->name('/details'); 
+Route::get('/myloan/{memberno}', [App\Http\Controllers\ApiController::class, 'getmyloan'])->name('/myloan'); 
 
+Route::get('/loans/all', [App\Http\Controllers\ApiController::class, 'getAllLoans'])->name('loans/all'); 
+Route::get('/deposits/all', [App\Http\Controllers\ApiController::class, 'getAllDeposits'])->name('deposits/all'); 
+Route::get('/loans/approved', [App\Http\Controllers\ApiController::class, 'getAllApprovedLoans'])->name('loans/approved'); 
+Route::get('/loans/rejected', [App\Http\Controllers\ApiController::class, 'getAllRejectedLoans'])->name('loans/rejected'); 
+Route::get('/loans/pending', [App\Http\Controllers\ApiController::class, 'getAllPendingLoans'])->name('loans/pending'); 

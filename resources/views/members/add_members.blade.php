@@ -8,12 +8,12 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h3>Members</h3>
+                    <h3>Customer</h3>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="{{url('admin')}}">Home</a></li>
-                        <li class="breadcrumb-item active">Members</li>
+                        <li class="breadcrumb-item active">Cuctomer</li>
                     </ol>
                 </div>
             </div>
@@ -26,60 +26,37 @@
 
             <div class="card bg-light text-dark ">
                 <div class="card-header bg-light">
-                    <h5 class="text-primary">Add Member</h5>
+                    <h5 class="text-primary">Add Customer</h5>
                 </div>
 
                 <div class="card-body">
 
-                    <form method="post" action="{{route('post_member')}}">
-                        @csrf                       
+                    <form method="post" action="{{route('post_customer')}}">
+                        @csrf  
+                        'Customer_SSN','Customer_Name','Customer_Street','Customer_City                     
                         <div class="form-group row">
                             <div class="col-sm-1"></div>
                             <div class="col-sm-5 form-floating mb-3 mt-3 mb-sm-0">
-                                <input type="text" name="Name" class="form-control" placeholder="Enter Full Name">
+                                <input type="text" name="Customer_Name" class="form-control" placeholder="Enter Full Name">
                                 <label>Full Name</label>
                             </div>
                             <div class="col-sm-5 form-floating mb-3 mt-3 mb-sm-0">
-                                <input type="text" name="Email" class="form-control" placeholder="Enter Email Address">
-                                <label>Email Address</label>
+                                <input type="text" name="Customer_SSN" class="form-control" placeholder="Enter Security Number">
+                                <label>Security Number</label>
                             </div>
                         </div>
                         <div class="form-group row">
                             <div class="col-sm-1"></div>
                             <div class="col-sm-5 form-floating mb-3 mt-3 mb-sm-0">
-                                <input type="text" name="Address" class="form-control" placeholder="Enter Address">
-                                <label>Physical Address</label>
+                                <input type="text" name="Customer_Street" class="form-control" placeholder="Enter Customer Street">
+                                <label>Customer Street</label>
                             </div>
                             <div class="col-sm-5 form-floating mb-3 mt-3 mb-sm-0">
-                                <input type="text" name="Mobile" class="form-control" placeholder="Enter Mobile">
-                                <label>Mobile</label>
+                                <input type="text" name="Customer_City" class="form-control" placeholder="Enter Customer City">
+                                <label>Customer City</label>
                             </div>
-                        </div>
-                        <div class="form-group row">
-                            <div class="col-sm-1"></div>
-                            <div class="col-sm-5 form-floating mb-3 mt-3 mb-sm-0">
-                                <input type="text" name="MemberNo" class="form-control" placeholder="Enter ID Number">
-                                <label>National ID Number</label>
-                            </div>
-                            <div class="col-sm-5 form-floating mb-3 mt-3 mb-sm-0">
-                                <input type="text" name="GroupCode" class="form-control" placeholder="Enter Group Code">
-                                <label>Group Code</label>
-                            </div>
-                        </div>                       
-
-                        <h5>Next of Kin Details</h5>
-                        <hr />
-                        <div class="form-group row">
-                            <div class="col-sm-1"></div>
-                            <div class="col-sm-5 form-floating mb-3 mt-3 mb-sm-0">
-                                <input type="text" name="KinName" class="form-control" placeholder="Enter Kin Name">
-                                <label>Next of Kin Name</label>
-                            </div>
-                            <div class="col-sm-5 form-floating mb-3 mt-3 mb-sm-0">
-                                <input type="text" name="KinMobile" class="form-control" placeholder="Enter Kin Mobile">
-                                <label>Next of Kin Mobile</label>
-                            </div>
-                        </div>                      
+                        </div>                                        
+                
                 </div>
 
 
