@@ -28,9 +28,15 @@ class MemberController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function allmembers()
     {
-        //
+        $members = Member::all();
+        return response()->json(
+            [
+                'success'=>true,
+                'members' => $members,                      
+            ]
+        );
     }
 
     /**

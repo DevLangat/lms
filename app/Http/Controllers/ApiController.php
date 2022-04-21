@@ -212,7 +212,6 @@ class ApiController extends Controller
         ->get();
         if($all_deposits){
             
-            Log::info($all_deposits);
             return response()->json(
                 [
                     'success'=>true,
@@ -233,10 +232,10 @@ class ApiController extends Controller
         $total_approvedloans = DB::table('loan_applications')->where ('Approved',"=",'1')->pluck('ApprovedAmount')->sum();
         $total_rejectedloans = DB::table('loan_applications') ->where ('Approved',"=",'2')->pluck('AmountApplied') ->sum();  
         $sum_deposits = DB::table('deposits')->pluck('Amount') ->sum();
-        $total_todayapproveloans = LoanApplication::all()
-        ->where ('Approved',"=",'1')
-        ->where('ApprovedOn','=',$date)
-        ->count();
+        $total_todayapproveloans =DB::table('loan_applications')->where ('Approved',"=",'1') ->where('ApprovedOn','=',$date)->pluck('ApprovedAmount')->sum();
+       
+       
+       
         $total_todayrejectedloans = LoanApplication::all()
         ->where ('Approved',"=",'2')
         ->where('ApprovedOn','=',$date)
