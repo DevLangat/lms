@@ -93,19 +93,24 @@ class MpesaTransactionController extends Controller
         Log::info($MemberNo);
         Log::info($Remarks);
 
-        $loanno = "";
+  
         $userid = $MemberNo;
         //check deposit no
         $RecietNo = Deposits::getdepositsRecieptNo();
         if ($Remarks == 'R') {
-            $loans = LoanApplication::select('Loanno')
+            $loans = LoanApplication::select ('Loanno')
             ->where ('MemberNo',"=",$userid)
             ->get();
+         
 foreach($loans as $loanno)
 {
-            $amount = DB::table('loan_applications')->where('Loanno', $loanno)->pluck('ApprovedAmount')->sum();
-            $payment = DB::table('repayments')->where('Loanno', $loanno)->pluck('amount')->sum();
+    $loannumber=$loanno->pluck('loanno')->first();
+    Log::info($loannumber); 
+            $amount = DB::table('loan_applications')->where('Loanno', $loannumber)->pluck('ApprovedAmount')->sum();
+            $payment = DB::table('repayments')->where('Loanno', $loannumber)->pluck('amount')->sum();
             $balance = $amount - $payment;
+            Log::info($amount);
+            Log::info($balance);
           
 if ($balance>0) 
 {
@@ -116,7 +121,7 @@ if ($balance>0)
             } else if ($balance < $TransAmount) {
                 $loanamount = $balance;
                 $Depositbal = $TransAmount - $balance;
-
+              
                 if ($Depositbal > 0) {
                     Deposits::create(
                         [
@@ -133,15 +138,18 @@ if ($balance>0)
                     );
                 }
             }
-         
+            $loanbal=$balance-$loanamount;
+            Log::info($loanbal);
+            Log::info($loanamount);
             repayments::create(
-                [
+                [                   
                     'Active' => 1,
                     'MemberNo' => $MemberNo,
-                    'Loanno' => $loanno,
+                    'Loanno' => $loannumber,
                     'amount' => $loanamount,
                     'Principal' => $loanamount,
-                    'Interest' => 0,
+                    'Interest' => 0,//Balance
+                    'Balance' =>  $loanbal, 
                     'ReceiptNo' => $RecietNo,
                     'MobileNo' => $MSISDN,
                     'payment_status' => 1,
