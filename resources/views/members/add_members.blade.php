@@ -31,7 +31,7 @@
 
                 <div class="card-body">
 
-                    <form method="post" action="{{route('post_customer')}}">
+                    <form method="post" action="{{route('post_member')}}">
                         @csrf  
                         'Customer_SSN','Customer_Name','Customer_Street','Customer_City                     
                         <div class="form-group row">
