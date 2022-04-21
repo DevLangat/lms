@@ -52,6 +52,7 @@ Route::post('/loan/approve', [App\Http\Controllers\ApiController::class, 'approv
 Route::post('/loan/destroy', [App\Http\Controllers\ApiController::class, 'destroy'])->name('destroy');
 Route::get('/details', [App\Http\Controllers\ApiController::class, 'getAllDetails'])->name('/details'); 
 Route::get('/myloan/{memberno}', [App\Http\Controllers\ApiController::class, 'getmyloan'])->name('/myloan'); 
+Route::get('/members/all', [App\Http\Controllers\MemberController::class, 'allmembers'])->name('/members/all'); 
 
 Route::get('/loans/all', [App\Http\Controllers\ApiController::class, 'getAllLoans'])->name('loans/all'); 
 Route::get('/deposits/all', [App\Http\Controllers\ApiController::class, 'getAllDeposits'])->name('deposits/all'); 
