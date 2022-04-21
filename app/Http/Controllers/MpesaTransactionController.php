@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\DB;
 use App\Models\MpesaTransaction;
 use App\Models\Deposits;
+use App\Models\LoanApplication;
 use App\Models\Repayments;
 use App\Models\Member;
 use Illuminate\Http\Request;
@@ -97,11 +98,18 @@ class MpesaTransactionController extends Controller
         //check deposit no
         $RecietNo = Deposits::getdepositsRecieptNo();
         if ($Remarks == 'R') {
-            $amount = DB::table('loan_applications')->where('MemberNo', $userid)->pluck('ApprovedAmount')->sum();
-            $payment = DB::table('repayments')->where('MemberNo', $userid)->pluck('amount')->sum();
+            $loans = LoanApplication::select('Loanno')
+            ->where ('MemberNo',"=",$userid)
+            ->get();
+foreach($loans as $loanno)
+{
+            $amount = DB::table('loan_applications')->where('Loanno', $loanno)->pluck('ApprovedAmount')->sum();
+            $payment = DB::table('repayments')->where('Loanno', $loanno)->pluck('amount')->sum();
             $balance = $amount - $payment;
-
-            if ($balance = $TransAmount) {
+          
+if ($balance>0) 
+{
+           if ($balance = $TransAmount) {
                 $loanamount = $TransAmount;
             } else if ($balance > $TransAmount) {
                 $loanamount = $TransAmount;
@@ -115,7 +123,7 @@ class MpesaTransactionController extends Controller
                             'MemberNo' => $MemberNo,
                             'Amount' => $Depositbal,
                             'TransBy' =>  $FirstName,
-                            'sharescode' => '',
+                            'sharescode' => '001',
                             'ReceiptNo' => $RecietNo,
                             'mpesacode' => $TransID,
                             'TransactionDate' => $TransTime,
@@ -125,6 +133,7 @@ class MpesaTransactionController extends Controller
                     );
                 }
             }
+         
             repayments::create(
                 [
                     'Active' => 1,
@@ -140,13 +149,21 @@ class MpesaTransactionController extends Controller
                     'AuditTime' => $TransTime
                 ]
             );
-        } else   {
+        
+        } 
+        
+
+
+    }
+       
+}
+else   {
             Deposits::create(
                 [
                     'MemberNo' => $MemberNo,
                     'Amount' => $TransAmount,
                     'TransBy' =>  $FirstName,
-                    'sharescode' => '',
+                    'sharescode' => '001',
                     'ReceiptNo' => $RecietNo,
                     'mpesacode' => $TransID,
                     'TransactionDate' => $TransTime,

@@ -51,6 +51,7 @@ class RepaymentsController extends Controller
         $repyments->TransactionDate = $request->TransactionDate;
         $repyments->AuditTime = Carbon::now()->format('Y-m-d');
         $repyments->Principal = $request->Principal;
+        $repyments->Balance = ($request->Principal)-($request->amount);
         $repyments->Interest = $request->Interest;
         $repyments->ReceiptNo = $request->ReceiptNo;
        // $repyments->Createdby = 'User';

@@ -47,6 +47,7 @@ class LoanRepaymentController extends Controller
             $loan->Active = 1;
             $loan->amount = $request->amount;
             $loan->Principal = $request->Principal;
+            $loan->Balance = $request->Balance;
             $loan->Interest = $request->Interest;
             $loan->ReceiptNo = $request->ReceiptNo;
             $loan->MobileNo = $request->mobileno;

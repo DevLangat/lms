@@ -8,6 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class Repayments extends Model
 {
     use HasFactory;
-    protected $fillable=['Active','MemberNo','Loanno','amount','Principal','Interest','ReceiptNo','MobileNo','payment_status','TransactionDate','AuditTime'];
+    protected $fillable=['Active','MemberNo','Loanno','amount','Principal','Interest','ReceiptNo','MobileNo','payment_status','TransactionDate','AuditTime','Balance'];
     
 }
