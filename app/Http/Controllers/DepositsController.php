@@ -77,7 +77,7 @@ class DepositsController extends Controller
             'MemberNo' => $request['MemberNo'],
             'Amount' => $request['Amount'],
             'TransBy' =>   [auth()->user()],
-            'TransBy' =>   'User',
+            // 'TransBy' =>   'User',
             'sharescode' => $request['sharescode'],
             'ReceiptNo' => $request['ReceiptNo'],
             'mpesacode' => $request['ReceiptNo'],

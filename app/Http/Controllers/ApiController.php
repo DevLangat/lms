@@ -59,7 +59,7 @@ class ApiController extends Controller
         $amount = DB::table('loan_applications')->where('MemberNo', $memberno)->pluck('ApprovedAmount') ->sum();
         $deposit = DB::table('deposits')->where('MemberNo', $memberno)->pluck('Amount') ->sum();
         $payment = DB::table('repayments')->where('MemberNo', $memberno)->pluck('amount') ->sum();
-        
+        $dueDate= DB::table('loan_applications')->where('MemberNo', $memberno)->pluck('EffectDate') ->first();
 
         $balance = $amount - $payment;
 
@@ -77,6 +77,7 @@ class ApiController extends Controller
                     [
                         'success' => true,
                         'loanbalance' => $balance,
+                        'dueDate'=>$dueDate,
                         'loanlimit'=>$loanlimiamt,
                         'deposit'=>$deposit,
                         'loanstatus'=>$loanstatus->Approved
@@ -380,7 +381,8 @@ class ApiController extends Controller
             $loan_number = $request->Loanno;
             $repayAmount = ($request->ApprovedAmount) / $request->Rperiod;
             $interest=(($request->ApprovedAmount)*$request->IntRate)*0.01; 
-           
+            $eDate=Carbon::now()->addDays(14);
+            $effectDate=$eDate->format('Y-m-d');
            
             LoanApplication::where('Loanno', $loan_number)
                     ->update([
@@ -388,7 +390,8 @@ class ApiController extends Controller
                         'ApprovedAmount' => $request->ApprovedAmount,
                         'RepayAmount' => $repayAmount,
                         'ApprovedBy' => $request->Name,
-                        'ApprovedOn' => $date
+                        'ApprovedOn' => $date,
+                        'EffectDate'=>$effectDate
                     ]);
                    // 'Loanno','MemberNo','ApprovedAmount','InterestAmount','ApprovedBy
             LoanInterest::where('Loanno', $loan_number)
