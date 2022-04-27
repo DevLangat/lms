@@ -25,15 +25,15 @@ class VerificationController extends Controller
       
         $db = Verification::where('phone',$phone)->select('otp')->first();
         $OTP=$db->otp;
-        Log::info($OTP);
-        Log::info($enteredOtp);
+        // Log::info($OTP);
+        // Log::info($enteredOtp);
         if($OTP == $enteredOtp){
 
             // Updating user's status "isVerified" as 1.
 
             User::where('id', $id)->update(['isVerified' => 1, 'phone_verified_at'=> Carbon::now()]);
-            Log::info('In');
-            Log::info($OTP);
+            // Log::info('In');
+            // Log::info($OTP);
             //Removing from d variable
             Verification::where('phone',$phone)->delete();
            
@@ -54,7 +54,7 @@ class VerificationController extends Controller
     {
        
         $phone=$request->phone;
-        Log::info($phone);
+        // Log::info($phone);
         $otp = rand(100000, 999999);
         $message='Never share this code with anyone,use code '.$otp.' to verify your Phone number. Vanlin Investments ltd';
         Session::put('OTP', $otp);                                     
