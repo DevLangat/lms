@@ -97,7 +97,7 @@ class LoanApplicationController extends Controller
                     $loan->LoanCode = $request->LoanCode;
                     $loan->AmountApplied = $request->AmountApplied;
                     $loanApplied= $request->AmountApplied;
-                    $loan->ApplicationDate = Carbon::now()->format('Y-m-d');;
+                    $loan->ApplicationDate = Carbon::now()->format('Y-m-d');
                     $loan->EffectDate = '';
                     $loan->RecoverInterestFirst = true;
                     $loan->IntRate = $request->IntRate;

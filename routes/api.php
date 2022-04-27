@@ -60,17 +60,7 @@ Route::get('/loans/approved', [App\Http\Controllers\ApiController::class, 'getAl
 Route::get('/loans/rejected', [App\Http\Controllers\ApiController::class, 'getAllRejectedLoans'])->name('loans/rejected'); 
 Route::get('/loans/pending', [App\Http\Controllers\ApiController::class, 'getAllPendingLoans'])->name('loans/pending'); 
 
-Route::get('/verifyOtp', [App\Http\Controllers\VerificationController::class, 'verifyOtp'])->name('/verifyOtp'); 
-Route::post('/sendOtp', [App\Http\Controllers\VerificationController::class, 'verifyOtp'])->name('/sendOtp'); 
-
-
-Route::post('/sendOtp', [
-    'middleware' => 'checkSession',
-    'uses'=>'userController@sendOtp'
-]);
-
-Route::post('/verifyOtp', [
-    'middleware' => 'checkSession',
-    'uses'=>'userController@verifyOtp'
-]);
+Route::post('/verifyOtp', [App\Http\Controllers\VerificationController::class, 'verifyOtp'])->name('/verifyOtp'); 
+Route::post('/sendOtp', [App\Http\Controllers\VerificationController::class, 'sendOtp'])->name('/sendOtp'); 
+Route::get('/check/{id}', [App\Http\Controllers\VerificationController::class, 'check'])->name('check'); 
 

@@ -4,7 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Verification;
 use App\Models\SMS;
+use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Log;
 
 class VerificationController extends Controller
 {
@@ -13,9 +17,32 @@ class VerificationController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function verifyOtp()
+    public function verifyOtp(Request $request )
     {
-        //
+        $enteredOtp = $request->OTP;
+        $phone = $request->phone;
+        $id = $request->id;
+      
+        $db = Verification::where('phone',$phone)->select('otp')->first();
+        $OTP=$db->otp;
+        Log::info($OTP);
+        Log::info($enteredOtp);
+        if($OTP == $enteredOtp){
+
+            // Updating user's status "isVerified" as 1.
+
+            User::where('id', $id)->update(['isVerified' => 1, 'phone_verified_at'=> Carbon::now()]);
+            Log::info('In');
+            Log::info($OTP);
+            //Removing from d variable
+            Verification::where('phone',$phone)->delete();
+           
+            return  response()->json([
+                'success' => true,
+                'message'=>'Verified.'
+
+            ]) ; 
+        }
     }
 
     /**
@@ -25,11 +52,12 @@ class VerificationController extends Controller
      */
     public function sendOtp(Request $request)
     {
+       
         $phone=$request->phone;
+        Log::info($phone);
         $otp = rand(100000, 999999);
         $message='Never share this code with anyone,use code '.$otp.' to verify your Phone number. Vanlin Investments ltd';
-                        
-                         
+        Session::put('OTP', $otp);                                     
               $createsms=new SMS;
               $createsms->phone =$phone;
               $createsms->message =$message;
@@ -37,6 +65,11 @@ class VerificationController extends Controller
               $createsms->status =0;
               $createsms->save();
               SMS::Sendsms();
+        Verification::insert([
+            'phone'=> $phone,
+            'otp'=>$otp,
+           
+        ]);
     }
 
     /**
@@ -45,9 +78,12 @@ class VerificationController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function check($id)
     {
-        //
+        $verification=User::find($id);
+        return response()->json([
+            'verification'=>$verification->isVerified
+        ]);
     }
 
     /**

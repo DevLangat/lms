@@ -8,5 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class Verification extends Model
 {
     use HasFactory;
-    protected $fillable = ['OTP','phone'];
+    protected $fillable = ['OTP','phone','id'];
+    public $timestamps = false;
 }
