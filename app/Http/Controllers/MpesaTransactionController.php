@@ -5,13 +5,14 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\DB;
 use App\Models\MpesaTransaction;
 use App\Models\Deposits;
+use App\Models\LoanApplication;
 use App\Models\Repayments;
 use App\Models\Member;
 use Illuminate\Http\Request;
 use App\Models\MpesaAPI;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Log;
-
+ 
 class MpesaTransactionController extends Controller
 {
     /**
@@ -92,30 +93,49 @@ class MpesaTransactionController extends Controller
         Log::info($MemberNo);
         Log::info($Remarks);
 
-        $loanno = "";
+  
         $userid = $MemberNo;
         //check deposit no
         $RecietNo = Deposits::getdepositsRecieptNo();
         if ($Remarks == 'R') {
-            $amount = DB::table('loan_applications')->where('MemberNo', $userid)->pluck('ApprovedAmount')->sum();
-            $payment = DB::table('repayments')->where('MemberNo', $userid)->pluck('amount')->sum();
-            $balance = $amount - $payment;
-
-            if ($balance = $TransAmount) {
+            $loans = LoanApplication::select ('Loanno')
+            ->where ('MemberNo',"=",$userid)
+            ->get();
+            Log::info($loans); 
+foreach($loans as $loanno)
+{
+    Log::info($loanno); 
+    // foreach ($loanno->Loanno as $loannumber)
+    // {
+        $loannumber=$loanno->Loanno;    
+        Log::info($loannumber); 
+        $amount = DB::table('loan_applications')->where('Loanno', $loannumber)->pluck('ApprovedAmount')->sum();
+        $payment = DB::table('repayments')->where('Loanno', $loannumber)->pluck('amount')->sum();
+        $balance = $amount - $payment;
+        Log::info($balance);
+    // }
+   
+            
+if ($balance>0) 
+{
+           if ($balance = $TransAmount) {
                 $loanamount = $TransAmount;
-            } else if ($balance > $TransAmount) {
+            } 
+            else if ($balance > $TransAmount) {
                 $loanamount = $TransAmount;
             } else if ($balance < $TransAmount) {
                 $loanamount = $balance;
                 $Depositbal = $TransAmount - $balance;
-
+                Log::info($TransAmount);
+                Log::info($Depositbal);
+              
                 if ($Depositbal > 0) {
                     Deposits::create(
                         [
                             'MemberNo' => $MemberNo,
                             'Amount' => $Depositbal,
                             'TransBy' =>  $FirstName,
-                            'sharescode' => '',
+                            'sharescode' => '001',
                             'ReceiptNo' => $RecietNo,
                             'mpesacode' => $TransID,
                             'TransactionDate' => $TransTime,
@@ -123,16 +143,26 @@ class MpesaTransactionController extends Controller
 
                         ]
                     );
+                    $DepAmount = DB::table('Deposits')->where('MemberNo', $MemberNo)->pluck('Amount')->sum();
+                    $loanlimit=$DepAmount*3;
+                    Log::info($loanlimit);
+                    Member::where('MemberNo', $MemberNo)
+                     ->update( ['MaxLoan' => $loanlimit]);
                 }
             }
+            $loanbal=$loanamount-$balance;
+            Log::info($balance);
+            Log::info($loanbal);
+            Log::info($loanamount);
             repayments::create(
-                [
+                [                   
                     'Active' => 1,
                     'MemberNo' => $MemberNo,
-                    'Loanno' => $loanno,
+                    'Loanno' => $loannumber,
                     'amount' => $loanamount,
                     'Principal' => $loanamount,
-                    'Interest' => 0,
+                    'Interest' => 0,//Balance
+                    'Balance' =>  $loanbal, 
                     'ReceiptNo' => $RecietNo,
                     'MobileNo' => $MSISDN,
                     'payment_status' => 1,
@@ -140,13 +170,37 @@ class MpesaTransactionController extends Controller
                     'AuditTime' => $TransTime
                 ]
             );
-        } else   {
+        
+        } 
+        // else if($balance<=0 && $TransAmount>0 )
+        // {
+        //     Deposits::create(
+        //         [
+        //             'MemberNo' => $MemberNo,
+        //             'Amount' => $TransAmount,
+        //             'TransBy' =>  $FirstName,
+        //             'sharescode' => '001',
+        //             'ReceiptNo' => $RecietNo,
+        //             'mpesacode' => $TransID,
+        //             'TransactionDate' => $TransTime,
+        //             'Remarks' => $Remarks
+
+        //         ]
+        //     );
+        // }
+        
+
+
+    }
+       
+}
+else   {
             Deposits::create(
                 [
                     'MemberNo' => $MemberNo,
                     'Amount' => $TransAmount,
                     'TransBy' =>  $FirstName,
-                    'sharescode' => '',
+                    'sharescode' => '001',
                     'ReceiptNo' => $RecietNo,
                     'mpesacode' => $TransID,
                     'TransactionDate' => $TransTime,
@@ -154,6 +208,11 @@ class MpesaTransactionController extends Controller
 
                 ]
             );
+            $DepAmount = DB::table('Deposits')->where('MemberNo', $MemberNo)->pluck('Amount')->sum();
+            $loanlimit=$DepAmount*3;
+            Log::info($loanlimit);
+            Member::where('MemberNo', $MemberNo)
+             ->update( ['MaxLoan' => $loanlimit]);
         }
         MpesaTransaction::create([
             'FirstName' => $FirstName,

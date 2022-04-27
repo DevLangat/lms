@@ -21,6 +21,7 @@ class CreateRepaymentsTable extends Migration
             $table->double('amount');
             $table->double('Principal');
             $table->double('Interest');
+            $table->double('Balance');
             $table->string('ReceiptNo'); 
             $table->string('MobileNo'); 
             $table->integer('payment_status');
