@@ -7,7 +7,6 @@ use App\Models\LoanApplication;
 use App\Models\LoanType;
 use App\Models\Member;
 use App\Models\LoanInterest;
-use App\Models\Repayments;
 use Illuminate\Http\Request;
 use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Support\Facades\Log;
@@ -102,7 +101,7 @@ class LoanApplicationController extends Controller
                     $loan->RecoverInterestFirst = true;
                     $loan->IntRate = $request->IntRate;
                     $loan->Rperiod = $request->Rperiod;
-                    $loan->Createdby ='Ken';
+                    $loan->Createdby = Auth::user()->name;
                     $loan->Approved = 0;
                     $loan->ApprovedAmount = '0';
                     $loan->RepayAmount = '0';
@@ -110,8 +109,8 @@ class LoanApplicationController extends Controller
                     $loan->ApprovedBy = $request->ApprovedBy;
                     $loan->Modifiedby = $request->Modifiedby;
                     $loan->ApprovedOn = $request->ApprovedOn;
-                    $loan->save();                      
-
+                    $loan->save();                    
+                   
                     $members_check = Member::select('*')->where('MemberNo', $userid)->get();
                     foreach($members_check as $members_checks)
                     {
@@ -128,8 +127,9 @@ class LoanApplicationController extends Controller
               $createsms->rType ='json';
               $createsms->status =0;
               $createsms->save();
-             SMS::Sendsms();
-                         Alert::success('Loan Application', 'You\'ve Successfully Applied');
+              Alert::success('Loan Application', 'You\'ve Successfully Applied');  
+              SMS::Sendsms();
+
                       }
                   }
                     
@@ -327,7 +327,7 @@ class LoanApplicationController extends Controller
                     $this->data['phone']='079109999';
                     $this->data['amount']=$amount_disburse;
                     
-                MpesaTransactionController::send_loan($this->data);
+              //  MpesaTransactionController::send_loan($this->data);
 
                 
                 Alert::success('Loan Approval', 'Approval Successfully');

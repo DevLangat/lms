@@ -7,8 +7,7 @@ use App\Models\SMS;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Session;
-use Illuminate\Support\Facades\Log;
+
 
 class VerificationController extends Controller
 {
