@@ -59,3 +59,8 @@ Route::get('/deposits/all', [App\Http\Controllers\ApiController::class, 'getAllD
 Route::get('/loans/approved', [App\Http\Controllers\ApiController::class, 'getAllApprovedLoans'])->name('loans/approved'); 
 Route::get('/loans/rejected', [App\Http\Controllers\ApiController::class, 'getAllRejectedLoans'])->name('loans/rejected'); 
 Route::get('/loans/pending', [App\Http\Controllers\ApiController::class, 'getAllPendingLoans'])->name('loans/pending'); 
+
+Route::post('/verifyOtp', [App\Http\Controllers\VerificationController::class, 'verifyOtp'])->name('/verifyOtp'); 
+Route::post('/sendOtp', [App\Http\Controllers\VerificationController::class, 'sendOtp'])->name('/sendOtp'); 
+Route::get('/check/{id}', [App\Http\Controllers\VerificationController::class, 'check'])->name('check'); 
+

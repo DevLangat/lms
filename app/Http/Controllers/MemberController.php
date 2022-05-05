@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Member;
 use Illuminate\Http\Request;
 use RealRashid\SweetAlert\Facades\Alert;
+use Illuminate\Support\Carbon;
 
 class MemberController extends Controller
 {
@@ -20,6 +21,7 @@ class MemberController extends Controller
     public function show()
     {
         $members = Member::all();
+        
         return view('members.view_members',compact('members'));        
     }
 
@@ -30,6 +32,7 @@ class MemberController extends Controller
      */
     public function allmembers()
     {
+       
         $members = Member::all();
         return response()->json(
             [
