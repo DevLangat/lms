@@ -39,8 +39,13 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
 //mpesa
 Route::post('validation', [App\Http\Controllers\MpesaTransactionController::class, 'validation']);
-Route::post('confirmation', [App\Http\Controllers\MpesaTransactionController::class, 'confirmation_url']);
+Route::post('confirmation', [App\Http\Controllers\MpesaTransactionController::class, 'confirmation_url']); 
+Route::post('queue_timeout_url', [App\Http\Controllers\MpesaTransactionController::class, 'queue_timeout_url']); 
+Route::post('result_url', [App\Http\Controllers\MpesaTransactionController::class, 'result_url']); 
 Route::get('accesstoken', [App\Http\Controllers\MpesaTransactionController::class, 'get_access_token']);
+Route::get('b2caccesstoken', [App\Http\Controllers\MpesaTransactionController::class, 'getB2C_access_token']); 
+Route::post('send_loan', [App\Http\Controllers\MpesaTransactionController::class, 'send_loan']); 
+
 Route::post('stkpush', [App\Http\Controllers\MpesaTransactionController::class, 'customerMpesaSTKPush']);
 Route::get('/members_details/{memberno}', [App\Http\Controllers\ApiController::class, 'membersdetails'])->name('members_details');
 Route::get('/loandetails/{memberno}', [App\Http\Controllers\ApiController::class, 'loandetails'])->name('loandetails');
@@ -63,4 +68,6 @@ Route::get('/loans/pending', [App\Http\Controllers\ApiController::class, 'getAll
 Route::post('/verifyOtp', [App\Http\Controllers\VerificationController::class, 'verifyOtp'])->name('/verifyOtp'); 
 Route::post('/sendOtp', [App\Http\Controllers\VerificationController::class, 'sendOtp'])->name('/sendOtp'); 
 Route::get('/check/{id}', [App\Http\Controllers\VerificationController::class, 'check'])->name('check'); 
+
+Route::get('/generateSecurity', [App\Http\Controllers\MpesaTransactionController ::class, 'SecurityCredentials'])->name('generateSecurity'); 
 

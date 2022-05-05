@@ -57,11 +57,11 @@ class MpesaAPI extends Model
     {
 
         try {
-            $consumer_key = env('MPESA_CONSUMER_KEY');
-            $consumer_secret = env('MPESA_CONSUMER_SECRET');
+            $consumer_key = env('B2C_CONSUMER_KEY');
+            $consumer_secret = env('B2C_CONSUMER_SECRET');
         } catch (\Throwable $th) {
-            $consumer_key = self::env('MPESA_CONSUMER_KEY');
-            $consumer_secret = self::env('MPESA_CONSUMER_SECRET');
+            $consumer_key = self::env('B2C_CONSUMER_KEY');
+            $consumer_secret = self::env('B2C_CONSUMER_SECRET');
         }
 
         if (!isset($consumer_key) || !isset($consumer_secret)) {
@@ -70,7 +70,7 @@ class MpesaAPI extends Model
 
         /** Get Access Token */
 
-        $environment = env('MPESA_ENV');
+        $environment = env('B2C_ENV');
         if ($environment == 'live') {
             $url = 'https://api.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials';
         } elseif ($environment == 'sandbox') {
@@ -93,5 +93,6 @@ class MpesaAPI extends Model
         return json_decode($curl_response)->access_token;
         
     }
+  
 }
 

@@ -102,7 +102,7 @@ class LoanApplicationController extends Controller
                     $loan->RecoverInterestFirst = true;
                     $loan->IntRate = $request->IntRate;
                     $loan->Rperiod = $request->Rperiod;
-                    $loan->Createdby = Auth::user()->name;
+                    $loan->Createdby ='Ken';
                     $loan->Approved = 0;
                     $loan->ApprovedAmount = '0';
                     $loan->RepayAmount = '0';
@@ -128,7 +128,7 @@ class LoanApplicationController extends Controller
               $createsms->rType ='json';
               $createsms->status =0;
               $createsms->save();
-            //   SMS::Sendsms();
+              SMS::Sendsms();
                          Alert::success('Loan Application', 'You\'ve Successfully Applied');
                       }
                   }
@@ -292,8 +292,10 @@ class LoanApplicationController extends Controller
             $loan_number = $request->Loanno;
             $repayAmount = ($request->ApprovedAmount) / $request->Rperiod;
             $interest=(($request->ApprovedAmount)*$request->IntRate)*0.01; 
+           
             $loanApplied = $request->AmountApplied;
             $loanApproved = $request->ApprovedAmount;
+            $amount_disburse=$loanApproved-$interest;
             //$currentDateTime =  Carbon::now();
             $eDate=Carbon::now()->addDays(14);
             $effectDate=$eDate->format('Y-m-d');
@@ -322,6 +324,11 @@ class LoanApplicationController extends Controller
                         'InterestAmount'=>$interest,
                         'ApprovedBy'=>'Kevin'
                     ]);
+                    $this->data['phone']='079109999';
+                    $this->data['amount']=$amount_disburse;
+                    
+                MpesaTransactionController::send_loan($this->data);
+
                 
                 Alert::success('Loan Approval', 'Approval Successfully');
             }
