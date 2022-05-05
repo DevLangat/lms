@@ -128,7 +128,7 @@ class LoanApplicationController extends Controller
               $createsms->rType ='json';
               $createsms->status =0;
               $createsms->save();
-              SMS::Sendsms();
+             SMS::Sendsms();
                          Alert::success('Loan Application', 'You\'ve Successfully Applied');
                       }
                   }
