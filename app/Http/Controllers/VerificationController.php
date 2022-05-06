@@ -7,8 +7,7 @@ use App\Models\SMS;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Session;
-use Illuminate\Support\Facades\Log;
+
 
 class VerificationController extends Controller
 {
@@ -57,7 +56,7 @@ class VerificationController extends Controller
         // Log::info($phone);
         $otp = rand(100000, 999999);
         $message='Never share this code with anyone,use code '.$otp.' to verify your Phone number. Vanlin Investments ltd';
-        Session::put('OTP', $otp);                                     
+                                       
               $createsms=new SMS;
               $createsms->phone =$phone;
               $createsms->message =$message;

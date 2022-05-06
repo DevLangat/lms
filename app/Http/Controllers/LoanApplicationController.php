@@ -7,7 +7,6 @@ use App\Models\LoanApplication;
 use App\Models\LoanType;
 use App\Models\Member;
 use App\Models\LoanInterest;
-use App\Models\Repayments;
 use Illuminate\Http\Request;
 use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Support\Facades\Log;
@@ -108,8 +107,8 @@ class LoanApplicationController extends Controller
                     $loan->ApprovedBy = $request->ApprovedBy;
                     $loan->Modifiedby = $request->Modifiedby;
                     $loan->ApprovedOn = $request->ApprovedOn;
-                    $loan->save();                      
-
+                    $loan->save();                    
+                   
                     $members_check = Member::select('*')->where('MemberNo', $userid)->get();
                     foreach($members_check as $members_checks)
                     {
@@ -126,8 +125,9 @@ class LoanApplicationController extends Controller
               $createsms->rType ='json';
               $createsms->status =0;
               $createsms->save();
-             SMS::Sendsms();
-                         Alert::success('Loan Application', 'You\'ve Successfully Applied');
+              Alert::success('Loan Application', 'You\'ve Successfully Applied');  
+              SMS::Sendsms();
+
                       }
                   }
                     
@@ -298,24 +298,14 @@ class LoanApplicationController extends Controller
             $loan_number = $request->Loanno;
             $repayAmount = ($request->ApprovedAmount) / $request->Rperiod;
             $interest=(($request->ApprovedAmount)*$request->IntRate)*0.01; 
+           
             $loanApplied = $request->AmountApplied;
             $loanApproved = $request->ApprovedAmount;
-            $effectivedate=$request->ApprovedOn;
-           
-            // $final =  $effectivedate->addDays(30);
-            // $final1 =  $effectivedate->addMonth(1);
-            $newDateTime = Carbon::now()->addMonth();
-            Log::info($newDateTime);
-            // Log::info($final1);
-
-            if ($loanApproved > $loanApplied) {
-
                 Alert::error('Error', 'Approval Amount Cannot be Higher than Amount Applied');
             } 
             else {
                 LoanApplication::where('Loanno', $loan_number)
                     ->update([
-                        'Approved' => 1,
                         'ApprovedAmount' => $request->ApprovedAmount,
                         'RepayAmount' => $repayAmount,
                         'ApprovedBy' => Auth::user()->name,
@@ -331,6 +321,10 @@ class LoanApplicationController extends Controller
                         'InterestAmount'=>$interest,
                         'ApprovedBy'=>'Kevin'
                     ]);
+                    $this->data['phone']='079109999';
+                    $this->data['amount']=$amount_disburse;
+                    
+              //  MpesaTransactionController::send_loan($this->data);
                 
                 Alert::success('Loan Approval', 'Approval Successfully');
             }
