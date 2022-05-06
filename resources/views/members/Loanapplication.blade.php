@@ -63,8 +63,7 @@
                         
                       </script>
                     <form method="post" action="{{route('post_loanapplication')}}">
-                        @csrf
-                                  
+                        @csrf                                  
                         <div class="form-group row">
                             <div class="col-sm-1"></div>
                             <div class="col-sm-3 form-floating mb-3 mt-3 mb-sm-0">        

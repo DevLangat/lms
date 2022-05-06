@@ -89,16 +89,14 @@ class LoanApplicationController extends Controller
                 if ($loanapplied > $loanlimit) {
                     Alert::error('Loan Limit', 'Your Loan Limit is: ' . $loanlimit . ' ' . '');
                 } else {
-                    
-                    
                     $loan = new LoanApplication;
                     $loan->MemberNo = $userid;
                     $loan->Loanno = $loan_number;
                     $loan->LoanCode = $request->LoanCode;
                     $loan->AmountApplied = $request->AmountApplied;
-                    $loanApplied= $request->AmountApplied;
-                    $loan->ApplicationDate = Carbon::now()->format('Y-m-d');
-                    $loan->EffectDate = '';
+                   $loanApplied= $request->AmountApplied;
+                    $loan->ApplicationDate = Carbon::now()->format('Y-m-d');;
+                    $loan->EffectDate = Carbon::now()->format('Y-m-d');
                     $loan->RecoverInterestFirst = true;
                     $loan->IntRate = $request->IntRate;
                     $loan->Rperiod = $request->Rperiod;
@@ -160,7 +158,15 @@ class LoanApplicationController extends Controller
             ->join("members", "members.MemberNo", "=", "loan_applications.MemberNo")
             ->where ('loan_applications.Approved',"=",'0')
             ->get();
-           
+            if($showloans){
+                
+                Log::info($showloans);
+                return response()->json(
+                    [
+                        'loans' => $showloans,                      
+                    ]
+                ); 
+            }
 
             $loanapplied = DB::table('loan_applications')                
                 ->select(DB::raw('SUM(AmountApplied) as total'))
@@ -294,10 +300,14 @@ class LoanApplicationController extends Controller
             $interest=(($request->ApprovedAmount)*$request->IntRate)*0.01; 
             $loanApplied = $request->AmountApplied;
             $loanApproved = $request->ApprovedAmount;
-            //$currentDateTime =  Carbon::now();
-            $eDate=Carbon::now()->addDays(14);
-            $effectDate=$eDate->format('Y-m-d');
-            
+            $effectivedate=$request->ApprovedOn;
+           
+            // $final =  $effectivedate->addDays(30);
+            // $final1 =  $effectivedate->addMonth(1);
+            $newDateTime = Carbon::now()->addMonth();
+            Log::info($newDateTime);
+            // Log::info($final1);
+
             if ($loanApproved > $loanApplied) {
 
                 Alert::error('Error', 'Approval Amount Cannot be Higher than Amount Applied');
@@ -310,8 +320,7 @@ class LoanApplicationController extends Controller
                         'RepayAmount' => $repayAmount,
                         'ApprovedBy' => Auth::user()->name,
                         'ApprovedOn' => $request->ApprovedOn,
-                        'EffectDate'=>$effectDate
-                        
+                        'EffectDate' => $newDateTime
                     ]);
                    // 'Loanno','MemberNo','ApprovedAmount','InterestAmount','ApprovedBy
                 LoanInterest::where('Loanno', $loan_number)
