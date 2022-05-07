@@ -54,4 +54,8 @@ Route::get('/deposits/add', [App\Http\Controllers\DepositsController::class, 'in
 Route::get('/deposits/all', [App\Http\Controllers\DepositsController::class, 'show'])->name('deposits/all')->middleware('auth');
 Route::post('/post_deposit', [App\Http\Controllers\DepositsController::class, 'store'])->name('post_deposit');
 Route::post('/Deposit_Details/{id}', [App\Http\Controllers\DepositsController::class, 'DepositDetails'])->name('Deposit_Details');
+// sms routes
+// Route::get('/defaults/show', [App\Http\Controllers\SMSController::class, 'index'])->name('defaults/show')->middleware('auth');
+Route::get('/NotifyDefaults', [App\Http\Controllers\SMSController::class, 'Savesms'])->name('NotifyDefaults');
+ 
 

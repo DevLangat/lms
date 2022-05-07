@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Log;
 class SMS extends Model
 {
     use HasFactory;
-    protected $fillable=['phone','rType','status','message' ];
+    protected $fillable=['phone','rType','status','SNo','message' ];
     public static function Sendsms()
     {
         $smspending =SMS::where('status', '=', '0')

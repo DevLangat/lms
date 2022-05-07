@@ -88,14 +88,16 @@ class LoanApplicationController extends Controller
                 if ($loanapplied > $loanlimit) {
                     Alert::error('Loan Limit', 'Your Loan Limit is: ' . $loanlimit . ' ' . '');
                 } else {
+                    
+                    
                     $loan = new LoanApplication;
                     $loan->MemberNo = $userid;
                     $loan->Loanno = $loan_number;
                     $loan->LoanCode = $request->LoanCode;
                     $loan->AmountApplied = $request->AmountApplied;
-                   $loanApplied= $request->AmountApplied;
-                    $loan->ApplicationDate = Carbon::now()->format('Y-m-d');;
-                    $loan->EffectDate = Carbon::now()->format('Y-m-d');
+                    $loanApplied= $request->AmountApplied;
+                    $loan->ApplicationDate = Carbon::now()->format('Y-m-d');
+                    $loan->EffectDate =Carbon::now()->addDays(14)->format('Y-m-d') ;
                     $loan->RecoverInterestFirst = true;
                     $loan->IntRate = $request->IntRate;
                     $loan->Rperiod = $request->Rperiod;
@@ -126,7 +128,7 @@ class LoanApplicationController extends Controller
               $createsms->status =0;
               $createsms->save();
               Alert::success('Loan Application', 'You\'ve Successfully Applied');  
-              SMS::Sendsms();
+            //   SMS::Sendsms();
 
                       }
                   }
@@ -158,15 +160,7 @@ class LoanApplicationController extends Controller
             ->join("members", "members.MemberNo", "=", "loan_applications.MemberNo")
             ->where ('loan_applications.Approved',"=",'0')
             ->get();
-            if($showloans){
-                
-                Log::info($showloans);
-                return response()->json(
-                    [
-                        'loans' => $showloans,                      
-                    ]
-                ); 
-            }
+           
 
             $loanapplied = DB::table('loan_applications')                
                 ->select(DB::raw('SUM(AmountApplied) as total'))
@@ -301,16 +295,25 @@ class LoanApplicationController extends Controller
            
             $loanApplied = $request->AmountApplied;
             $loanApproved = $request->ApprovedAmount;
+            $amount_disburse=$loanApproved-$interest;
+            //$currentDateTime =  Carbon::now();
+            $eDate=Carbon::now()->addDays(14);
+            $effectDate=$eDate->format('Y-m-d');
+            
+            if ($loanApproved > $loanApplied) {
+
                 Alert::error('Error', 'Approval Amount Cannot be Higher than Amount Applied');
             } 
             else {
                 LoanApplication::where('Loanno', $loan_number)
                     ->update([
+                        'Approved' => 1,
                         'ApprovedAmount' => $request->ApprovedAmount,
                         'RepayAmount' => $repayAmount,
                         'ApprovedBy' => Auth::user()->name,
                         'ApprovedOn' => $request->ApprovedOn,
-                        'EffectDate' => $newDateTime
+                        'EffectDate'=>$effectDate
+                        
                     ]);
                    // 'Loanno','MemberNo','ApprovedAmount','InterestAmount','ApprovedBy
                 LoanInterest::where('Loanno', $loan_number)
@@ -325,6 +328,7 @@ class LoanApplicationController extends Controller
                     $this->data['amount']=$amount_disburse;
                     
               //  MpesaTransactionController::send_loan($this->data);
+
                 
                 Alert::success('Loan Approval', 'Approval Successfully');
             }
